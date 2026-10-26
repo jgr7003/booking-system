@@ -1,0 +1,77 @@
+[
+  {
+    "type": "city",
+    "code": "NYC",
+    "name": "New York",
+    "city": null,
+    "country_code": "US",
+    "time_zone": null,
+    "airports": [
+      "JFK",
+      "LGA"
+    ]
+  },
+  {
+    "type": "airport",
+    "code": "JFK",
+    "name": "John F Kennedy International Airport",
+    "city": "New York",
+    "country_code": "US",
+    "time_zone": "America/New_York",
+    "airports": []
+  },
+  {
+    "type": "airport",
+    "code": "LGA",
+    "name": "Laguardia Airport",
+    "city": "New York",
+    "country_code": "US",
+    "time_zone": "America/New_York",
+    "airports": []
+  },
+  {
+    "type": "airport",
+    "code": "ISP",
+    "name": "Long Island Mac Arthur Airport",
+    "city": "New York",
+    "country_code": "US",
+    "time_zone": "America/New_York",
+    "airports": []
+  },
+  {
+    "type": "airport",
+    "code": "SWF",
+    "name": "New York Stewart International Airport",
+    "city": "New York",
+    "country_code": "US",
+    "time_zone": "America/New_York",
+    "airports": []
+  },
+  {
+    "type": "airport",
+    "code": "NYS",
+    "name": "New York Skyports Inc Seaplane Base",
+    "city": "New York",
+    "country_code": "US",
+    "time_zone": "America/New_York",
+    "airports": []
+  },
+  {
+    "type": "airport",
+    "code": "EWR",
+    "name": "Newark Liberty International Airport",
+    "city": "Newark",
+    "country_code": "US",
+    "time_zone": "America/New_York",
+    "airports": []
+  },
+  {
+    "type": "airport",
+    "code": "TEB",
+    "name": "Teterboro Airport",
+    "city": "Teterboro",
+    "country_code": "US",
+    "time_zone": "America/New_York",
+    "airports": []
+  }
+]

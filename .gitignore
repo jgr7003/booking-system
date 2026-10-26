@@ -218,3 +218,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/coverage/
+# The Python rules above ignore any "lib/" and "dist/" folder: keep the frontend's sources.
+!frontend/src/lib/

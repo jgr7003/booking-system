@@ -1,0 +1,5685 @@
+{
+  "provider": "duffel",
+  "search_id": "orq_0000BBiPI0fBoJ3vgP3eAA",
+  "passengers": [
+    {
+      "id": "pas_0000BBiPI0fXmzLVhVDviC",
+      "type": "adult",
+      "age": null
+    }
+  ],
+  "expires_at": "2026-10-23T21:26:50Z",
+  "flights": [
+    {
+      "key": "725d566a0d915895",
+      "provider": "duffel",
+      "owner": {
+        "code": "IB",
+        "name": "Iberia",
+        "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/IB.svg",
+        "conditions_of_carriage_url": "https://www.iberia.com/gb/bills/conditions/"
+      },
+      "emissions_kg": 990,
+      "lowest_price": {
+        "amount": "230.01",
+        "currency": "USD"
+      },
+      "slices": [
+        {
+          "origin": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country_code": "GB",
+            "time_zone": "Europe/London",
+            "latitude": 51.470311,
+            "longitude": -0.458118,
+            "terminal": null
+          },
+          "destination": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country_code": "US",
+            "time_zone": "America/New_York",
+            "latitude": 40.640556,
+            "longitude": -73.778519,
+            "terminal": null
+          },
+          "duration_minutes": 478,
+          "stops": 0,
+          "segments": [
+            {
+              "origin": {
+                "code": "LHR",
+                "name": "Heathrow Airport",
+                "city": "London",
+                "country_code": "GB",
+                "time_zone": "Europe/London",
+                "latitude": 51.470311,
+                "longitude": -0.458118,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "JFK",
+                "name": "John F. Kennedy International Airport",
+                "city": "New York",
+                "country_code": "US",
+                "time_zone": "America/New_York",
+                "latitude": 40.640556,
+                "longitude": -73.778519,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T10:50:00",
+              "arriving_at": "2026-12-15T13:48:00",
+              "duration_minutes": 478,
+              "marketing_carrier": {
+                "code": "IB",
+                "name": "Iberia",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/IB.svg",
+                "conditions_of_carriage_url": "https://www.iberia.com/gb/bills/conditions/"
+              },
+              "flight_number": "3179",
+              "operating_carrier": {
+                "code": "IB",
+                "name": "Iberia",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/IB.svg",
+                "conditions_of_carriage_url": "https://www.iberia.com/gb/bills/conditions/"
+              },
+              "aircraft": null,
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "Economy",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": true,
+                  "seat_pitch": "30",
+                  "legroom": null
+                }
+              }
+            }
+          ],
+          "connections": []
+        }
+      ],
+      "fares": [
+        {
+          "offer_id": "off_034l6SavDjxAdhKZnJOx04",
+          "price": {
+            "total": {
+              "amount": "230.01",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "197.28",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "32.73",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50.636757Z",
+          "slices": [
+            {
+              "fare_brand": "Basic",
+              "benefits": {
+                "advance_seat_selection": null,
+                "priority_boarding": null,
+                "priority_check_in": null
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "40.00",
+                "currency": "USD"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "40.00",
+                "currency": "USD"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-26T20:56:50Z",
+            "price_guaranteed_until": "2026-10-25T20:56:50Z"
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "known_traveler_number",
+            "passenger_redress_number"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "8ff440d5d9cb67d7",
+      "provider": "duffel",
+      "owner": {
+        "code": "BA",
+        "name": "British Airways",
+        "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/BA.svg",
+        "conditions_of_carriage_url": "https://www.britishairways.com/en-gb/information/legal/british-airways/general-conditions-of-carriage"
+      },
+      "emissions_kg": 893,
+      "lowest_price": {
+        "amount": "234.20",
+        "currency": "USD"
+      },
+      "slices": [
+        {
+          "origin": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country_code": "GB",
+            "time_zone": "Europe/London",
+            "latitude": 51.470311,
+            "longitude": -0.458118,
+            "terminal": null
+          },
+          "destination": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country_code": "US",
+            "time_zone": "America/New_York",
+            "latitude": 40.640556,
+            "longitude": -73.778519,
+            "terminal": null
+          },
+          "duration_minutes": 478,
+          "stops": 0,
+          "segments": [
+            {
+              "origin": {
+                "code": "LHR",
+                "name": "Heathrow Airport",
+                "city": "London",
+                "country_code": "GB",
+                "time_zone": "Europe/London",
+                "latitude": 51.470311,
+                "longitude": -0.458118,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "JFK",
+                "name": "John F. Kennedy International Airport",
+                "city": "New York",
+                "country_code": "US",
+                "time_zone": "America/New_York",
+                "latitude": 40.640556,
+                "longitude": -73.778519,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T10:50:00",
+              "arriving_at": "2026-12-15T13:48:00",
+              "duration_minutes": 478,
+              "marketing_carrier": {
+                "code": "BA",
+                "name": "British Airways",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/BA.svg",
+                "conditions_of_carriage_url": "https://www.britishairways.com/en-gb/information/legal/british-airways/general-conditions-of-carriage"
+              },
+              "flight_number": "0109",
+              "operating_carrier": {
+                "code": "BA",
+                "name": "British Airways",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/BA.svg",
+                "conditions_of_carriage_url": "https://www.britishairways.com/en-gb/information/legal/british-airways/general-conditions-of-carriage"
+              },
+              "aircraft": null,
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "Economy",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": true,
+                  "seat_pitch": "30",
+                  "legroom": null
+                }
+              }
+            }
+          ],
+          "connections": []
+        }
+      ],
+      "fares": [
+        {
+          "offer_id": "off_034l6SavDjxAdhKZnJMTYm",
+          "price": {
+            "total": {
+              "amount": "234.20",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "201.50",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "32.70",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50.636347Z",
+          "slices": [
+            {
+              "fare_brand": "Basic",
+              "benefits": {
+                "advance_seat_selection": null,
+                "priority_boarding": null,
+                "priority_check_in": null
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": false,
+              "penalty": null
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-26T20:56:50Z",
+            "price_guaranteed_until": "2026-10-25T20:56:50Z"
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "known_traveler_number",
+            "passenger_redress_number"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "9c7a753ff6f45e4b",
+      "provider": "duffel",
+      "owner": {
+        "code": "AA",
+        "name": "American Airlines",
+        "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/AA.svg",
+        "conditions_of_carriage_url": "https://www.aa.com/i18n/customer-service/support/conditions-of-carriage.jsp"
+      },
+      "emissions_kg": 269,
+      "lowest_price": {
+        "amount": "242.86",
+        "currency": "USD"
+      },
+      "slices": [
+        {
+          "origin": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country_code": "GB",
+            "time_zone": "Europe/London",
+            "latitude": 51.470311,
+            "longitude": -0.458118,
+            "terminal": null
+          },
+          "destination": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country_code": "US",
+            "time_zone": "America/New_York",
+            "latitude": 40.640556,
+            "longitude": -73.778519,
+            "terminal": null
+          },
+          "duration_minutes": 478,
+          "stops": 0,
+          "segments": [
+            {
+              "origin": {
+                "code": "LHR",
+                "name": "Heathrow Airport",
+                "city": "London",
+                "country_code": "GB",
+                "time_zone": "Europe/London",
+                "latitude": 51.470311,
+                "longitude": -0.458118,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "JFK",
+                "name": "John F. Kennedy International Airport",
+                "city": "New York",
+                "country_code": "US",
+                "time_zone": "America/New_York",
+                "latitude": 40.640556,
+                "longitude": -73.778519,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T10:50:00",
+              "arriving_at": "2026-12-15T13:48:00",
+              "duration_minutes": 478,
+              "marketing_carrier": {
+                "code": "AA",
+                "name": "American Airlines",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/AA.svg",
+                "conditions_of_carriage_url": "https://www.aa.com/i18n/customer-service/support/conditions-of-carriage.jsp"
+              },
+              "flight_number": "118",
+              "operating_carrier": {
+                "code": "AA",
+                "name": "American Airlines",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/AA.svg",
+                "conditions_of_carriage_url": "https://www.aa.com/i18n/customer-service/support/conditions-of-carriage.jsp"
+              },
+              "aircraft": null,
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "Economy",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": true,
+                  "seat_pitch": "30",
+                  "legroom": null
+                }
+              }
+            }
+          ],
+          "connections": []
+        }
+      ],
+      "fares": [
+        {
+          "offer_id": "off_034l6SavPpNeHsYO6KTUvY",
+          "price": {
+            "total": {
+              "amount": "242.86",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "208.52",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "34.34",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50.638013Z",
+          "slices": [
+            {
+              "fare_brand": "Basic Economy",
+              "benefits": {
+                "advance_seat_selection": null,
+                "priority_boarding": null,
+                "priority_check_in": null
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "40.00",
+                "currency": "USD"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-26T20:56:50Z",
+            "price_guaranteed_until": "2026-10-25T20:56:50Z"
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "known_traveler_number",
+            "passenger_redress_number"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "60d4a3302cb2ce47",
+      "provider": "duffel",
+      "owner": {
+        "code": "ZZ",
+        "name": "Duffel Airways",
+        "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/ZZ.svg",
+        "conditions_of_carriage_url": "https://duffelairways.com/dummy-url/conditions-of-carriage"
+      },
+      "emissions_kg": 540,
+      "lowest_price": {
+        "amount": "243.88",
+        "currency": "USD"
+      },
+      "slices": [
+        {
+          "origin": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country_code": "GB",
+            "time_zone": "Europe/London",
+            "latitude": 51.470311,
+            "longitude": -0.458118,
+            "terminal": null
+          },
+          "destination": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country_code": "US",
+            "time_zone": "America/New_York",
+            "latitude": 40.640556,
+            "longitude": -73.778519,
+            "terminal": null
+          },
+          "duration_minutes": 478,
+          "stops": 0,
+          "segments": [
+            {
+              "origin": {
+                "code": "LHR",
+                "name": "Heathrow Airport",
+                "city": "London",
+                "country_code": "GB",
+                "time_zone": "Europe/London",
+                "latitude": 51.470311,
+                "longitude": -0.458118,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "JFK",
+                "name": "John F. Kennedy International Airport",
+                "city": "New York",
+                "country_code": "US",
+                "time_zone": "America/New_York",
+                "latitude": 40.640556,
+                "longitude": -73.778519,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T10:50:00",
+              "arriving_at": "2026-12-15T13:48:00",
+              "duration_minutes": 478,
+              "marketing_carrier": {
+                "code": "ZZ",
+                "name": "Duffel Airways",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/ZZ.svg",
+                "conditions_of_carriage_url": "https://duffelairways.com/dummy-url/conditions-of-carriage"
+              },
+              "flight_number": "1079",
+              "operating_carrier": {
+                "code": "ZZ",
+                "name": "Duffel Airways",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/ZZ.svg",
+                "conditions_of_carriage_url": "https://duffelairways.com/dummy-url/conditions-of-carriage"
+              },
+              "aircraft": null,
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "Economy",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": true,
+                  "seat_pitch": "30",
+                  "legroom": null
+                }
+              }
+            }
+          ],
+          "connections": []
+        }
+      ],
+      "fares": [
+        {
+          "offer_id": "off_034l6Sav7hEvobifdnrGSm",
+          "price": {
+            "total": {
+              "amount": "243.88",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "209.61",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "34.27",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50.635699Z",
+          "slices": [
+            {
+              "fare_brand": "Basic",
+              "benefits": {
+                "advance_seat_selection": null,
+                "priority_boarding": null,
+                "priority_check_in": null
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": false,
+              "penalty": null
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-26T20:56:50Z",
+            "price_guaranteed_until": "2026-10-25T20:56:50Z"
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "known_traveler_number",
+            "passenger_redress_number"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "44d536294972b291",
+      "provider": "duffel",
+      "owner": {
+        "code": "LH",
+        "name": "Lufthansa",
+        "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+        "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+      },
+      "emissions_kg": 379,
+      "lowest_price": {
+        "amount": "425.73",
+        "currency": "USD"
+      },
+      "slices": [
+        {
+          "origin": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country_code": "GB",
+            "time_zone": "Europe/London",
+            "latitude": 51.470311,
+            "longitude": -0.458118,
+            "terminal": null
+          },
+          "destination": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country_code": "US",
+            "time_zone": "America/New_York",
+            "latitude": 40.640556,
+            "longitude": -73.778519,
+            "terminal": null
+          },
+          "duration_minutes": 760,
+          "stops": 1,
+          "segments": [
+            {
+              "origin": {
+                "code": "LHR",
+                "name": "Heathrow Airport",
+                "city": "London",
+                "country_code": "GB",
+                "time_zone": "Europe/London",
+                "latitude": 51.470311,
+                "longitude": -0.458118,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "ZRH",
+                "name": "Zürich Airport",
+                "city": "Zürich",
+                "country_code": "CH",
+                "time_zone": "Europe/Zurich",
+                "latitude": 47.461458,
+                "longitude": 8.552323,
+                "terminal": null
+              },
+              "departing_at": "2026-12-15T09:00:00",
+              "arriving_at": "2026-12-15T11:55:00",
+              "duration_minutes": 115,
+              "marketing_carrier": {
+                "code": "LX",
+                "name": "SWISS",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LX.svg",
+                "conditions_of_carriage_url": "https://www.swiss.com/de/en/terms-conditions/conditions-of-carriage"
+              },
+              "flight_number": "0317",
+              "operating_carrier": {
+                "code": "LX",
+                "name": "SWISS",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LX.svg",
+                "conditions_of_carriage_url": "https://www.swiss.com/de/en/terms-conditions/conditions-of-carriage"
+              },
+              "aircraft": "Airbus A321neo",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "unavailable",
+                  "power": true,
+                  "seat_pitch": "29",
+                  "legroom": "less"
+                }
+              }
+            },
+            {
+              "origin": {
+                "code": "ZRH",
+                "name": "Zürich Airport",
+                "city": "Zürich",
+                "country_code": "CH",
+                "time_zone": "Europe/Zurich",
+                "latitude": 47.461458,
+                "longitude": 8.552323,
+                "terminal": null
+              },
+              "destination": {
+                "code": "JFK",
+                "name": "John F. Kennedy International Airport",
+                "city": "New York",
+                "country_code": "US",
+                "time_zone": "America/New_York",
+                "latitude": 40.640556,
+                "longitude": -73.778519,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T13:10:00",
+              "arriving_at": "2026-12-15T16:40:00",
+              "duration_minutes": 570,
+              "marketing_carrier": {
+                "code": "LX",
+                "name": "SWISS",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LX.svg",
+                "conditions_of_carriage_url": "https://www.swiss.com/de/en/terms-conditions/conditions-of-carriage"
+              },
+              "flight_number": "0014",
+              "operating_carrier": {
+                "code": "LX",
+                "name": "SWISS",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LX.svg",
+                "conditions_of_carriage_url": "https://www.swiss.com/de/en/terms-conditions/conditions-of-carriage"
+              },
+              "aircraft": "Airbus A330-300",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": true,
+                  "seat_pitch": "31",
+                  "legroom": "standard"
+                }
+              }
+            }
+          ],
+          "connections": [
+            {
+              "airport": "ZRH",
+              "duration_minutes": 75
+            }
+          ]
+        }
+      ],
+      "fares": [
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1g",
+          "price": {
+            "total": {
+              "amount": "425.73",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "47.06",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "378.67",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Light",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 0,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "300",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1q",
+          "price": {
+            "total": {
+              "amount": "553.80",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "175.13",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "378.67",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort",
+              "benefits": {
+                "advance_seat_selection": null,
+                "priority_boarding": null,
+                "priority_check_in": null
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k20",
+          "price": {
+            "total": {
+              "amount": "685.71",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "307.04",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "378.67",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort Plus",
+              "benefits": {
+                "advance_seat_selection": null,
+                "priority_boarding": null,
+                "priority_check_in": null
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "150",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2A",
+          "price": {
+            "total": {
+              "amount": "727.17",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "348.50",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "378.67",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Impact",
+              "benefits": {
+                "advance_seat_selection": null,
+                "priority_boarding": null,
+                "priority_check_in": null
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": null,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2K",
+          "price": {
+            "total": {
+              "amount": "810.85",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "432.18",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "378.67",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Flex",
+              "benefits": {
+                "advance_seat_selection": null,
+                "priority_boarding": null,
+                "priority_check_in": null
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "f3e03f39d0473ee9",
+      "provider": "duffel",
+      "owner": {
+        "code": "LH",
+        "name": "Lufthansa",
+        "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+        "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+      },
+      "emissions_kg": 379,
+      "lowest_price": {
+        "amount": "431.32",
+        "currency": "USD"
+      },
+      "slices": [
+        {
+          "origin": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country_code": "GB",
+            "time_zone": "Europe/London",
+            "latitude": 51.470311,
+            "longitude": -0.458118,
+            "terminal": null
+          },
+          "destination": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country_code": "US",
+            "time_zone": "America/New_York",
+            "latitude": 40.640556,
+            "longitude": -73.778519,
+            "terminal": null
+          },
+          "duration_minutes": 735,
+          "stops": 1,
+          "segments": [
+            {
+              "origin": {
+                "code": "LHR",
+                "name": "Heathrow Airport",
+                "city": "London",
+                "country_code": "GB",
+                "time_zone": "Europe/London",
+                "latitude": 51.470311,
+                "longitude": -0.458118,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "ZRH",
+                "name": "Zürich Airport",
+                "city": "Zürich",
+                "country_code": "CH",
+                "time_zone": "Europe/Zurich",
+                "latitude": 47.461458,
+                "longitude": 8.552323,
+                "terminal": null
+              },
+              "departing_at": "2026-12-15T06:00:00",
+              "arriving_at": "2026-12-15T08:40:00",
+              "duration_minutes": 100,
+              "marketing_carrier": {
+                "code": "LX",
+                "name": "SWISS",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LX.svg",
+                "conditions_of_carriage_url": "https://www.swiss.com/de/en/terms-conditions/conditions-of-carriage"
+              },
+              "flight_number": "0345",
+              "operating_carrier": {
+                "code": "LX",
+                "name": "SWISS",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LX.svg",
+                "conditions_of_carriage_url": "https://www.swiss.com/de/en/terms-conditions/conditions-of-carriage"
+              },
+              "aircraft": "Airbus A320neo",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "free",
+                  "power": true,
+                  "seat_pitch": "29",
+                  "legroom": "less"
+                }
+              }
+            },
+            {
+              "origin": {
+                "code": "ZRH",
+                "name": "Zürich Airport",
+                "city": "Zürich",
+                "country_code": "CH",
+                "time_zone": "Europe/Zurich",
+                "latitude": 47.461458,
+                "longitude": 8.552323,
+                "terminal": null
+              },
+              "destination": {
+                "code": "JFK",
+                "name": "John F. Kennedy International Airport",
+                "city": "New York",
+                "country_code": "US",
+                "time_zone": "America/New_York",
+                "latitude": 40.640556,
+                "longitude": -73.778519,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T09:55:00",
+              "arriving_at": "2026-12-15T13:15:00",
+              "duration_minutes": 560,
+              "marketing_carrier": {
+                "code": "LX",
+                "name": "SWISS",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LX.svg",
+                "conditions_of_carriage_url": "https://www.swiss.com/de/en/terms-conditions/conditions-of-carriage"
+              },
+              "flight_number": "0016",
+              "operating_carrier": {
+                "code": "LX",
+                "name": "SWISS",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LX.svg",
+                "conditions_of_carriage_url": "https://www.swiss.com/de/en/terms-conditions/conditions-of-carriage"
+              },
+              "aircraft": "Airbus A330-300",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": true,
+                  "seat_pitch": "31",
+                  "legroom": "standard"
+                }
+              }
+            }
+          ],
+          "connections": [
+            {
+              "airport": "ZRH",
+              "duration_minutes": 75
+            }
+          ]
+        }
+      ],
+      "fares": [
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1h",
+          "price": {
+            "total": {
+              "amount": "431.32",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "52.65",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "378.67",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Light",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 0,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "300",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1r",
+          "price": {
+            "total": {
+              "amount": "549.14",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "170.47",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "378.67",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k21",
+          "price": {
+            "total": {
+              "amount": "676.36",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "297.69",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "378.67",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort Plus",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "150",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2B",
+          "price": {
+            "total": {
+              "amount": "725.46",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "346.79",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "378.67",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Impact",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": null,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2L",
+          "price": {
+            "total": {
+              "amount": "810.90",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "432.23",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "378.67",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Flex",
+              "benefits": {
+                "advance_seat_selection": true,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "6ae0f888bb3bcde4",
+      "provider": "duffel",
+      "owner": {
+        "code": "LH",
+        "name": "Lufthansa",
+        "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+        "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+      },
+      "emissions_kg": 390,
+      "lowest_price": {
+        "amount": "432.29",
+        "currency": "USD"
+      },
+      "slices": [
+        {
+          "origin": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country_code": "GB",
+            "time_zone": "Europe/London",
+            "latitude": 51.470311,
+            "longitude": -0.458118,
+            "terminal": null
+          },
+          "destination": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country_code": "US",
+            "time_zone": "America/New_York",
+            "latitude": 40.640556,
+            "longitude": -73.778519,
+            "terminal": null
+          },
+          "duration_minutes": 780,
+          "stops": 1,
+          "segments": [
+            {
+              "origin": {
+                "code": "LHR",
+                "name": "Heathrow Airport",
+                "city": "London",
+                "country_code": "GB",
+                "time_zone": "Europe/London",
+                "latitude": 51.470311,
+                "longitude": -0.458118,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "MUC",
+                "name": "Munich Airport",
+                "city": "Munich",
+                "country_code": "DE",
+                "time_zone": "Europe/Berlin",
+                "latitude": 48.353732,
+                "longitude": 11.780563,
+                "terminal": "2"
+              },
+              "departing_at": "2026-12-15T07:40:00",
+              "arriving_at": "2026-12-15T10:30:00",
+              "duration_minutes": 110,
+              "marketing_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "flight_number": "4205",
+              "operating_carrier": {
+                "code": "VL",
+                "name": "City Airlines",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/VL.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa-city.com/en/service/gcc.html"
+              },
+              "aircraft": "Airbus A320neo",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "free",
+                  "power": true,
+                  "seat_pitch": "29",
+                  "legroom": "less"
+                }
+              }
+            },
+            {
+              "origin": {
+                "code": "MUC",
+                "name": "Munich Airport",
+                "city": "Munich",
+                "country_code": "DE",
+                "time_zone": "Europe/Berlin",
+                "latitude": 48.353732,
+                "longitude": 11.780563,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "JFK",
+                "name": "John F. Kennedy International Airport",
+                "city": "New York",
+                "country_code": "US",
+                "time_zone": "America/New_York",
+                "latitude": 40.640556,
+                "longitude": -73.778519,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T12:45:00",
+              "arriving_at": "2026-12-15T15:40:00",
+              "duration_minutes": 535,
+              "marketing_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "flight_number": "0410",
+              "operating_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "aircraft": "Airbus A350-900",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": true,
+                  "seat_pitch": "31",
+                  "legroom": "standard"
+                }
+              }
+            }
+          ],
+          "connections": [
+            {
+              "airport": "MUC",
+              "duration_minutes": 135
+            }
+          ]
+        }
+      ],
+      "fares": [
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1l",
+          "price": {
+            "total": {
+              "amount": "432.29",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "46.67",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "385.62",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Light",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 0,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "300",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1v",
+          "price": {
+            "total": {
+              "amount": "568.82",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "183.20",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "385.62",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k25",
+          "price": {
+            "total": {
+              "amount": "687.06",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "301.44",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "385.62",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort Plus",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "150",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2F",
+          "price": {
+            "total": {
+              "amount": "729.48",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "343.86",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "385.62",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Impact",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": null,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2P",
+          "price": {
+            "total": {
+              "amount": "829.60",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "443.98",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "385.62",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Flex",
+              "benefits": {
+                "advance_seat_selection": true,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "5587b6cee9b77d6a",
+      "provider": "duffel",
+      "owner": {
+        "code": "LH",
+        "name": "Lufthansa",
+        "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+        "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+      },
+      "emissions_kg": 487,
+      "lowest_price": {
+        "amount": "432.87",
+        "currency": "USD"
+      },
+      "slices": [
+        {
+          "origin": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country_code": "GB",
+            "time_zone": "Europe/London",
+            "latitude": 51.470311,
+            "longitude": -0.458118,
+            "terminal": null
+          },
+          "destination": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country_code": "US",
+            "time_zone": "America/New_York",
+            "latitude": 40.640556,
+            "longitude": -73.778519,
+            "terminal": null
+          },
+          "duration_minutes": 795,
+          "stops": 1,
+          "segments": [
+            {
+              "origin": {
+                "code": "LHR",
+                "name": "Heathrow Airport",
+                "city": "London",
+                "country_code": "GB",
+                "time_zone": "Europe/London",
+                "latitude": 51.470311,
+                "longitude": -0.458118,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "VIE",
+                "name": "Vienna International Airport",
+                "city": "Vienna",
+                "country_code": "AT",
+                "time_zone": "Europe/Vienna",
+                "latitude": 48.113065,
+                "longitude": 16.568137,
+                "terminal": "3"
+              },
+              "departing_at": "2026-12-15T06:00:00",
+              "arriving_at": "2026-12-15T09:10:00",
+              "duration_minutes": 130,
+              "marketing_carrier": {
+                "code": "OS",
+                "name": "Austrian",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/OS.svg",
+                "conditions_of_carriage_url": "https://www.austrian.com/es/en/legal/conditions-of-carriage"
+              },
+              "flight_number": "0340",
+              "operating_carrier": {
+                "code": "OS",
+                "name": "Austrian",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/OS.svg",
+                "conditions_of_carriage_url": "https://www.austrian.com/es/en/legal/conditions-of-carriage"
+              },
+              "aircraft": "Airbus A320neo",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "free",
+                  "power": true,
+                  "seat_pitch": "28",
+                  "legroom": "less"
+                }
+              }
+            },
+            {
+              "origin": {
+                "code": "VIE",
+                "name": "Vienna International Airport",
+                "city": "Vienna",
+                "country_code": "AT",
+                "time_zone": "Europe/Vienna",
+                "latitude": 48.113065,
+                "longitude": 16.568137,
+                "terminal": "3"
+              },
+              "destination": {
+                "code": "JFK",
+                "name": "John F. Kennedy International Airport",
+                "city": "New York",
+                "country_code": "US",
+                "time_zone": "America/New_York",
+                "latitude": 40.640556,
+                "longitude": -73.778519,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T10:50:00",
+              "arriving_at": "2026-12-15T14:15:00",
+              "duration_minutes": 565,
+              "marketing_carrier": {
+                "code": "OS",
+                "name": "Austrian",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/OS.svg",
+                "conditions_of_carriage_url": "https://www.austrian.com/es/en/legal/conditions-of-carriage"
+              },
+              "flight_number": "0035",
+              "operating_carrier": {
+                "code": "OS",
+                "name": "Austrian",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/OS.svg",
+                "conditions_of_carriage_url": "https://www.austrian.com/es/en/legal/conditions-of-carriage"
+              },
+              "aircraft": "Boeing 787-9",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": true,
+                  "seat_pitch": "31",
+                  "legroom": "standard"
+                }
+              }
+            }
+          ],
+          "connections": [
+            {
+              "airport": "VIE",
+              "duration_minutes": 100
+            }
+          ]
+        }
+      ],
+      "fares": [
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1i",
+          "price": {
+            "total": {
+              "amount": "432.87",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "49.79",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "383.08",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Light",
+              "benefits": {
+                "advance_seat_selection": null,
+                "priority_boarding": null,
+                "priority_check_in": null
+              },
+              "baggage": [
+                {
+                  "checked": 0,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "300",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1s",
+          "price": {
+            "total": {
+              "amount": "558.38",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "175.30",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "383.08",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort",
+              "benefits": {
+                "advance_seat_selection": null,
+                "priority_boarding": null,
+                "priority_check_in": null
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k22",
+          "price": {
+            "total": {
+              "amount": "695.59",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "312.51",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "383.08",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort Plus",
+              "benefits": {
+                "advance_seat_selection": null,
+                "priority_boarding": null,
+                "priority_check_in": null
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "150",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2C",
+          "price": {
+            "total": {
+              "amount": "731.88",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "348.80",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "383.08",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Impact",
+              "benefits": {
+                "advance_seat_selection": null,
+                "priority_boarding": null,
+                "priority_check_in": null
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": null,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2M",
+          "price": {
+            "total": {
+              "amount": "835.40",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "452.32",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "383.08",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Flex",
+              "benefits": {
+                "advance_seat_selection": null,
+                "priority_boarding": null,
+                "priority_check_in": null
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "c1104563fd98b1b0",
+      "provider": "duffel",
+      "owner": {
+        "code": "LH",
+        "name": "Lufthansa",
+        "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+        "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+      },
+      "emissions_kg": 372,
+      "lowest_price": {
+        "amount": "433.31",
+        "currency": "USD"
+      },
+      "slices": [
+        {
+          "origin": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country_code": "GB",
+            "time_zone": "Europe/London",
+            "latitude": 51.470311,
+            "longitude": -0.458118,
+            "terminal": null
+          },
+          "destination": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country_code": "US",
+            "time_zone": "America/New_York",
+            "latitude": 40.640556,
+            "longitude": -73.778519,
+            "terminal": null
+          },
+          "duration_minutes": 725,
+          "stops": 1,
+          "segments": [
+            {
+              "origin": {
+                "code": "LHR",
+                "name": "Heathrow Airport",
+                "city": "London",
+                "country_code": "GB",
+                "time_zone": "Europe/London",
+                "latitude": 51.470311,
+                "longitude": -0.458118,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "FRA",
+                "name": "Frankfurt am Main Airport",
+                "city": "Frankfurt",
+                "country_code": "DE",
+                "time_zone": "Europe/Berlin",
+                "latitude": 50.034866,
+                "longitude": 8.567755,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T06:30:00",
+              "arriving_at": "2026-12-15T09:05:00",
+              "duration_minutes": 95,
+              "marketing_carrier": {
+                "code": "VL",
+                "name": "City Airlines",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/VL.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa-city.com/en/service/gcc.html"
+              },
+              "flight_number": "0921",
+              "operating_carrier": {
+                "code": "VL",
+                "name": "City Airlines",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/VL.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa-city.com/en/service/gcc.html"
+              },
+              "aircraft": "Airbus A320neo",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "unavailable",
+                  "power": true,
+                  "seat_pitch": "29",
+                  "legroom": "less"
+                }
+              }
+            },
+            {
+              "origin": {
+                "code": "FRA",
+                "name": "Frankfurt am Main Airport",
+                "city": "Frankfurt",
+                "country_code": "DE",
+                "time_zone": "Europe/Berlin",
+                "latitude": 50.034866,
+                "longitude": 8.567755,
+                "terminal": "1"
+              },
+              "destination": {
+                "code": "JFK",
+                "name": "John F. Kennedy International Airport",
+                "city": "New York",
+                "country_code": "US",
+                "time_zone": "America/New_York",
+                "latitude": 40.640556,
+                "longitude": -73.778519,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T11:00:00",
+              "arriving_at": "2026-12-15T13:35:00",
+              "duration_minutes": 515,
+              "marketing_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "flight_number": "0400",
+              "operating_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "aircraft": "Airbus A350-900",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": true,
+                  "seat_pitch": "31",
+                  "legroom": "standard"
+                }
+              }
+            }
+          ],
+          "connections": [
+            {
+              "airport": "FRA",
+              "duration_minutes": 115
+            }
+          ]
+        }
+      ],
+      "fares": [
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1n",
+          "price": {
+            "total": {
+              "amount": "433.31",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "47.15",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "386.16",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Light",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "300",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1x",
+          "price": {
+            "total": {
+              "amount": "557.54",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "171.38",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "386.16",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k27",
+          "price": {
+            "total": {
+              "amount": "683.98",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "297.82",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "386.16",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort Plus",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "150",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2H",
+          "price": {
+            "total": {
+              "amount": "722.62",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "336.46",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "386.16",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Impact",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": null,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2R",
+          "price": {
+            "total": {
+              "amount": "824.30",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "438.14",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "386.16",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Flex",
+              "benefits": {
+                "advance_seat_selection": true,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "16d474afe670723a",
+      "provider": "duffel",
+      "owner": {
+        "code": "LH",
+        "name": "Lufthansa",
+        "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+        "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+      },
+      "emissions_kg": 372,
+      "lowest_price": {
+        "amount": "434.77",
+        "currency": "USD"
+      },
+      "slices": [
+        {
+          "origin": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country_code": "GB",
+            "time_zone": "Europe/London",
+            "latitude": 51.470311,
+            "longitude": -0.458118,
+            "terminal": null
+          },
+          "destination": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country_code": "US",
+            "time_zone": "America/New_York",
+            "latitude": 40.640556,
+            "longitude": -73.778519,
+            "terminal": null
+          },
+          "duration_minutes": 665,
+          "stops": 1,
+          "segments": [
+            {
+              "origin": {
+                "code": "LHR",
+                "name": "Heathrow Airport",
+                "city": "London",
+                "country_code": "GB",
+                "time_zone": "Europe/London",
+                "latitude": 51.470311,
+                "longitude": -0.458118,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "FRA",
+                "name": "Frankfurt am Main Airport",
+                "city": "Frankfurt",
+                "country_code": "DE",
+                "time_zone": "Europe/Berlin",
+                "latitude": 50.034866,
+                "longitude": 8.567755,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T07:30:00",
+              "arriving_at": "2026-12-15T10:05:00",
+              "duration_minutes": 95,
+              "marketing_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "flight_number": "0923",
+              "operating_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "aircraft": "Airbus A320neo",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "free",
+                  "power": true,
+                  "seat_pitch": "29",
+                  "legroom": "less"
+                }
+              }
+            },
+            {
+              "origin": {
+                "code": "FRA",
+                "name": "Frankfurt am Main Airport",
+                "city": "Frankfurt",
+                "country_code": "DE",
+                "time_zone": "Europe/Berlin",
+                "latitude": 50.034866,
+                "longitude": 8.567755,
+                "terminal": "1"
+              },
+              "destination": {
+                "code": "JFK",
+                "name": "John F. Kennedy International Airport",
+                "city": "New York",
+                "country_code": "US",
+                "time_zone": "America/New_York",
+                "latitude": 40.640556,
+                "longitude": -73.778519,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T11:00:00",
+              "arriving_at": "2026-12-15T13:35:00",
+              "duration_minutes": 515,
+              "marketing_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "flight_number": "0400",
+              "operating_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "aircraft": "Airbus A350-900",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": true,
+                  "seat_pitch": "31",
+                  "legroom": "standard"
+                }
+              }
+            }
+          ],
+          "connections": [
+            {
+              "airport": "FRA",
+              "duration_minutes": 55
+            }
+          ]
+        }
+      ],
+      "fares": [
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1m",
+          "price": {
+            "total": {
+              "amount": "434.77",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "48.61",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "386.16",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Light",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 0,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "300",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1w",
+          "price": {
+            "total": {
+              "amount": "561.50",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "175.34",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "386.16",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k26",
+          "price": {
+            "total": {
+              "amount": "698.65",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "312.49",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "386.16",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort Plus",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "150",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2G",
+          "price": {
+            "total": {
+              "amount": "742.69",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "356.53",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "386.16",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Impact",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": null,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2Q",
+          "price": {
+            "total": {
+              "amount": "819.53",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "433.37",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "386.16",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Flex",
+              "benefits": {
+                "advance_seat_selection": true,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "841cd0590975c99a",
+      "provider": "duffel",
+      "owner": {
+        "code": "LH",
+        "name": "Lufthansa",
+        "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+        "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+      },
+      "emissions_kg": 390,
+      "lowest_price": {
+        "amount": "436.39",
+        "currency": "USD"
+      },
+      "slices": [
+        {
+          "origin": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country_code": "GB",
+            "time_zone": "Europe/London",
+            "latitude": 51.470311,
+            "longitude": -0.458118,
+            "terminal": null
+          },
+          "destination": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country_code": "US",
+            "time_zone": "America/New_York",
+            "latitude": 40.640556,
+            "longitude": -73.778519,
+            "terminal": null
+          },
+          "duration_minutes": 715,
+          "stops": 1,
+          "segments": [
+            {
+              "origin": {
+                "code": "LHR",
+                "name": "Heathrow Airport",
+                "city": "London",
+                "country_code": "GB",
+                "time_zone": "Europe/London",
+                "latitude": 51.470311,
+                "longitude": -0.458118,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "MUC",
+                "name": "Munich Airport",
+                "city": "Munich",
+                "country_code": "DE",
+                "time_zone": "Europe/Berlin",
+                "latitude": 48.353732,
+                "longitude": 11.780563,
+                "terminal": "2"
+              },
+              "departing_at": "2026-12-15T08:45:00",
+              "arriving_at": "2026-12-15T11:35:00",
+              "duration_minutes": 110,
+              "marketing_carrier": {
+                "code": "VL",
+                "name": "City Airlines",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/VL.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa-city.com/en/service/gcc.html"
+              },
+              "flight_number": "2471",
+              "operating_carrier": {
+                "code": "VL",
+                "name": "City Airlines",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/VL.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa-city.com/en/service/gcc.html"
+              },
+              "aircraft": "Airbus A320neo",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "unavailable",
+                  "power": true,
+                  "seat_pitch": "29",
+                  "legroom": "less"
+                }
+              }
+            },
+            {
+              "origin": {
+                "code": "MUC",
+                "name": "Munich Airport",
+                "city": "Munich",
+                "country_code": "DE",
+                "time_zone": "Europe/Berlin",
+                "latitude": 48.353732,
+                "longitude": 11.780563,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "JFK",
+                "name": "John F. Kennedy International Airport",
+                "city": "New York",
+                "country_code": "US",
+                "time_zone": "America/New_York",
+                "latitude": 40.640556,
+                "longitude": -73.778519,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T12:45:00",
+              "arriving_at": "2026-12-15T15:40:00",
+              "duration_minutes": 535,
+              "marketing_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "flight_number": "0410",
+              "operating_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "aircraft": "Airbus A350-900",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": true,
+                  "seat_pitch": "31",
+                  "legroom": "standard"
+                }
+              }
+            }
+          ],
+          "connections": [
+            {
+              "airport": "MUC",
+              "duration_minutes": 70
+            }
+          ]
+        }
+      ],
+      "fares": [
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1j",
+          "price": {
+            "total": {
+              "amount": "436.39",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "50.77",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "385.62",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Light",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "300",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1t",
+          "price": {
+            "total": {
+              "amount": "570.44",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "184.82",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "385.62",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k23",
+          "price": {
+            "total": {
+              "amount": "697.92",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "312.30",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "385.62",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort Plus",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "150",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2D",
+          "price": {
+            "total": {
+              "amount": "729.56",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "343.94",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "385.62",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Impact",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": null,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2N",
+          "price": {
+            "total": {
+              "amount": "817.74",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "432.12",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "385.62",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Flex",
+              "benefits": {
+                "advance_seat_selection": true,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "7fa446ae598a0a08",
+      "provider": "duffel",
+      "owner": {
+        "code": "LH",
+        "name": "Lufthansa",
+        "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+        "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+      },
+      "emissions_kg": 372,
+      "lowest_price": {
+        "amount": "437.92",
+        "currency": "USD"
+      },
+      "slices": [
+        {
+          "origin": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country_code": "GB",
+            "time_zone": "Europe/London",
+            "latitude": 51.470311,
+            "longitude": -0.458118,
+            "terminal": null
+          },
+          "destination": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country_code": "US",
+            "time_zone": "America/New_York",
+            "latitude": 40.640556,
+            "longitude": -73.778519,
+            "terminal": null
+          },
+          "duration_minutes": 725,
+          "stops": 1,
+          "segments": [
+            {
+              "origin": {
+                "code": "LHR",
+                "name": "Heathrow Airport",
+                "city": "London",
+                "country_code": "GB",
+                "time_zone": "Europe/London",
+                "latitude": 51.470311,
+                "longitude": -0.458118,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "FRA",
+                "name": "Frankfurt am Main Airport",
+                "city": "Frankfurt",
+                "country_code": "DE",
+                "time_zone": "Europe/Berlin",
+                "latitude": 50.034866,
+                "longitude": 8.567755,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T06:30:00",
+              "arriving_at": "2026-12-15T09:05:00",
+              "duration_minutes": 95,
+              "marketing_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "flight_number": "4233",
+              "operating_carrier": {
+                "code": "VL",
+                "name": "City Airlines",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/VL.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa-city.com/en/service/gcc.html"
+              },
+              "aircraft": "Airbus A320neo",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "free",
+                  "power": true,
+                  "seat_pitch": "29",
+                  "legroom": "less"
+                }
+              }
+            },
+            {
+              "origin": {
+                "code": "FRA",
+                "name": "Frankfurt am Main Airport",
+                "city": "Frankfurt",
+                "country_code": "DE",
+                "time_zone": "Europe/Berlin",
+                "latitude": 50.034866,
+                "longitude": 8.567755,
+                "terminal": "1"
+              },
+              "destination": {
+                "code": "JFK",
+                "name": "John F. Kennedy International Airport",
+                "city": "New York",
+                "country_code": "US",
+                "time_zone": "America/New_York",
+                "latitude": 40.640556,
+                "longitude": -73.778519,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T11:00:00",
+              "arriving_at": "2026-12-15T13:35:00",
+              "duration_minutes": 515,
+              "marketing_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "flight_number": "0400",
+              "operating_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "aircraft": "Airbus A350-900",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": true,
+                  "seat_pitch": "31",
+                  "legroom": "standard"
+                }
+              }
+            }
+          ],
+          "connections": [
+            {
+              "airport": "FRA",
+              "duration_minutes": 115
+            }
+          ]
+        }
+      ],
+      "fares": [
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1o",
+          "price": {
+            "total": {
+              "amount": "437.92",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "51.76",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "386.16",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Light",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 0,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "300",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1y",
+          "price": {
+            "total": {
+              "amount": "565.92",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "179.76",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "386.16",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k28",
+          "price": {
+            "total": {
+              "amount": "687.30",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "301.14",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "386.16",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort Plus",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "150",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2I",
+          "price": {
+            "total": {
+              "amount": "738.27",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "352.11",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "386.16",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Impact",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": null,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2S",
+          "price": {
+            "total": {
+              "amount": "836.75",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "450.59",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "386.16",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Flex",
+              "benefits": {
+                "advance_seat_selection": true,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "751a9a414cd2cc7a",
+      "provider": "duffel",
+      "owner": {
+        "code": "LH",
+        "name": "Lufthansa",
+        "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+        "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+      },
+      "emissions_kg": 390,
+      "lowest_price": {
+        "amount": "439.51",
+        "currency": "USD"
+      },
+      "slices": [
+        {
+          "origin": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country_code": "GB",
+            "time_zone": "Europe/London",
+            "latitude": 51.470311,
+            "longitude": -0.458118,
+            "terminal": null
+          },
+          "destination": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country_code": "US",
+            "time_zone": "America/New_York",
+            "latitude": 40.640556,
+            "longitude": -73.778519,
+            "terminal": null
+          },
+          "duration_minutes": 715,
+          "stops": 1,
+          "segments": [
+            {
+              "origin": {
+                "code": "LHR",
+                "name": "Heathrow Airport",
+                "city": "London",
+                "country_code": "GB",
+                "time_zone": "Europe/London",
+                "latitude": 51.470311,
+                "longitude": -0.458118,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "MUC",
+                "name": "Munich Airport",
+                "city": "Munich",
+                "country_code": "DE",
+                "time_zone": "Europe/Berlin",
+                "latitude": 48.353732,
+                "longitude": 11.780563,
+                "terminal": "2"
+              },
+              "departing_at": "2026-12-15T08:45:00",
+              "arriving_at": "2026-12-15T11:35:00",
+              "duration_minutes": 110,
+              "marketing_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "flight_number": "4193",
+              "operating_carrier": {
+                "code": "VL",
+                "name": "City Airlines",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/VL.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa-city.com/en/service/gcc.html"
+              },
+              "aircraft": "Airbus A320neo",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "free",
+                  "power": true,
+                  "seat_pitch": "29",
+                  "legroom": "less"
+                }
+              }
+            },
+            {
+              "origin": {
+                "code": "MUC",
+                "name": "Munich Airport",
+                "city": "Munich",
+                "country_code": "DE",
+                "time_zone": "Europe/Berlin",
+                "latitude": 48.353732,
+                "longitude": 11.780563,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "JFK",
+                "name": "John F. Kennedy International Airport",
+                "city": "New York",
+                "country_code": "US",
+                "time_zone": "America/New_York",
+                "latitude": 40.640556,
+                "longitude": -73.778519,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T12:45:00",
+              "arriving_at": "2026-12-15T15:40:00",
+              "duration_minutes": 535,
+              "marketing_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "flight_number": "0410",
+              "operating_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "aircraft": "Airbus A350-900",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": true,
+                  "seat_pitch": "31",
+                  "legroom": "standard"
+                }
+              }
+            }
+          ],
+          "connections": [
+            {
+              "airport": "MUC",
+              "duration_minutes": 70
+            }
+          ]
+        }
+      ],
+      "fares": [
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1k",
+          "price": {
+            "total": {
+              "amount": "439.51",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "53.89",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "385.62",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Light",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 0,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "300",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1u",
+          "price": {
+            "total": {
+              "amount": "564.32",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "178.70",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "385.62",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k24",
+          "price": {
+            "total": {
+              "amount": "686.49",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "300.87",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "385.62",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort Plus",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "150",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2E",
+          "price": {
+            "total": {
+              "amount": "730.65",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "345.03",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "385.62",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Impact",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": null,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2O",
+          "price": {
+            "total": {
+              "amount": "821.03",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "435.41",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "385.62",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Flex",
+              "benefits": {
+                "advance_seat_selection": true,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "7b4306b39790aace",
+      "provider": "duffel",
+      "owner": {
+        "code": "LH",
+        "name": "Lufthansa",
+        "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+        "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+      },
+      "emissions_kg": 373,
+      "lowest_price": {
+        "amount": "442.58",
+        "currency": "USD"
+      },
+      "slices": [
+        {
+          "origin": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country_code": "GB",
+            "time_zone": "Europe/London",
+            "latitude": 51.470311,
+            "longitude": -0.458118,
+            "terminal": null
+          },
+          "destination": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country_code": "US",
+            "time_zone": "America/New_York",
+            "latitude": 40.640556,
+            "longitude": -73.778519,
+            "terminal": null
+          },
+          "duration_minutes": 760,
+          "stops": 1,
+          "segments": [
+            {
+              "origin": {
+                "code": "LHR",
+                "name": "Heathrow Airport",
+                "city": "London",
+                "country_code": "GB",
+                "time_zone": "Europe/London",
+                "latitude": 51.470311,
+                "longitude": -0.458118,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "GVA",
+                "name": "Geneva Airport",
+                "city": "Geneva",
+                "country_code": "CH",
+                "time_zone": "Europe/Zurich",
+                "latitude": 46.237553,
+                "longitude": 6.109053,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T07:00:00",
+              "arriving_at": "2026-12-15T09:40:00",
+              "duration_minutes": 100,
+              "marketing_carrier": {
+                "code": "LX",
+                "name": "SWISS",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LX.svg",
+                "conditions_of_carriage_url": "https://www.swiss.com/de/en/terms-conditions/conditions-of-carriage"
+              },
+              "flight_number": "0359",
+              "operating_carrier": {
+                "code": "LX",
+                "name": "SWISS",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LX.svg",
+                "conditions_of_carriage_url": "https://www.swiss.com/de/en/terms-conditions/conditions-of-carriage"
+              },
+              "aircraft": "Airbus A220-300",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "unavailable",
+                  "power": false,
+                  "seat_pitch": "29",
+                  "legroom": "less"
+                }
+              }
+            },
+            {
+              "origin": {
+                "code": "GVA",
+                "name": "Geneva Airport",
+                "city": "Geneva",
+                "country_code": "CH",
+                "time_zone": "Europe/Zurich",
+                "latitude": 46.237553,
+                "longitude": 6.109053,
+                "terminal": "1"
+              },
+              "destination": {
+                "code": "JFK",
+                "name": "John F. Kennedy International Airport",
+                "city": "New York",
+                "country_code": "US",
+                "time_zone": "America/New_York",
+                "latitude": 40.640556,
+                "longitude": -73.778519,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T11:40:00",
+              "arriving_at": "2026-12-15T14:40:00",
+              "duration_minutes": 540,
+              "marketing_carrier": {
+                "code": "LX",
+                "name": "SWISS",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LX.svg",
+                "conditions_of_carriage_url": "https://www.swiss.com/de/en/terms-conditions/conditions-of-carriage"
+              },
+              "flight_number": "0022",
+              "operating_carrier": {
+                "code": "LX",
+                "name": "SWISS",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LX.svg",
+                "conditions_of_carriage_url": "https://www.swiss.com/de/en/terms-conditions/conditions-of-carriage"
+              },
+              "aircraft": "Airbus A330-300",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": true,
+                  "seat_pitch": "31",
+                  "legroom": "standard"
+                }
+              }
+            }
+          ],
+          "connections": [
+            {
+              "airport": "GVA",
+              "duration_minutes": 120
+            }
+          ]
+        }
+      ],
+      "fares": [
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1p",
+          "price": {
+            "total": {
+              "amount": "442.58",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "48.00",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "394.58",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Light",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 0,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "300",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k1z",
+          "price": {
+            "total": {
+              "amount": "573.15",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "178.57",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "394.58",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": false,
+              "penalty": null
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k29",
+          "price": {
+            "total": {
+              "amount": "708.28",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "313.70",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "394.58",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Comfort Plus",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "150",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2J",
+          "price": {
+            "total": {
+              "amount": "732.71",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "338.13",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "394.58",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Impact",
+              "benefits": {
+                "advance_seat_selection": false,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": null,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "200",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        },
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2T",
+          "price": {
+            "total": {
+              "amount": "827.50",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "432.92",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "394.58",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Flex",
+              "benefits": {
+                "advance_seat_selection": true,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-10-27T01:56:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "32cea86f03d47b30",
+      "provider": "duffel",
+      "owner": {
+        "code": "LH",
+        "name": "Lufthansa",
+        "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+        "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+      },
+      "emissions_kg": 400,
+      "lowest_price": {
+        "amount": "6450.69",
+        "currency": "USD"
+      },
+      "slices": [
+        {
+          "origin": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country_code": "GB",
+            "time_zone": "Europe/London",
+            "latitude": 51.470311,
+            "longitude": -0.458118,
+            "terminal": null
+          },
+          "destination": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country_code": "US",
+            "time_zone": "America/New_York",
+            "latitude": 40.640556,
+            "longitude": -73.778519,
+            "terminal": null
+          },
+          "duration_minutes": 840,
+          "stops": 2,
+          "segments": [
+            {
+              "origin": {
+                "code": "LHR",
+                "name": "Heathrow Airport",
+                "city": "London",
+                "country_code": "GB",
+                "time_zone": "Europe/London",
+                "latitude": 51.470311,
+                "longitude": -0.458118,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "MUC",
+                "name": "Munich Airport",
+                "city": "Munich",
+                "country_code": "DE",
+                "time_zone": "Europe/Berlin",
+                "latitude": 48.353732,
+                "longitude": 11.780563,
+                "terminal": "2"
+              },
+              "departing_at": "2026-12-15T07:40:00",
+              "arriving_at": "2026-12-15T10:30:00",
+              "duration_minutes": 110,
+              "marketing_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "flight_number": "4205",
+              "operating_carrier": {
+                "code": "VL",
+                "name": "City Airlines",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/VL.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa-city.com/en/service/gcc.html"
+              },
+              "aircraft": "Airbus A320neo",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "free",
+                  "power": true,
+                  "seat_pitch": "29",
+                  "legroom": "less"
+                }
+              }
+            },
+            {
+              "origin": {
+                "code": "MUC",
+                "name": "Munich Airport",
+                "city": "Munich",
+                "country_code": "DE",
+                "time_zone": "Europe/Berlin",
+                "latitude": 48.353732,
+                "longitude": 11.780563,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "ZRH",
+                "name": "Zürich Airport",
+                "city": "Zürich",
+                "country_code": "CH",
+                "time_zone": "Europe/Zurich",
+                "latitude": 47.461458,
+                "longitude": 8.552323,
+                "terminal": null
+              },
+              "departing_at": "2026-12-15T11:25:00",
+              "arriving_at": "2026-12-15T12:20:00",
+              "duration_minutes": 55,
+              "marketing_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "flight_number": "2368",
+              "operating_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "aircraft": "Airbus A320 (sharklets)",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": false,
+                  "seat_pitch": "30",
+                  "legroom": "standard"
+                }
+              }
+            },
+            {
+              "origin": {
+                "code": "ZRH",
+                "name": "Zürich Airport",
+                "city": "Zürich",
+                "country_code": "CH",
+                "time_zone": "Europe/Zurich",
+                "latitude": 47.461458,
+                "longitude": 8.552323,
+                "terminal": null
+              },
+              "destination": {
+                "code": "JFK",
+                "name": "John F. Kennedy International Airport",
+                "city": "New York",
+                "country_code": "US",
+                "time_zone": "America/New_York",
+                "latitude": 40.640556,
+                "longitude": -73.778519,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T13:10:00",
+              "arriving_at": "2026-12-15T16:40:00",
+              "duration_minutes": 570,
+              "marketing_carrier": {
+                "code": "LX",
+                "name": "SWISS",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LX.svg",
+                "conditions_of_carriage_url": "https://www.swiss.com/de/en/terms-conditions/conditions-of-carriage"
+              },
+              "flight_number": "0014",
+              "operating_carrier": {
+                "code": "LX",
+                "name": "SWISS",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LX.svg",
+                "conditions_of_carriage_url": "https://www.swiss.com/de/en/terms-conditions/conditions-of-carriage"
+              },
+              "aircraft": "Airbus A330-300",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": true,
+                  "seat_pitch": "31",
+                  "legroom": "standard"
+                }
+              }
+            }
+          ],
+          "connections": [
+            {
+              "airport": "MUC",
+              "duration_minutes": 55
+            },
+            {
+              "airport": "ZRH",
+              "duration_minutes": 50
+            }
+          ]
+        }
+      ],
+      "fares": [
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2U",
+          "price": {
+            "total": {
+              "amount": "6450.69",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "5928.92",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "521.77",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Flex",
+              "benefits": {
+                "advance_seat_selection": true,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-12-15T12:40:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        }
+      ]
+    },
+    {
+      "key": "c26f9e6ab2ea2c06",
+      "provider": "duffel",
+      "owner": {
+        "code": "LH",
+        "name": "Lufthansa",
+        "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+        "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+      },
+      "emissions_kg": 400,
+      "lowest_price": {
+        "amount": "8004.04",
+        "currency": "USD"
+      },
+      "slices": [
+        {
+          "origin": {
+            "code": "LHR",
+            "name": "Heathrow Airport",
+            "city": "London",
+            "country_code": "GB",
+            "time_zone": "Europe/London",
+            "latitude": 51.470311,
+            "longitude": -0.458118,
+            "terminal": null
+          },
+          "destination": {
+            "code": "JFK",
+            "name": "John F. Kennedy International Airport",
+            "city": "New York",
+            "country_code": "US",
+            "time_zone": "America/New_York",
+            "latitude": 40.640556,
+            "longitude": -73.778519,
+            "terminal": null
+          },
+          "duration_minutes": 840,
+          "stops": 2,
+          "segments": [
+            {
+              "origin": {
+                "code": "LHR",
+                "name": "Heathrow Airport",
+                "city": "London",
+                "country_code": "GB",
+                "time_zone": "Europe/London",
+                "latitude": 51.470311,
+                "longitude": -0.458118,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "MUC",
+                "name": "Munich Airport",
+                "city": "Munich",
+                "country_code": "DE",
+                "time_zone": "Europe/Berlin",
+                "latitude": 48.353732,
+                "longitude": 11.780563,
+                "terminal": "2"
+              },
+              "departing_at": "2026-12-15T07:40:00",
+              "arriving_at": "2026-12-15T10:30:00",
+              "duration_minutes": 110,
+              "marketing_carrier": {
+                "code": "VL",
+                "name": "City Airlines",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/VL.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa-city.com/en/service/gcc.html"
+              },
+              "flight_number": "2487",
+              "operating_carrier": {
+                "code": "VL",
+                "name": "City Airlines",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/VL.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa-city.com/en/service/gcc.html"
+              },
+              "aircraft": "Airbus A320neo",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "unavailable",
+                  "power": true,
+                  "seat_pitch": "29",
+                  "legroom": "less"
+                }
+              }
+            },
+            {
+              "origin": {
+                "code": "MUC",
+                "name": "Munich Airport",
+                "city": "Munich",
+                "country_code": "DE",
+                "time_zone": "Europe/Berlin",
+                "latitude": 48.353732,
+                "longitude": 11.780563,
+                "terminal": "2"
+              },
+              "destination": {
+                "code": "ZRH",
+                "name": "Zürich Airport",
+                "city": "Zürich",
+                "country_code": "CH",
+                "time_zone": "Europe/Zurich",
+                "latitude": 47.461458,
+                "longitude": 8.552323,
+                "terminal": null
+              },
+              "departing_at": "2026-12-15T11:25:00",
+              "arriving_at": "2026-12-15T12:20:00",
+              "duration_minutes": 55,
+              "marketing_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "flight_number": "2368",
+              "operating_carrier": {
+                "code": "LH",
+                "name": "Lufthansa",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LH.svg",
+                "conditions_of_carriage_url": "https://www.lufthansa.com/gb/en/business-terms-and-conditions-1"
+              },
+              "aircraft": "Airbus A320 (sharklets)",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": false,
+                  "seat_pitch": "30",
+                  "legroom": "standard"
+                }
+              }
+            },
+            {
+              "origin": {
+                "code": "ZRH",
+                "name": "Zürich Airport",
+                "city": "Zürich",
+                "country_code": "CH",
+                "time_zone": "Europe/Zurich",
+                "latitude": 47.461458,
+                "longitude": 8.552323,
+                "terminal": null
+              },
+              "destination": {
+                "code": "JFK",
+                "name": "John F. Kennedy International Airport",
+                "city": "New York",
+                "country_code": "US",
+                "time_zone": "America/New_York",
+                "latitude": 40.640556,
+                "longitude": -73.778519,
+                "terminal": "1"
+              },
+              "departing_at": "2026-12-15T13:10:00",
+              "arriving_at": "2026-12-15T16:40:00",
+              "duration_minutes": 570,
+              "marketing_carrier": {
+                "code": "LX",
+                "name": "SWISS",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LX.svg",
+                "conditions_of_carriage_url": "https://www.swiss.com/de/en/terms-conditions/conditions-of-carriage"
+              },
+              "flight_number": "0014",
+              "operating_carrier": {
+                "code": "LX",
+                "name": "SWISS",
+                "logo_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/LX.svg",
+                "conditions_of_carriage_url": "https://www.swiss.com/de/en/terms-conditions/conditions-of-carriage"
+              },
+              "aircraft": "Airbus A330-300",
+              "cabin": {
+                "cabin_class": "economy",
+                "cabin_name": "ECONOMY",
+                "amenities": {
+                  "wifi": "paid",
+                  "power": true,
+                  "seat_pitch": "31",
+                  "legroom": "standard"
+                }
+              }
+            }
+          ],
+          "connections": [
+            {
+              "airport": "MUC",
+              "duration_minutes": 55
+            },
+            {
+              "airport": "ZRH",
+              "duration_minutes": 50
+            }
+          ]
+        }
+      ],
+      "fares": [
+        {
+          "offer_id": "off_034l6ScLRLhYObdEbC8k2V",
+          "price": {
+            "total": {
+              "amount": "8004.04",
+              "currency": "USD"
+            },
+            "base": {
+              "amount": "7482.27",
+              "currency": "USD"
+            },
+            "taxes": {
+              "amount": "521.77",
+              "currency": "USD"
+            }
+          },
+          "expires_at": "2026-10-23T21:26:50Z",
+          "slices": [
+            {
+              "fare_brand": "Economy Flex",
+              "benefits": {
+                "advance_seat_selection": true,
+                "priority_boarding": false,
+                "priority_check_in": false
+              },
+              "baggage": [
+                {
+                  "checked": 1,
+                  "carry_on": 1,
+                  "passenger_id": "pas_0000BBiPI0fXmzLVhVDviC"
+                }
+              ]
+            }
+          ],
+          "conditions": {
+            "change": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            },
+            "refund": {
+              "allowed": true,
+              "penalty": {
+                "amount": "0.00",
+                "currency": "GBP"
+              }
+            }
+          },
+          "payment": {
+            "can_hold": true,
+            "payment_required_by": "2026-12-15T12:40:00Z",
+            "price_guaranteed_until": null
+          },
+          "requires_identity_documents": false,
+          "supported_identity_documents": [
+            "passport",
+            "passenger_redress_number",
+            "known_traveler_number"
+          ]
+        }
+      ]
+    }
+  ]
+}

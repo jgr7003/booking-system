@@ -1,0 +1,111 @@
+@import "tailwindcss";
+
+/* Tokens of the design (docs/frontend, proposal A). Names follow the design's swatches. */
+@theme {
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Ink and text */
+  --color-ink: #111827;
+  --color-ink-2: #374151;
+  --color-muted: #4b5563;
+  --color-muted-2: #6b7280;
+  --color-subtle: #9ca3af;
+
+  /* Surfaces and lines */
+  --color-canvas: #f3f4f6;
+  --color-surface-2: #f9fafb;
+  --color-line: #dadde3;
+  --color-line-soft: #e5e7eb;
+  --color-line-dash: #c4c8cf;
+  --color-line-strong: #d1d5db;
+  --color-header-line: #4b5563;
+
+  /* Action */
+  --color-action: #1d4ed8;
+  --color-action-hover: #1e3a8a;
+  --color-action-soft: #e8eefd;
+  --color-action-tint: #f7f9fe;
+  --color-action-line: #dbe4fb;
+  --color-action-light: #93b4ff;
+
+  /* Data states: included / with a charge / not allowed / unknown. */
+  --color-ok: #0b6b44;
+  --color-ok-soft: #e6f4ee;
+  --color-warn: #8a4b00;
+  --color-warn-soft: #fdf3e2;
+  --color-warn-line: #f0d29b;
+  --color-warn-ink: #5c3a00;
+  --color-bad: #a11d12;
+  --color-bad-soft: #fdecea;
+  --color-bad-line: #f3b8b2;
+  --color-bad-ink: #5f140c;
+  --color-short: #c2410c;
+
+  --shadow-pop: 0 8px 24px rgba(17, 24, 39, 0.08);
+  --shadow-dialog: 0 12px 32px rgba(17, 24, 39, 0.14);
+
+  --animate-shimmer: shimmer 1.4s linear infinite;
+  --animate-progress: progress 1.6s ease-in-out infinite;
+
+  @keyframes shimmer {
+    from {
+      background-position: -400px 0;
+    }
+    to {
+      background-position: 400px 0;
+    }
+  }
+
+  @keyframes progress {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(250%);
+    }
+  }
+}
+
+@layer base {
+  html {
+    background: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  a {
+    color: var(--color-action);
+  }
+
+  a:hover {
+    color: var(--color-action-hover);
+  }
+
+  /* Times, prices and codes: monospaced with tabular figures so columns align. */
+  .data {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  /* Field label of the design: small caps, above the control. */
+  .field-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  /* Loading placeholder with the design's shimmer. */
+  .skeleton {
+    background: linear-gradient(90deg, #e5e7eb 0px, #f3f4f6 120px, #e5e7eb 240px);
+    background-size: 800px 100%;
+    animation: var(--animate-shimmer);
+    border-radius: 4px;
+  }
+}

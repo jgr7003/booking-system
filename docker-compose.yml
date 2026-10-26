@@ -1,0 +1,75 @@
+name: booking-system
+
+services:
+  api:
+    build:
+      context: ./backend
+      args:
+        REQUIREMENTS: requirements-dev.txt
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: ./backend/.env
+        required: false
+    environment:
+      DATABASE_URL: postgresql+asyncpg://booking:booking@postgres:5432/booking
+      REDIS_URL: redis://redis:6379/0
+      # Used by the integration tests only; isolated from development data.
+      TEST_DATABASE_URL: postgresql+asyncpg://booking:booking@postgres:5432/booking_test
+      TEST_REDIS_URL: redis://redis:6379/15
+    volumes:
+      - ./backend/app:/code/app
+      - ./backend/migrations:/code/migrations
+      - ./backend/alembic.ini:/code/alembic.ini
+      - ./backend/pyproject.toml:/code/pyproject.toml
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    environment:
+      API_PROXY_TARGET: http://api:8000
+      VITE_USE_POLLING: "true"
+    volumes:
+      - ./frontend:/app
+      # Keep the container's own dependencies instead of the (absent) host folder.
+      - /app/node_modules
+    depends_on:
+      - api
+
+  postgres:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: booking
+      POSTGRES_PASSWORD: booking
+      POSTGRES_DB: booking
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+      - ./backend/docker/postgres:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U booking -d booking"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:8-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  pgdata:

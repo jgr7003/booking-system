@@ -1,0 +1,1 @@
+{"errors":[{"documentation_url":"https://duffel.com/docs/api/overview/response-handling","source":{"field":"origin","pointer":"/slices/0/origin"},"title":"Invalid IATA code","type":"validation_error","message":"Field 'origin' is invalid. Expected a valid IATA code.","code":"invalid_iata_code"}],"meta":{"request_id":"GOIa5x_Nzt_COmAAAGsK","status":422}}

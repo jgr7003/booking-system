@@ -52,6 +52,27 @@ Ejecutar desde la raíz:
 
 El código (`backend/app`, `frontend/src`) está montado como volumen, con recarga automática. Solo hace falta `make up` si cambian dependencias o un `Dockerfile`.
 
+## Herramientas para agentes
+
+### Grafo de conocimiento (graphify)
+
+El repo tiene un grafo de código y documentación en `graphify-out/` (ignorado por git, se regenera). [graphify](https://github.com/Graphify-Labs/graphify) está instalado en el host con `uv tool install --python 3.13 graphifyy`. Es la única herramienta de Python del host y no tiene relación con el Python del proyecto, que sigue en Docker.
+
+- **Primero el grafo.** Ante cualquier pregunta sobre el código, correr `graphify query "<pregunta>"` antes del primer grep, búsqueda o lectura de archivos fuente. Para relaciones, `graphify path "<A>" "<B>"`; para un concepto puntual, `graphify explain "<concepto>"`. Leer archivos solo en las líneas que el grafo ya ubicó. Incluir esta regla en el prompt de todo subagente que explore código.
+- `graphify-out/GRAPH_REPORT.md` resume la arquitectura (nodos centrales y comunidades). Se lee solo para una revisión amplia o cuando `query`, `path` y `explain` no alcanzan.
+- **Mantenerlo al día.** Después de modificar código, correr `graphify update .`, que es solo AST, sin costo de LLM. Si cambian documentos de `docs/`, regenerarlo con `/graphify . --update`.
+- Lo que no entra al grafo está en `.graphifyignore`: tablero de diseño, samples, fixtures, `schema.d.ts` generado y configuración de agentes.
+- Un hook `PreToolUse` en `.claude/settings.json` le recuerda a Claude Code consultar el grafo antes de buscar o leer.
+
+### Skills de superpowers
+
+El plugin [superpowers](https://github.com/obra/superpowers) está habilitado a nivel proyecto en `.claude/settings.json`. Incluye flujos de brainstorming, planes, TDD, depuración sistemática, revisión de código y verificación. Se usan, pero **las reglas de este archivo mandan sobre las de las skills**:
+
+- **Commits:** las skills piden commits frecuentes, pero acá no se hace ninguno sin que el autor lo pida. Los pasos "Commit" de un plan se saltean o se le proponen al autor.
+- **Ramas y worktrees:** `using-git-worktrees` y `finishing-a-development-branch` (merge, PR, borrar la rama) solo se usan si el autor lo pide.
+- **Alcance:** un plan no puede introducir patrones o capas que no estén en el cronograma (ver "Proyecto").
+- **Documentos:** los specs y planes van en `docs/superpowers/` y se escriben en español, como el resto de `docs/`. Las decisiones de arquitectura se siguen registrando en `docs/architecture/`.
+
 ## Convenciones
 
 - **Idioma:** código, identificadores y docstrings en inglés; documentación en `docs/` y comunicación con el autor en español.
@@ -127,3 +148,4 @@ El código (`backend/app`, `frontend/src`) está montado como volumen, con recar
 | 2026-10-26 | Resultados grandes: gzip en la API, `supplier_timeout` 45 s (con 10 s faltaban Avianca y LATAM), tarifas en modal, sin búsquedas duplicadas por `StrictMode`. Ida y vuelta en dos pasos (cada ida una vez, después sus vueltas), igual para toda ida y vuelta, sin cambiar la API. 93 tests de backend y 45 de frontend. |
 | 2026-10-26 | Objetivo de la plataforma anotado (viajes empresariales, historial por particular o empresa; versión actual: una persona, un vuelo). "Agregar otro vuelo" deshabilitado y su formulario eliminado. Las vueltas respetan el orden elegido. |
 | 2026-10-26 | **Cierre de la etapa 1.** Documentación actualizada con el estado final (`01-busqueda-vuelos.md`, decisiones 28-31 en `00-global.md`) y PR con todo lo hecho. Hallazgo: el sandbox de Duffel no cubre todas las rutas (BAQ-EOH solo trae Duffel Airways; BAQ-MDE, 621 vuelos). |
+| 2026-10-27 | Herramientas para agentes: grafo de conocimiento con graphify (instalado en el host con `uv`; hook `PreToolUse` y skill en `.claude/`) y plugin superpowers habilitado a nivel proyecto. Reglas de convivencia con este archivo en "Herramientas para agentes". |

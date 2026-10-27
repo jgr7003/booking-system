@@ -1,0 +1,11 @@
+# Generated or bulky files that add noise to the graph
+docs/frontend/
+docs/samples/
+**/tests/fixtures/
+frontend/src/test/fixtures/
+frontend/src/api/schema.d.ts
+frontend/tsconfig.tsbuildinfo
+frontend/pnpm-lock.yaml
+# Agent configuration
+.claude/
+CLAUDE.md

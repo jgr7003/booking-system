@@ -225,3 +225,6 @@ frontend/dist/
 frontend/coverage/
 # The Python rules above ignore any "lib/" and "dist/" folder: keep the frontend's sources.
 !frontend/src/lib/
+
+# graphify (knowledge graph, regenerable)
+graphify-out/

@@ -10,9 +10,18 @@ export type Fare = Schemas["FareResponse"];
 export type FlightSlice = Schemas["FlightSlice"];
 export type FlightSegment = Schemas["FlightSegment"];
 export type FareCondition = Schemas["FareCondition"];
-export type Money = Schemas["Money"];
+// Money is in requests and responses, so the OpenAPI has two variants; responses carry the amount as text.
+export type Money = Schemas["Money-Output"];
 export type PlaceSuggestion = Schemas["PlaceSuggestion"];
 export type CabinClass = NonNullable<SearchCriteria["cabin_class"]>;
+export type Booking = Schemas["BookingResponse"];
+export type BookingRequest = Schemas["BookingRequest"];
+export type BookingStatus = Booking["status"];
+export type FailureCode = NonNullable<Booking["failure_code"]>;
+export type PassengerTitle = Schemas["PassengerTitle"];
+export type PriceDecisionRequest = Schemas["PriceDecisionRequest"];
+export type OrderSlice = Schemas["Slice"];
+export type OrderSegment = Schemas["Segment"];
 
 /** Error of the platform's API: `{"error": {"code", "message"}}`. */
 export class ApiError extends Error {

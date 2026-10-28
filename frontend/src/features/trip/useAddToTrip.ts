@@ -2,8 +2,8 @@ import { useNavigate } from "@tanstack/react-router";
 import { useCallback } from "react";
 import type { Fare, Flight } from "@/api/client";
 import { useToasts } from "@/components/ui/toast";
-import { fareName } from "../flights/results/logic";
-import type { CompleteSearch } from "../flights/search/params";
+import { fareName } from "@/lib/flights/fares";
+import type { CompleteSearch } from "@/lib/flights/search";
 import { makeTripItem, useTrip } from "./store";
 
 /**

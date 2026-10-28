@@ -1,6 +1,10 @@
 """Duffel adapter for the `FlightProvider` port."""
 
-from app.flights.domain.dtos import SearchCriteria, SearchResult
+import uuid
+
+from app.flights.domain.dtos.offers import SearchResult
+from app.flights.domain.dtos.orders import BookableOffer, Order, OrderRequest
+from app.flights.domain.dtos.search import SearchCriteria
 from app.flights.providers.duffel import mapper
 from app.flights.providers.duffel.client import DuffelClient
 
@@ -42,3 +46,16 @@ class DuffelFlightProvider:
             airlines = set(criteria.airlines)
             result = result.model_copy(update={"offers": [o for o in result.offers if o.owner.code in airlines]})
         return result
+
+    async def get_offer(self, offer_id: str) -> BookableOffer:
+        """Reads an offer from Duffel; see `FlightProvider.get_offer`."""
+        return mapper.to_bookable_offer(await self._client.get_offer(offer_id))
+
+    async def find_order(self, offer_id: str, booking_id: uuid.UUID) -> Order | None:
+        """Finds our order for an offer through its metadata; see `FlightProvider.find_order`."""
+        orders = [mapper.to_order(o) for o in await self._client.list_orders(offer_id)]
+        return next((o for o in orders if o.booking_id == booking_id), None)
+
+    async def create_order(self, request: OrderRequest) -> Order:
+        """Creates an instant order paid from the Duffel balance; see `FlightProvider.create_order`."""
+        return mapper.to_order(await self._client.create_order(mapper.to_order_payload(request)))

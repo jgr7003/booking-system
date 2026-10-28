@@ -1,0 +1,19 @@
+{
+  "errors": [
+    {
+      "documentation_url": "https://duffel.com/docs/api/overview/response-handling",
+      "source": {
+        "field": "selected_offers",
+        "pointer": "/selected_offers"
+      },
+      "title": "Linked record(s) not found",
+      "type": "validation_error",
+      "message": "Field 'selected_offers' contains ID(s) of linked record(s) that were not found in your account",
+      "code": "not_found"
+    }
+  ],
+  "meta": {
+    "request_id": "GOJqPbG5mRO9vMEAHeIB",
+    "status": 422
+  }
+}

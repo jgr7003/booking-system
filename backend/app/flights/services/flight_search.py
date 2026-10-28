@@ -1,9 +1,11 @@
 """Flight search use case."""
 
 from app.core.pricing.base import PricingPolicy
-from app.flights.domain.dtos import FlightSearchResult, Offer, OfferAmounts, SearchCriteria
+from app.flights.domain.dtos.results import FlightSearchResult
+from app.flights.domain.dtos.search import SearchCriteria
 from app.flights.providers.base import FlightProvider
 from app.flights.services.grouping import group_offers
+from app.flights.services.pricing import apply_pricing
 
 
 class FlightSearchService:
@@ -35,29 +37,10 @@ class FlightSearchService:
             ProviderError: The provider failed for any other reason.
         """
         result = await self._provider.search(criteria)
-        priced = [self._apply_pricing(o) for o in result.offers]
+        priced = [apply_pricing(o, self._pricing) for o in result.offers]
         return FlightSearchResult(
             provider=result.provider,
             search_id=result.search_id,
             passengers=result.passengers,
             flights=group_offers(priced),
         )
-
-    def _apply_pricing(self, offer: Offer) -> Offer:
-        """Sets the sale price of an offer.
-
-        Taxes stay as charged by the provider; the markup goes into the base fare.
-
-        Args:
-            offer: Offer with its cost.
-
-        Returns:
-            A copy of the offer with `price` and `markup` set.
-        """
-        markup = self._pricing.markup(offer.cost.total, key=f"{offer.provider}:{offer.id}")
-        price = OfferAmounts(
-            total=offer.cost.total + markup,
-            base=offer.cost.base + markup if offer.cost.base is not None else None,
-            taxes=offer.cost.taxes,
-        )
-        return offer.model_copy(update={"price": price, "markup": markup})

@@ -1,3 +1,55 @@
 [tool.pytest.ini_options]
 testpaths = ["app"]
 addopts = "-ra"
+
+# Boundaries of the modular monolith (docs/architecture/00-global.md §4.1), checked by
+# `app/tests/test_module_boundaries.py`. Modules in parentheses don't exist yet.
+[tool.importlinter]
+root_package = "app"
+
+[[tool.importlinter.contracts]]
+name = "Verticals depend on shared modules, shared modules on core; never upwards or in cycles"
+type = "layers"
+layers = [
+    "app.flights | (app.hotels)",
+    "app.travellers | app.payments | app.notifications",
+    "app.core",
+]
+# Tests may start the whole application from its composition root.
+ignore_imports = [
+    "app.*.tests.** -> app.main",
+]
+unmatched_ignore_imports_alerting = "none"
+
+[[tool.importlinter.contracts]]
+name = "Other modules only import the public interface of travellers"
+type = "forbidden"
+source_modules = ["app.flights", "app.payments", "app.notifications"]
+forbidden_modules = ["app.travellers"]
+allow_indirect_imports = true
+unmatched_ignore_imports_alerting = "none"
+ignore_imports = [
+    "app.flights.** -> app.travellers.public",
+]
+
+[[tool.importlinter.contracts]]
+name = "Other modules only import the public interface of payments"
+type = "forbidden"
+source_modules = ["app.flights", "app.travellers", "app.notifications"]
+forbidden_modules = ["app.payments"]
+allow_indirect_imports = true
+unmatched_ignore_imports_alerting = "none"
+ignore_imports = [
+    "app.flights.** -> app.payments.public",
+]
+
+[[tool.importlinter.contracts]]
+name = "Other modules only import the public interface of notifications"
+type = "forbidden"
+source_modules = ["app.flights", "app.travellers", "app.payments"]
+forbidden_modules = ["app.notifications"]
+allow_indirect_imports = true
+unmatched_ignore_imports_alerting = "none"
+ignore_imports = [
+    "app.flights.** -> app.notifications.public",
+]

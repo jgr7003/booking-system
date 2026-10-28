@@ -4,33 +4,40 @@ No I/O happens here, so every function can be tested with captured Duffel respon
 """
 
 import re
+import uuid
 from datetime import date, datetime
 from decimal import Decimal
 from typing import Any
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from app.core.money import Money
-from app.flights.domain.dtos import (
+from app.flights.domain.dtos.itinerary import (
     Amenities,
     Baggage,
     Carrier,
     Connection,
     FareBenefits,
+    Place,
+    Segment,
+    SegmentPassenger,
+    Slice,
+)
+from app.flights.domain.dtos.offers import (
     FareCondition,
     Offer,
     OfferAmounts,
     OfferConditions,
     PaymentTerms,
-    Place,
-    SearchCriteria,
     SearchPassenger,
     SearchResult,
-    Segment,
-    SegmentPassenger,
-    Slice,
 )
+from app.flights.domain.dtos.orders import BookableOffer, Order, OrderRequest, Ticket
+from app.flights.domain.dtos.search import SearchCriteria
 
 PROVIDER = "duffel"
+
+# Key of the order metadata that holds the platform's booking id.
+BOOKING_ID_METADATA = "booking_id"
 
 Json = dict[str, Any]
 
@@ -68,6 +75,46 @@ def to_offer_request(criteria: SearchCriteria) -> Json:
 def _slice_request(origin: str, destination: str, departure_date: date) -> Json:
     """Builds one slice of an offer request."""
     return {"origin": origin, "destination": destination, "departure_date": departure_date.isoformat()}
+
+
+def to_order_payload(request: OrderRequest) -> Json:
+    """Builds the body of `POST /air/orders`: an instant order paid from the Duffel balance.
+
+    Args:
+        request: What to book.
+
+    Returns:
+        The order, without the `data` envelope.
+    """
+    passenger = request.passenger
+    duffel_passenger: Json = {
+        "id": request.passenger_id,
+        "title": passenger.title.value,
+        "given_name": passenger.given_name,
+        "family_name": passenger.family_name,
+        "gender": passenger.gender.value,
+        "born_on": passenger.born_on.isoformat(),
+        "email": passenger.email,
+        "phone_number": passenger.phone_number,
+    }
+    if passenger.passport is not None:
+        duffel_passenger["identity_documents"] = [
+            {
+                "type": "passport",
+                "unique_identifier": passenger.passport.number,
+                "issuing_country_code": passenger.passport.issuing_country_code,
+                "expires_on": passenger.passport.expires_on.isoformat(),
+            }
+        ]
+    return {
+        "type": "instant",
+        "selected_offers": [request.offer_id],
+        "passengers": [duffel_passenger],
+        "payments": [
+            {"type": "balance", "amount": str(request.payment.amount), "currency": request.payment.currency}
+        ],
+        "metadata": {BOOKING_ID_METADATA: str(request.booking_id)},
+    }
 
 
 # --- Duffel → platform ---
@@ -127,6 +174,53 @@ def to_offer(offer: Json) -> Offer:
         supported_identity_documents=offer.get("supported_passenger_identity_document_types") or [],
     )
 
+
+def to_bookable_offer(data: Json) -> BookableOffer:
+    """Converts the answer of `GET /air/offers/{id}` into an offer ready to book.
+
+    Args:
+        data: The `data` object of Duffel's answer.
+
+    Returns:
+        The offer with its current cost and the ids of its passengers.
+    """
+    return BookableOffer(offer=to_offer(data), passenger_ids=[p["id"] for p in data["passengers"]])
+
+
+def to_order(data: Json) -> Order:
+    """Converts a Duffel order into the platform's order.
+
+    Args:
+        data: A Duffel order, from `POST /air/orders` or `GET /air/orders`.
+
+    Returns:
+        The order, with its itinerary and electronic tickets.
+    """
+    payment = data.get("payment_status") or {}
+    conditions = data.get("conditions") or {}
+    booking_id = (data.get("metadata") or {}).get(BOOKING_ID_METADATA)
+    return Order(
+        id=data["id"],
+        offer_id=data["offer_id"],
+        booking_reference=data["booking_reference"],
+        booking_id=uuid.UUID(booking_id) if booking_id else None,
+        owner=_carrier(data["owner"]),
+        total=Money(amount=data["total_amount"], currency=data["total_currency"]),
+        slices=[_slice(s) for s in data["slices"]],
+        conditions=OfferConditions(
+            change=_fare_condition(conditions.get("change_before_departure")),
+            refund=_fare_condition(conditions.get("refund_before_departure")),
+        ),
+        tickets=[
+            Ticket(passenger_id=passenger_id, number=document["unique_identifier"])
+            for document in data.get("documents") or []
+            if document.get("type") == "electronic_ticket"
+            for passenger_id in document.get("passenger_ids") or []
+        ],
+        paid_at=payment.get("paid_at"),
+        awaiting_payment=bool(payment.get("awaiting_payment")),
+        available_actions=data.get("available_actions") or [],
+    )
 
 def _slice(data: Json) -> Slice:
     """Converts a Duffel slice, calculating its stops and connections."""

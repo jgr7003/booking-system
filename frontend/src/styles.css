@@ -28,10 +28,15 @@
   --color-action-tint: #f7f9fe;
   --color-action-line: #dbe4fb;
   --color-action-light: #93b4ff;
+  --color-action-ring: #c7d5fa;
+  --color-action-pale: #bfd0fb;
 
   /* Data states: included / with a charge / not allowed / unknown. */
   --color-ok: #0b6b44;
   --color-ok-soft: #e6f4ee;
+  --color-ok-line: #bfe3d0;
+  --color-ok-ink: #08442c;
+  --color-ok-ink-2: #0b5537;
   --color-warn: #8a4b00;
   --color-warn-soft: #fdf3e2;
   --color-warn-line: #f0d29b;
@@ -40,6 +45,8 @@
   --color-bad-soft: #fdecea;
   --color-bad-line: #f3b8b2;
   --color-bad-ink: #5f140c;
+  --color-bad-strong: #b42318;
+  --color-bad-ink-2: #7a150c;
   --color-short: #c2410c;
 
   --shadow-pop: 0 8px 24px rgba(17, 24, 39, 0.08);

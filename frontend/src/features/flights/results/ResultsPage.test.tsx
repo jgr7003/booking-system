@@ -2,7 +2,7 @@ import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { HttpResponse, http } from "msw";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { useTrip } from "@/features/trip/store";
+import { useTrip } from "@/features/trip/public";
 import { RESULTS_URL, renderApp } from "@/test/render";
 import { FIXTURE_NOW, fixtures, server } from "@/test/server";
 

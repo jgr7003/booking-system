@@ -1,8 +1,8 @@
 """Airport and city autocomplete use case."""
 
 from app.core.text import normalize_search_text
-from app.flights.domain.constants import PLACE_QUERY_MIN_LENGTH
-from app.flights.domain.dtos import PlaceSuggestion
+from app.flights.domain.constants.places import PLACE_QUERY_MIN_LENGTH
+from app.flights.domain.dtos.places import PlaceSuggestion
 from app.flights.repositories.places import PlaceRepository
 
 

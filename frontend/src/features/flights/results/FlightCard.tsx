@@ -1,18 +1,14 @@
 import { memo, type ReactNode } from "react";
 import type { Flight } from "@/api/client";
+import { AirlineBadge } from "@/components/flight/AirlineBadge";
+import { SliceTimeline } from "@/components/flight/SliceTimeline";
 import { CarryOnIcon, CheckedBagIcon } from "@/components/icons";
+import type { Cell } from "@/lib/cell";
 import { cn } from "@/lib/cn";
+import { bagCell, fareCarryOn, fareCheckedBags, fareName } from "@/lib/flights/fares";
+import { flightNumbersOf } from "@/lib/flights/itinerary";
 import { formatMoney } from "@/lib/format";
-import {
-  bagCell,
-  type Cell,
-  type FlightInsight,
-  fareCarryOn,
-  fareCheckedBags,
-  fareName,
-  flightNumbersOf,
-} from "./logic";
-import { SliceTimeline } from "./SliceTimeline";
+import type { FlightInsight } from "./logic";
 
 const TAG_TONES = {
   ok: "bg-ok-soft text-ok",
@@ -36,15 +32,6 @@ function BagChip({ cell, label, icon }: { cell: Cell; label: string; icon: React
       <span className="max-sm:hidden">{icon}</span>
       {label}
       {cell.tone === "na" && <span className="font-normal">?</span>}
-    </span>
-  );
-}
-
-/** Code of the airline in a dark square (design). */
-export function AirlineBadge({ code }: { code: string }) {
-  return (
-    <span className="data inline-flex h-[22px] w-[22px] items-center justify-center rounded bg-ink text-[10px] font-semibold text-white">
-      {code}
     </span>
   );
 }

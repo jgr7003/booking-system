@@ -31,6 +31,21 @@ class Settings(BaseSettings):
         description="URL of the Redis cache (`REDIS_URL`).",
     )
 
+    rabbitmq_url: str = Field(
+        default="amqp://booking:booking@localhost:5672/",
+        description="AMQP URL of RabbitMQ, the transport of events between the API and the workers (`RABBITMQ_URL`).",
+    )
+
+    app_url: str = Field(
+        default="http://localhost:5173",
+        description="Public URL of the web app, for links in emails (`APP_URL`).",
+    )
+
+    outbox_poll_interval_s: float = Field(
+        default=0.5,
+        description="How long the outbox relay waits before looking again when there was nothing to publish.",
+    )
+
     cache_timeout_s: float = Field(
         default=0.5,
         description="Max wait for a Redis command; past it the cache is skipped and the database is used.",

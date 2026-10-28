@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import type { Fare, Flight } from "@/api/client";
+import { fareName } from "@/lib/flights/fares";
+import type { CompleteSearch } from "@/lib/flights/search";
 import { fixtures } from "@/test/server";
-import { fareName } from "../flights/results/logic";
-import type { CompleteSearch } from "../flights/search/params";
 import { itemKeyOf, makeTripItem, type TripItems, tripItems, upsertItem, useTrip } from "./store";
 
 const search: CompleteSearch = { from: "LHR", to: "JFK", depart: "2026-12-15" };

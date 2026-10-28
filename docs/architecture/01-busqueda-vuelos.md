@@ -98,7 +98,7 @@ class FlightProvider(Protocol):
   "max_connections": 1, "airlines": ["BA"] }
 ```
 
-**Validaciones** (en `domain/validators.py`):
+**Validaciones** (en `domain/validators/search.py`):
 - códigos IATA;
 - origen distinto de destino;
 - fechas: la ida no puede ser en el pasado y la vuelta no puede ser anterior a la ida;
@@ -246,7 +246,7 @@ Esto se verificó con la muestra real: los campos de "Vuelo" no cambian en ningu
 
 Si OurAirports no está disponible, la carga sigue igual, sin esos dos datos. OurAirports sola no alcanza como fuente porque **no trae zona horaria** ni códigos de ciudad.
 
-### 6.2 Modelo (`flights/domain/models.py`)
+### 6.2 Modelo (`flights/domain/models/airports.py`)
 
 ```
 airports
@@ -305,7 +305,7 @@ GET /api/v1/flights/places?q=new%20y&limit=8
 ### 6.5 Capas
 
 ```
-api/routes.py → services/places.py → repositories/airports.py → (Redis → PostgreSQL)
+api/routes/places.py → services/places.py → repositories/places.py → (Redis → PostgreSQL)
 ```
 
 `app/core/db.py` (engine y sesión async) y `app/core/cache.py` (cliente Redis) se crean en el `lifespan`, igual que el cliente HTTP, y se inyectan por dependencia.
@@ -416,7 +416,7 @@ Todas las pantallas se hacen en **desktop y mobile**.
 | Logging | Sin configuración: los logs salen sin nivel ni hora. Falta un log por búsqueda (ruta, fechas, tiempo y ofertas por aerolínea) para diagnosticar resultados pobres |
 | Respuestas grandes | Una ida y vuelta grande pesa 16,5 MB sin comprimir (0,4 MB con gzip) y tarda ~25 s. Opciones: resultados progresivos (Batch Offer Requests de Duffel) o paginar en el servidor |
 | Cobertura del sandbox | Duffel test no cubre todas las rutas: BAQ-EOH solo trae a Duffel Airways (ZZ), BAQ-MDE trae 621 vuelos. Evaluar buscar por código de ciudad (Medellín = MDE + EOH), como NYC |
-| Una persona, un vuelo | El buscador todavía permite varios pasajeros, y elegir un vuelo distinto desde resultados lo suma como segundo vuelo del viaje |
+| Una persona, un vuelo | El buscador ya queda en un adulto (etapa 2). Elegir un vuelo distinto desde resultados todavía lo suma como segundo vuelo del viaje |
 | Bundle del frontend | 588 KB minificado. Dividir por ruta (`import()` dinámico) |
 | Autocompletado | Las coincidencias por ortografía parecida pueden mostrar aeropuertos poco relevantes (por ejemplo ELS para "londres", después de LHR) |
 | Nombres en inglés | Ciudades y aeropuertos se muestran como vienen de la fuente, en inglés; los nombres alternativos de OurAirports cubren algunos casos ("Londres") |

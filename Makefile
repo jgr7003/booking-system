@@ -2,8 +2,8 @@ COMPOSE = docker compose
 API = $(COMPOSE) exec api
 FE = $(COMPOSE) exec frontend
 
-.PHONY: up down build restart logs ps test test-backend test-frontend lint shell \
-	migrate migration seed-airports psql redis-cli api-types fe-add
+.PHONY: up down build restart logs logs-workers ps test test-backend test-frontend lint lint-backend lint-frontend shell \
+	migrate migration seed-airports psql redis-cli rabbitmq mailpit api-types fe-add
 
 up: ## Levanta todos los servicios (reconstruye las imágenes si cambiaron)
 	$(COMPOSE) up -d --build
@@ -23,6 +23,9 @@ logs: ## Logs en vivo de todos los servicios
 ps: ## Estado de los contenedores
 	$(COMPOSE) ps
 
+logs-workers: ## Logs en vivo del outbox relay y del worker de reservas
+	$(COMPOSE) logs -f outbox-relay booking-worker
+
 test: test-backend test-frontend ## Corre todos los tests
 
 test-backend: ## Tests del backend (pytest)
@@ -31,7 +34,12 @@ test-backend: ## Tests del backend (pytest)
 test-frontend: ## Tests del frontend (vitest)
 	$(FE) pnpm test
 
-lint: ## Chequeo de tipos y lint del frontend
+lint: lint-backend lint-frontend ## Lint de backend y frontend
+
+lint-backend: ## Límites entre módulos del monolito modular (import-linter)
+	$(API) lint-imports
+
+lint-frontend: ## Chequeo de tipos y lint del frontend
 	$(FE) pnpm typecheck
 	$(FE) pnpm lint
 
@@ -58,3 +66,9 @@ psql: ## Consola de PostgreSQL
 
 redis-cli: ## Consola de Redis
 	$(COMPOSE) exec redis redis-cli
+
+rabbitmq: ## Consola de gestión de RabbitMQ (booking / booking)
+	@echo "http://localhost:15672"
+
+mailpit: ## Bandeja de Mailpit: los correos que manda la plataforma en desarrollo
+	@echo "http://localhost:8025"

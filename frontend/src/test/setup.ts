@@ -1,7 +1,8 @@
 import "@testing-library/jest-dom/vitest";
 import { cleanup } from "@testing-library/react";
 import { afterAll, afterEach, beforeAll, vi } from "vitest";
-import { useTrip } from "@/features/trip/store";
+import { useCheckout } from "@/features/checkout/store";
+import { useTrip } from "@/features/trip/public";
 import { server } from "./server";
 
 // Any request (or WebSocket frame) without a handler fails: tests never reach a real API.
@@ -16,7 +17,9 @@ afterEach(() => {
   server.resetHandlers();
   sessionStorage.clear();
   useTrip.getState().clear();
+  useCheckout.setState({ drafts: {}, attempts: {} });
   vi.useRealTimers();
+  vi.unstubAllGlobals();
 });
 
 afterAll(() => server.close());

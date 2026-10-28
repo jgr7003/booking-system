@@ -74,6 +74,107 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/flights/bookings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create Booking
+         * @description Books a fare for one traveler.
+         *
+         *     The booking is processed in the background: the answer comes right away (`202`, `pending`)
+         *     and the changes of state arrive by `GET /bookings/{id}/events` (SSE). Send a new UUID in
+         *     `Idempotency-Key` for each checkout attempt and the same one for its retries: a retry answers
+         *     `200` with the existing booking and never books twice. The same key with another body is
+         *     `422 idempotency_key_reused`; without the header, `400 idempotency_key_required`.
+         *
+         *     The fare is reconfirmed before charging. If its price changed, nothing is charged and the
+         *     booking goes to `awaiting_price_approval` until the traveler answers with
+         *     `POST /bookings/{id}/price-decision`.
+         */
+        post: operations["create_booking_api_v1_flights_bookings_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/flights/bookings/{booking_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Booking
+         * @description Returns a booking and its current state. Use it when the event stream isn't available.
+         */
+        get: operations["get_booking_api_v1_flights_bookings__booking_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/flights/bookings/{booking_id}/price-decision": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Decide Price
+         * @description Answers a new price of a booking in `awaiting_price_approval`.
+         *
+         *     `accept` books at the new price (`price` must be the `offered_price`); if it changes again,
+         *     the traveler is asked again. `reject` cancels the booking. Repeating the same answer is
+         *     harmless. A booking that isn't waiting for an answer is `409 price_decision_not_applicable`;
+         *     a price other than the offered one is `422 price_mismatch`.
+         */
+        post: operations["decide_price_api_v1_flights_bookings__booking_id__price_decision_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/flights/bookings/{booking_id}/events": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Booking Events
+         * @description Streams the state of a booking (Server-Sent Events).
+         *
+         *     The first event is the current state; then one event per change, until the booking is final
+         *     (`confirmed`, `failed` or `cancelled`), when the stream closes. Each event is
+         *     `event: status`, `id: <version>` and `data: {"booking_id", "status", "version"}`: read the
+         *     full booking with `GET /bookings/{id}` when it arrives. On reconnection the current state is
+         *     sent again. A `: ping` comment keeps the connection alive.
+         */
+        get: operations["booking_events_api_v1_flights_bookings__booking_id__events_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -104,6 +205,131 @@ export interface components {
              */
             legroom?: string | null;
         };
+        /**
+         * Baggage
+         * @description Bags included in the fare, per passenger.
+         *
+         *     `0` means not included; `null` means the airline doesn't report it (never inferred).
+         */
+        Baggage: {
+            /**
+             * Checked
+             * @description Checked bags included; `0` = not included, `null` = not reported.
+             */
+            checked?: number | null;
+            /**
+             * Carry On
+             * @description Cabin bags included; `0` = not included, `null` = not reported.
+             */
+            carry_on?: number | null;
+        };
+        /**
+         * BookingPassenger
+         * @description The traveler of a booking: their personal data plus what the airline asks for.
+         */
+        BookingPassenger: {
+            /** @description Title printed on the ticket. */
+            title: components["schemas"]["PassengerTitle"];
+            /** @description Personal data, as written in the travel document. */
+            traveller: components["schemas"]["TravellerDetails"];
+        };
+        /**
+         * BookingPassengerResponse
+         * @description The passenger of a booking, as printed on the ticket.
+         *
+         *     Contact data and documents aren't returned: anyone with the booking id can read it.
+         */
+        BookingPassengerResponse: {
+            /** @description Title printed on the ticket. */
+            title: components["schemas"]["PassengerTitle"];
+            /**
+             * Given Name
+             * @description Given name, as sent to the airline (e.g. `JOSE`).
+             */
+            given_name: string;
+            /**
+             * Family Name
+             * @description Family name, as sent to the airline (e.g. `MUNOZ`).
+             */
+            family_name: string;
+        };
+        /**
+         * BookingRequest
+         * @description What the traveler confirms on the passengers and payment screen.
+         */
+        BookingRequest: {
+            /**
+             * Offer Id
+             * @description Provider id of the chosen fare (`fares[].offer_id`).
+             */
+            offer_id: string;
+            /** @description Total sale price shown when confirming. If the airline changed it, nothing is charged and the booking waits for the traveler's approval. */
+            expected_price: components["schemas"]["Money-Input"];
+            /** @description The traveler. */
+            passenger: components["schemas"]["BookingPassenger"];
+            /**
+             * Payment Token
+             * @description Token of the card from the payment form (simulated for now: `tok_fake_<last 4 digits>`). The card number never reaches the API.
+             */
+            payment_token: string;
+        };
+        /**
+         * BookingResponse
+         * @description A booking and its current state.
+         */
+        BookingResponse: {
+            /**
+             * Id
+             * Format: uuid
+             * @description Id of the booking.
+             */
+            id: string;
+            /** @description `pending` → `processing` → `confirmed`, or `awaiting_price_approval`, `failed`, `cancelled`. `issuance_error` means the airline may have issued the booking but it couldn't be confirmed or charged: it is being reviewed, and it must not be booked again. */
+            status: components["schemas"]["BookingStatus"];
+            /**
+             * Version
+             * @description Grows with every change of state; it's the `id` of the SSE events.
+             */
+            version: number;
+            /**
+             * Offer Id
+             * @description Provider id of the booked fare.
+             */
+            offer_id: string;
+            /** @description Sale price the booking charges: the one confirmed or, after a change, the one approved. */
+            price: components["schemas"]["Money-Output"];
+            /** @description New price found when reconfirming the fare; set while `awaiting_price_approval`. */
+            offered_price: components["schemas"]["Money-Output"] | null;
+            /** @description Why it failed, when `failed` or `issuance_error`. */
+            failure_code: components["schemas"]["FailureCode"] | null;
+            /**
+             * Booking Reference
+             * @description Booking reference (PNR) of the airline, when `confirmed`.
+             */
+            booking_reference: string | null;
+            /** @description The passenger. */
+            passenger: components["schemas"]["BookingPassengerResponse"];
+            /** @description The confirmed order, when `confirmed`. */
+            order: components["schemas"]["OrderResponse"] | null;
+            /**
+             * Created At
+             * Format: date-time
+             * @description When the booking was created (UTC).
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             * @description When it last changed (UTC).
+             */
+            updated_at: string;
+        };
+        /**
+         * BookingStatus
+         * @description State of a booking (see docs/superpowers/specs/2026-10-27-reserva-vuelos-design.md §5.2).
+         * @enum {string}
+         */
+        BookingStatus: "pending" | "processing" | "awaiting_price_approval" | "confirmed" | "failed" | "cancelled" | "issuance_error";
         /**
          * CabinClass
          * @description Cabin the passengers want to travel in.
@@ -153,6 +379,12 @@ export interface components {
             duration_minutes: number | null;
         };
         /**
+         * FailureCode
+         * @description Why a booking failed or ended in an issuance error.
+         * @enum {string}
+         */
+        FailureCode: "offer_expired" | "offer_unavailable" | "passenger_rejected" | "payment_declined" | "provider_rejected" | "provider_unavailable" | "capture_failed" | "order_unverified";
+        /**
          * FareBenefits
          * @description Extras included in the fare. `null` means unknown.
          */
@@ -184,7 +416,7 @@ export interface components {
              */
             allowed?: boolean | null;
             /** @description Fee charged by the airline. May be in a different currency than the price. */
-            penalty?: components["schemas"]["Money"] | null;
+            penalty?: components["schemas"]["Money-Output"] | null;
         };
         /**
          * FareResponse
@@ -265,7 +497,7 @@ export interface components {
              */
             emissions_kg: number | null;
             /** @description Total of the cheapest fare. */
-            lowest_price: components["schemas"]["Money"];
+            lowest_price: components["schemas"]["Money-Output"];
             /**
              * Slices
              * @description Outbound and, for round trips, inbound.
@@ -350,10 +582,68 @@ export interface components {
              */
             connections: components["schemas"]["Connection"][];
         };
+        /**
+         * Gender
+         * @description Gender as written in the traveller's identity document.
+         * @enum {string}
+         */
+        Gender: "m" | "f";
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /**
+         * IdentityDocumentDetails
+         * @description An identity document of a traveller, e.g. a passport.
+         */
+        IdentityDocumentDetails: {
+            /**
+             * @description Kind of document.
+             * @default passport
+             */
+            type: components["schemas"]["IdentityDocumentType"];
+            /**
+             * Number
+             * @description Number of the document, as printed on it.
+             */
+            number: string;
+            /**
+             * Issuing Country Code
+             * @description ISO 3166-1 alpha-2 code of the issuing country, e.g. `AR`.
+             */
+            issuing_country_code: string;
+            /**
+             * Expires On
+             * Format: date
+             * @description Expiry date; it must be in the future.
+             */
+            expires_on: string;
+        };
+        /**
+         * IdentityDocumentType
+         * @description Kind of identity document. Only passports are supported for now.
+         * @enum {string}
+         */
+        IdentityDocumentType: "passport";
+        /**
+         * Money
+         * @description An amount in a currency.
+         *
+         *     Amounts are `Decimal` to avoid float rounding errors and are serialized as strings in JSON
+         *     (e.g. `"402.74"`).
+         */
+        "Money-Input": {
+            /**
+             * Amount
+             * @description The amount, in units of `currency`.
+             */
+            amount: number | string;
+            /**
+             * Currency
+             * @description ISO 4217 currency code, e.g. `"USD"`.
+             */
+            currency: string;
         };
         /**
          * Money
@@ -362,7 +652,7 @@ export interface components {
          *     Amounts are `Decimal` to avoid float rounding errors and are serialized as strings in JSON
          *     (e.g. `"402.74"`).
          */
-        Money: {
+        "Money-Output": {
             /**
              * Amount
              * @description The amount, in units of `currency`.
@@ -380,11 +670,11 @@ export interface components {
          */
         OfferAmounts: {
             /** @description Total to pay, taxes included. */
-            total: components["schemas"]["Money"];
+            total: components["schemas"]["Money-Output"];
             /** @description Fare without taxes. */
-            base?: components["schemas"]["Money"] | null;
+            base?: components["schemas"]["Money-Output"] | null;
             /** @description Taxes and fees. */
-            taxes?: components["schemas"]["Money"] | null;
+            taxes?: components["schemas"]["Money-Output"] | null;
         };
         /**
          * OfferConditions
@@ -395,6 +685,41 @@ export interface components {
             change: components["schemas"]["FareCondition"];
             /** @description Cancelling with a refund before departure. */
             refund: components["schemas"]["FareCondition"];
+        };
+        /**
+         * OrderResponse
+         * @description The order confirmed by the airline. Its cost to the platform isn't included.
+         */
+        OrderResponse: {
+            /** @description Airline that sold the order. */
+            owner: components["schemas"]["Carrier"];
+            /**
+             * Slices
+             * @description Itinerary, with the operating carrier of each segment.
+             */
+            slices: components["schemas"]["Slice"][];
+            /** @description Change and refund rules. */
+            conditions: components["schemas"]["OfferConditions"];
+            /**
+             * Tickets
+             * @description Electronic tickets; empty until they are issued.
+             */
+            tickets: components["schemas"]["Ticket"][];
+            /**
+             * Paid At
+             * @description When the order was paid (UTC).
+             */
+            paid_at: string | null;
+            /**
+             * Awaiting Payment
+             * @description Whether the order still has to be paid.
+             */
+            awaiting_payment: boolean;
+            /**
+             * Available Actions
+             * @description What can be done with the order (`cancel`, `change`, `update`). Show only these.
+             */
+            available_actions: string[];
         };
         /**
          * PassengerBaggage
@@ -434,6 +759,12 @@ export interface components {
              */
             children_ages?: number[];
         };
+        /**
+         * PassengerTitle
+         * @description Title airlines print on the ticket. Some airlines don't accept `dr`.
+         * @enum {string}
+         */
+        PassengerTitle: "mr" | "ms" | "mrs" | "miss" | "dr";
         /**
          * PaymentTerms
          * @description When the offer has to be paid.
@@ -546,6 +877,22 @@ export interface components {
          */
         PlaceType: "city" | "airport";
         /**
+         * PriceDecision
+         * @description What the traveler decided about a new price.
+         * @enum {string}
+         */
+        PriceDecision: "accept" | "reject";
+        /**
+         * PriceDecisionRequest
+         * @description The traveler's answer to a new price.
+         */
+        PriceDecisionRequest: {
+            /** @description `accept` books at the new price; `reject` cancels the booking. */
+            decision: components["schemas"]["PriceDecision"];
+            /** @description The new price being answered (`offered_price` of the booking). */
+            price: components["schemas"]["Money-Input"];
+        };
+        /**
          * SearchCriteria
          * @description What the traveler is looking for. This is the body of `POST /api/v1/flights/search`.
          */
@@ -640,6 +987,52 @@ export interface components {
             flights: components["schemas"]["FlightResponse"][];
         };
         /**
+         * Segment
+         * @description A single flight, from takeoff to landing.
+         */
+        Segment: {
+            /** @description Departure airport, with terminal. */
+            origin: components["schemas"]["Place"];
+            /** @description Arrival airport, with terminal. */
+            destination: components["schemas"]["Place"];
+            /**
+             * Departing At
+             * Format: date-time
+             * @description Departure, local time at `origin`, without time zone.
+             */
+            departing_at: string;
+            /**
+             * Arriving At
+             * Format: date-time
+             * @description Arrival, local time at `destination`, without time zone.
+             */
+            arriving_at: string;
+            /**
+             * Duration Minutes
+             * @description Flight time.
+             */
+            duration_minutes: number | null;
+            /** @description Airline that sells the flight under its code. */
+            marketing_carrier: components["schemas"]["Carrier"];
+            /**
+             * Flight Number
+             * @description Flight number of the marketing carrier, e.g. `0317`.
+             */
+            flight_number: string;
+            /** @description Airline that actually flies the aircraft. US regulations require showing it. */
+            operating_carrier: components["schemas"]["Carrier"];
+            /**
+             * Aircraft
+             * @description Aircraft model, e.g. `Airbus A321neo`.
+             */
+            aircraft?: string | null;
+            /**
+             * Passengers
+             * @description Cabin, baggage and amenities of each passenger.
+             */
+            passengers: components["schemas"]["SegmentPassenger"][];
+        };
+        /**
          * SegmentCabin
          * @description Cabin of a segment, shared by every fare of the same flight.
          */
@@ -656,6 +1049,123 @@ export interface components {
             cabin_name?: string | null;
             /** @description Cabin amenities, when the airline reports them. */
             amenities?: components["schemas"]["Amenities"] | null;
+        };
+        /**
+         * SegmentPassenger
+         * @description What a passenger gets on a segment.
+         */
+        SegmentPassenger: {
+            /**
+             * Passenger Id
+             * @description Id of the passenger in `SearchResult.passengers`.
+             */
+            passenger_id: string;
+            /**
+             * Cabin Class
+             * @description Cabin class, e.g. `economy`.
+             */
+            cabin_class?: string | null;
+            /**
+             * Cabin Name
+             * @description The airline's marketing name for the cabin.
+             */
+            cabin_name?: string | null;
+            /** @description Bags included. */
+            baggage: components["schemas"]["Baggage"];
+            /** @description Cabin amenities, when the airline reports them. */
+            amenities?: components["schemas"]["Amenities"] | null;
+        };
+        /**
+         * Slice
+         * @description One direction of the trip: outbound or inbound.
+         */
+        Slice: {
+            /** @description Where the slice starts. */
+            origin: components["schemas"]["Place"];
+            /** @description Where the slice ends. */
+            destination: components["schemas"]["Place"];
+            /**
+             * Duration Minutes
+             * @description Total time, from first takeoff to last landing.
+             */
+            duration_minutes: number | null;
+            /**
+             * Fare Brand
+             * @description The airline's fare name, e.g. `Economy Light`.
+             */
+            fare_brand?: string | null;
+            /**
+             * Stops
+             * @description Number of connections: 0 for direct flights.
+             */
+            stops: number;
+            /** @description Extras included in the fare. */
+            benefits: components["schemas"]["FareBenefits"];
+            /**
+             * Segments
+             * @description Flights in order.
+             */
+            segments: components["schemas"]["Segment"][];
+            /**
+             * Connections
+             * @description Layovers in order; one fewer than `segments`.
+             */
+            connections: components["schemas"]["Connection"][];
+        };
+        /**
+         * Ticket
+         * @description An electronic ticket of the order.
+         */
+        Ticket: {
+            /**
+             * Passenger Id
+             * @description Provider id of the passenger.
+             */
+            passenger_id: string;
+            /**
+             * Number
+             * @description Ticket number.
+             */
+            number: string;
+        };
+        /**
+         * TravellerDetails
+         * @description Personal data of a traveller, as written in their travel document.
+         */
+        TravellerDetails: {
+            /**
+             * Given Name
+             * @description Given name.
+             */
+            given_name: string;
+            /**
+             * Family Name
+             * @description Family name.
+             */
+            family_name: string;
+            /**
+             * Born On
+             * Format: date
+             * @description Date of birth.
+             */
+            born_on: string;
+            /** @description Gender as written in the identity document. */
+            gender: components["schemas"]["Gender"];
+            /**
+             * Email
+             * @description Email where the traveller gets the itinerary and the tickets.
+             */
+            email: string;
+            /**
+             * Phone Number
+             * @description Phone number in international E.164 format, e.g. `+5491112345678`.
+             */
+            phone_number: string;
+            /**
+             * Identity Documents
+             * @description Identity documents; at most one of each type.
+             */
+            identity_documents?: components["schemas"]["IdentityDocumentDetails"][];
         };
         /** ValidationError */
         ValidationError: {
@@ -755,6 +1265,148 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PlaceSuggestion"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_booking_api_v1_flights_bookings_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description UUID generated by the client for each checkout attempt; retries reuse it. */
+                "idempotency-key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BookingRequest"];
+            };
+        };
+        responses: {
+            /** @description Retry with the same key: the existing booking. */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookingResponse"];
+                };
+            };
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookingResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_booking_api_v1_flights_bookings__booking_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                booking_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookingResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    decide_price_api_v1_flights_bookings__booking_id__price_decision_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                booking_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PriceDecisionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BookingResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    booking_events_api_v1_flights_bookings__booking_id__events_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                booking_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/event-stream": unknown;
                 };
             };
             /** @description Validation Error */

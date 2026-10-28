@@ -1,0 +1,137 @@
+{#- Design board "Correo de confirmación" (Propuesta A v2). Inline styles and tables only:
+    email clients don't support flexbox, grid or external stylesheets. -#}
+{% set sans = "'IBM Plex Sans', Arial, Helvetica, sans-serif" %}
+{% set mono = "'IBM Plex Mono', 'Courier New', monospace" %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<title>{{ subject }}</title>
+<style>
+  :root { color-scheme: light dark; }
+  @media (max-width: 480px) {
+    .container { width: 100% !important; }
+    .pad { padding-left: 18px !important; padding-right: 18px !important; }
+    .seg-flight { display: block !important; width: 100% !important; padding-right: 0 !important; }
+    .seg-time { width: 50% !important; }
+    .code { font-size: 32px !important; }
+  }
+</style>
+</head>
+<body style="margin: 0; padding: 0; background: #E5E7EB; font-family: {{ sans }}; color: #111827">
+<div style="display: none; max-height: 0; overflow: hidden; opacity: 0">{{ preview }}</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; background: #E5E7EB">
+<tr><td align="center" style="padding: 32px 0">
+<table role="presentation" class="container" width="600" cellpadding="0" cellspacing="0" style="width: 600px; border-collapse: collapse; background: #FFFFFF">
+
+  <tr><td class="pad" style="background: #111827; padding: 20px 32px">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse"><tr>
+      <td style="color: #FFFFFF; font-family: {{ sans }}; font-size: 22px; font-weight: 700">✈ Vuelos</td>
+      <td align="right" style="color: #D1D5DB; font-family: {{ sans }}; font-size: 13px">Reserva <span style="font-family: {{ mono }}; font-weight: 600; color: #FFFFFF; letter-spacing: 0.08em">{{ reference }}</span></td>
+    </tr></table>
+  </td></tr>
+
+  <tr><td class="pad" align="center" style="background: #F3F4F6; padding: 36px 32px 28px; text-align: center; font-family: {{ sans }}">
+    <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin: 0 auto"><tr>
+      <td align="center" width="64" height="64" style="width: 64px; height: 64px; border-radius: 32px; background: #0B6B44; color: #FFFFFF; font-size: 34px; font-weight: 700; line-height: 64px; text-align: center">✓</td>
+    </tr></table>
+    <h1 style="margin: 18px 0 6px; font-size: 28px; line-height: 1.25; font-weight: 700; color: #111827">Tu reserva está confirmada</h1>
+    <p style="margin: 0; font-size: 16px; line-height: 1.5; color: #374151">Hola, {{ greeting_name }}.
+      {% if paid_on %}Pagaste <strong style="color: #111827">{{ total }}</strong> el {{ paid_on }}{% else %}El total es <strong style="color: #111827">{{ total }}</strong>{% endif %}{% if tickets %} y los tickets ya están emitidos.{% else %}. Los tickets se emiten al pagar.{% endif %}</p>
+    <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin: 22px auto 0; background: #FFFFFF; border: 2px solid #111827"><tr>
+      <td align="center" style="padding: 14px 32px; text-align: center">
+        <span style="display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #4B5563">Código de reserva</span>
+        <span class="code" style="display: block; font-family: {{ mono }}; font-size: 40px; font-weight: 600; letter-spacing: 0.14em; line-height: 1.2; color: #111827">{{ reference }}</span>
+        <span style="display: block; font-size: 13px; color: #4B5563">Lo pide {{ owner }} para el check-in</span>
+      </td>
+    </tr></table>
+  </td></tr>
+
+  <tr><td class="pad" style="padding: 28px 32px 10px; border-bottom: 1px solid #E5E7EB; font-family: {{ sans }}">
+    <h2 style="margin: 0; font-size: 22px; font-weight: 600; color: #111827">Tu viaje · {{ trip_kind }}</h2>
+  </td></tr>
+
+  {% for slice in slices %}
+  <tr><td class="pad" style="padding: 20px 32px 18px; border-bottom: 1px solid #E5E7EB; font-family: {{ sans }}">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse"><tr>
+      <td width="40" valign="top" style="font-size: 24px; line-height: 1; color: #111827">✈</td>
+      <td valign="top">
+        <span style="display: inline-block; font-family: {{ mono }}; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; color: #FFFFFF; background: #1D4ED8; padding: 2px 7px; border-radius: 3px">{{ slice.label }}</span>
+        <span style="display: block; margin-top: 6px; font-size: 16px; font-weight: 700; color: #111827">{{ slice.route }}</span>
+        <span style="display: block; font-size: 14px; color: #374151">{{ slice.summary }}</span>
+      </td>
+    </tr></table>
+    {% for segment in slice.segments %}
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-top: 14px; border-top: 1px dashed #C4C8CF"><tr>
+      <td class="seg-flight" width="34%" valign="top" style="padding: 12px 12px 0 0; font-size: 13px; line-height: 1.5; color: #374151"><span style="display: block; font-family: {{ mono }}; font-weight: 600; font-size: 14px; color: #111827">{{ segment.flight }}</span>Operado por <strong style="color: #111827">{{ segment.operator }}</strong><br>{{ segment.aircraft }}</td>
+      <td class="seg-time" width="33%" valign="top" style="padding: 12px 12px 0 0; font-size: 13px; line-height: 1.5; color: #374151"><strong style="display: block; color: #111827">Salida</strong><span style="display: block; font-family: {{ mono }}; font-size: 18px; font-weight: 600; color: #111827">{{ segment.departure_time }}</span>{{ segment.departure_place }}</td>
+      <td class="seg-time" width="33%" valign="top" style="padding: 12px 0 0; font-size: 13px; line-height: 1.5; color: #374151"><strong style="display: block; color: #111827">Llegada</strong><span style="display: block; font-family: {{ mono }}; font-size: 18px; font-weight: 600; color: #111827">{{ segment.arrival_time }}</span>{{ segment.arrival_place }}</td>
+    </tr></table>
+    {% if segment.connection %}
+    <p style="margin: 12px 0 0; padding: 8px 12px; font-size: 13px; {% if segment.connection_is_short %}background: #FDF3E2; color: #5C3A00; border: 1px solid #F0D29B{% else %}background: #F9FAFB; color: #374151{% endif %}">{{ segment.connection }}{% if segment.connection_is_short %}. Conexión corta: buscá la puerta del próximo vuelo apenas aterrices.{% endif %}</p>
+    {% endif %}
+    {% endfor %}
+  </td></tr>
+  {% endfor %}
+
+  <tr><td class="pad" style="padding: 22px 32px 24px; font-family: {{ sans }}">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse"><tr>
+      <td width="40" valign="top" style="font-size: 22px; line-height: 1; color: #111827">●</td>
+      <td valign="top">
+        <span style="display: block; font-size: 15px; font-weight: 700; letter-spacing: 0.02em; color: #111827">{{ passenger }}</span>
+        <span style="display: block; font-size: 13px; color: #374151">Adulto · {% if tickets %}Ticket electrónico <span style="font-family: {{ mono }}; font-weight: 600; color: #111827">{{ tickets | join(", ") }}</span>{% else %}Los tickets se emiten al pagar{% endif %}</span>
+        {% for slice in (slices[:1] if same_included else slices) %}
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; margin-top: 14px; background: #F3F4F6; border: 1px solid #DADDE3"><tr><td style="padding: 16px 18px">
+          <span style="display: block; font-size: 15px; font-weight: 700; margin-bottom: 8px; color: #111827">Qué incluye tu tarifa {{ fare_names }}{% if not same_included %} · {{ "Ida" if slice.label == "IDA" else "Vuelta" }}{% endif %}</span>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; font-size: 14px">
+            {% for item in slice.included %}
+            <tr><td style="padding: 4px 0; color: #374151">{{ item.label }}</td><td align="right" style="padding: 4px 0; font-weight: 600; color: {{ item.color }}{% if item.tone == 'na' %}; font-style: italic{% endif %}">{{ item.value }}</td></tr>
+            {% endfor %}
+          </table>
+          {% if round_trip and same_included %}<span style="display: block; margin-top: 8px; font-size: 12px; color: #4B5563">Igual en la ida y en la vuelta.</span>{% endif %}
+        </td></tr></table>
+        {% endfor %}
+      </td>
+    </tr></table>
+    <p style="margin: 18px 0 0; text-align: right"><a href="{{ booking_url }}" style="color: #1D4ED8; font-size: 15px; font-weight: 600; text-decoration: none">Ver tu reserva ▸</a></p>
+  </td></tr>
+
+  <tr><td style="background: #F3F4F6; height: 12px; line-height: 12px; font-size: 0">&nbsp;</td></tr>
+
+  <tr><td class="pad" style="padding: 24px 32px 10px; border-bottom: 1px solid #E5E7EB; font-family: {{ sans }}"><h2 style="margin: 0; font-size: 22px; font-weight: 600; color: #111827">Precio</h2></td></tr>
+  <tr><td class="pad" style="padding: 12px 32px 22px; font-family: {{ sans }}">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; font-size: 14px; color: #111827">
+      <tr><td style="padding: 8px 0; font-weight: 700; border-bottom: 1px solid #E5E7EB">Concepto</td><td align="right" style="padding: 8px 0; font-weight: 700; border-bottom: 1px solid #E5E7EB">Total</td></tr>
+      <tr><td style="padding: 10px 0 4px; font-weight: 700">Vuelo {{ trip_kind }} · {{ route }}</td><td></td></tr>
+      <tr><td style="padding: 4px 0 10px 12px; color: #374151; border-bottom: 1px solid #E5E7EB">{{ passenger }} · {{ fare_names }}</td><td align="right" style="padding: 4px 0 10px; font-family: {{ mono }}; border-bottom: 1px solid #E5E7EB">{{ total }}</td></tr>
+      <tr><td style="padding: 14px 0 0; font-size: 17px; font-weight: 700">Precio final</td><td align="right" style="padding: 14px 0 0; font-family: {{ mono }}; font-size: 18px; font-weight: 600">{{ total }}</td></tr>
+    </table>
+    <p style="margin: 10px 0 0; font-size: 12px; color: #4B5563">{% if paid_on %}Pagado el {{ paid_on }} · {% endif %}vendido por {{ owner }}</p>
+  </td></tr>
+
+  <tr><td style="background: #F3F4F6; height: 12px; line-height: 12px; font-size: 0">&nbsp;</td></tr>
+
+  <tr><td class="pad" style="padding: 24px 32px; font-family: {{ sans }}">
+    <h2 style="margin: 0 0 10px; font-size: 18px; font-weight: 600; color: #111827">Antes de volar</h2>
+    <ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.6; color: #374151">
+      <li>Llevá tu documento: el nombre tiene que coincidir con el del ticket ({{ passenger }}).</li>
+      <li>Hacé el check-in con {{ owner }} usando el código {{ reference }}.</li>
+      <li>Llegá con tiempo al aeropuerto. Revisá con la aerolínea cuánto antes conviene presentarse.</li>
+    </ul>
+    {% if conditions_url %}<p style="margin: 12px 0 0; font-size: 13px; color: #374151">Más detalles en las <a href="{{ conditions_url }}" style="color: #1D4ED8">condiciones de transporte de {{ owner }}</a>.</p>{% endif %}
+  </td></tr>
+
+  <tr><td class="pad" style="background: #111827; padding: 22px 32px; color: #D1D5DB; font-family: {{ sans }}; font-size: 12px; line-height: 1.6">
+    Recibís este correo porque hiciste una reserva en Vuelos con esta dirección. Guardalo: tiene tu código de reserva.<br>
+    Pronto vas a poder cambiar o cancelar desde la web. Mientras tanto, consultá a {{ owner }} con el código {{ reference }}.<br>
+    <span style="color: #9CA3AF">[Razón social, dirección y datos de contacto de la empresa]</span>
+  </td></tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>

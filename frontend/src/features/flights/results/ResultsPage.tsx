@@ -6,10 +6,8 @@ import { flightKeys, useFlightSearch } from "@/api/flights";
 import { CalendarIcon, DepartureIcon, PencilIcon, PersonIcon, SwapIcon } from "@/components/icons";
 import { StepCircles } from "@/components/layout/Steps";
 import { BarDivider, ProgressBar, TopBar } from "@/components/layout/TopBar";
-import { formatDate, formatPassengers, formatShortDate, formatTime } from "@/lib/format";
-import { searchedCity } from "@/lib/placeLabels";
-import { useTrip } from "../../trip/store";
-import { useAddToTrip } from "../../trip/useAddToTrip";
+import { useAddToTrip, useTrip } from "@/features/trip/public";
+import { flightNumbersOf } from "@/lib/flights/itinerary";
 import {
   CABIN_LABELS,
   type CompleteSearch,
@@ -17,7 +15,9 @@ import {
   pickSearch,
   type ResultsSearch,
   toCriteria,
-} from "../search/params";
+} from "@/lib/flights/search";
+import { formatDate, formatPassengers, formatShortDate, formatTime } from "@/lib/format";
+import { searchedCity } from "@/lib/placeLabels";
 import { FaresDialog } from "./FaresDialog";
 import { FilterChips, SortSelect } from "./FiltersBar";
 import { FlightCard } from "./FlightCard";
@@ -27,7 +27,6 @@ import {
   applyFilters,
   filtersFromSearch,
   flightInsights,
-  flightNumbersOf,
   isRoundTrip,
   outboundKeyOf,
   relaxSuggestions,

@@ -58,3 +58,18 @@ async def get_db_session(request: Request) -> AsyncIterator[AsyncSession]:
     """
     async with request.app.state.session_factory() as session:
         yield session
+
+
+def get_session_factory(request: Request) -> async_sessionmaker[AsyncSession]:
+    """FastAPI dependency that provides the session factory, for long requests (e.g. SSE).
+
+    A streaming response shouldn't hold a connection for its whole life: it opens a short
+    session for each read instead.
+
+    Args:
+        request: The incoming request, used to reach the session factory in the app state.
+
+    Returns:
+        The session factory.
+    """
+    return request.app.state.session_factory

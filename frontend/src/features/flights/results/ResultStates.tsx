@@ -4,16 +4,14 @@ import { ApiError } from "@/api/client";
 import { AlertIcon, ClockIcon, SpinnerIcon } from "@/components/icons";
 import { Dialog } from "@/components/ui/dialog";
 import { cn } from "@/lib/cn";
-import { formatRemaining } from "@/lib/format";
+import { type FlightSearch, pickSearch, type ResultsSearch } from "@/lib/flights/search";
+import { formatRemaining, utcTime } from "@/lib/format";
+import { useExpiry } from "@/lib/useExpiry";
 import { useNow } from "@/lib/useNow";
-import { type FlightSearch, pickSearch, type ResultsSearch } from "../search/params";
 import type { RelaxSuggestion, ResultFilters } from "./logic";
 
 /** After this long the search is flagged as slow and can be cancelled (large round trips take ~25 s). */
 export const SLOW_SEARCH_MS = 40_000;
-
-/** Countdowns turn amber when less than this is left (design: "pasa a ámbar a los 5 min"). */
-export const EXPIRY_WARNING_MS = 5 * 60_000;
 
 const PRIMARY =
   "inline-flex h-11 items-center rounded-md bg-action px-4 font-semibold text-white hover:bg-action-hover hover:text-white";
@@ -236,13 +234,10 @@ export function NoMatchesState({
   );
 }
 
-const utcTime = (iso: string) => new Date(iso).toISOString().slice(11, 16);
-
 /** Validity of the search's offers (design: box at the right of the filters). */
 export function ExpiryBadge({ expiresAt }: { expiresAt: string }) {
-  const remaining = new Date(expiresAt).getTime() - useNow(1000);
-  if (remaining <= 0) return null;
-  const warning = remaining < EXPIRY_WARNING_MS;
+  const { remaining, expired, warning } = useExpiry(expiresAt);
+  if (expired) return null;
   return (
     <span
       className={cn(
@@ -272,7 +267,7 @@ export function ExpiredDialog({
   refreshing: boolean;
   search: FlightSearch;
 }) {
-  const expired = new Date(expiresAt).getTime() <= useNow(1000);
+  const { expired } = useExpiry(expiresAt);
   return (
     <Dialog open={expired} title="Los precios de esta búsqueda vencieron">
       <p className="text-[14px] text-ink-2">

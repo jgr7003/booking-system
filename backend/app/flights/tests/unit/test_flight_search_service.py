@@ -4,7 +4,7 @@ import pytest
 
 from app.core.money import Money
 from app.core.pricing.fixed_fee_random_percent import FixedFeeRandomPercentPolicy
-from app.flights.domain.errors import ProviderTimeoutError
+from app.flights.domain.errors.provider import ProviderTimeoutError
 from app.flights.services.flight_search import FlightSearchService
 from app.flights.tests.support import FakeFlightProvider, make_criteria
 

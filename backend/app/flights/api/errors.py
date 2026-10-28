@@ -3,7 +3,15 @@
 from fastapi import FastAPI
 
 from app.core.errors import add_error_handlers
-from app.flights.domain.errors import InvalidSearchError, ProviderError, ProviderTimeoutError
+from app.flights.domain.errors.bookings import (
+    BookingNotFoundError,
+    IdempotencyKeyRequiredError,
+    IdempotencyKeyReusedError,
+    PriceDecisionNotApplicableError,
+    PriceMismatchError,
+)
+from app.flights.domain.errors.provider import ProviderError, ProviderTimeoutError
+from app.flights.domain.errors.search import InvalidSearchError
 
 
 def register_flights_error_handlers(app: FastAPI) -> None:
@@ -18,5 +26,10 @@ def register_flights_error_handlers(app: FastAPI) -> None:
             InvalidSearchError: 422,
             ProviderError: 502,
             ProviderTimeoutError: 504,
+            IdempotencyKeyRequiredError: 400,
+            IdempotencyKeyReusedError: 422,
+            BookingNotFoundError: 404,
+            PriceDecisionNotApplicableError: 409,
+            PriceMismatchError: 422,
         },
     )

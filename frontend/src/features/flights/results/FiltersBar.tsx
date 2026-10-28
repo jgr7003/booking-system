@@ -1,7 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { Chip } from "@/components/ui/chip";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import type { ResultsSearch } from "../search/params";
+import type { ResultsSearch } from "@/lib/flights/search";
 import { type SortKey, TIME_WINDOW_LABELS, type TimeWindow } from "./logic";
 
 const SORT_LABELS: Record<SortKey, string> = {

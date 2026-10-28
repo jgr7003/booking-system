@@ -10,6 +10,11 @@ export function formatMoney(money: Money): string {
   return `${money.currency} ${formatAmount(money)}`;
 }
 
+/** "524,44 USD": amount first, as in the passengers, payment and confirmation screens. */
+export function formatTotal(money: Money): string {
+  return `${formatAmount(money)} ${money.currency}`;
+}
+
 /** "402,74". */
 export function formatAmount(money: Money): string {
   return amountFormat.format(Number(money.amount));
@@ -80,6 +85,22 @@ export function formatRemaining(ms: number): string {
   return minutes >= 1 ? `${minutes} min` : `${Math.ceil(ms / 1000)} s`;
 }
 
+const utcFormat = new Intl.DateTimeFormat(LOCALE, {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+  hourCycle: "h23",
+  timeZone: "UTC",
+});
+
+/** An instant (ISO with zone) in UTC: "27 oct 2026 14:00 UTC". Not a flight time (those are local). */
+export function formatUtcDateTime(iso: string): string {
+  const parts = Object.fromEntries(utcFormat.formatToParts(new Date(iso)).map((p) => [p.type, p.value]));
+  return `${parts.day} ${String(parts.month).replace(".", "")} ${parts.year} ${parts.hour}:${parts.minute} UTC`;
+}
+
 /** "1 adulto", "2 adultos · 1 menor". */
 export function formatPassengers(adults: number, children: number): string {
   const parts = [`${adults} ${adults === 1 ? "adulto" : "adultos"}`];
@@ -91,3 +112,15 @@ function ymd(value: string): [number, number, number] {
   const [y, m, d] = value.slice(0, 10).split("-").map(Number);
   return [y ?? 1970, (m ?? 1) - 1, d ?? 1];
 }
+
+export function joinSpanish(items: string[]): string {
+  if (items.length <= 1) return items.join("");
+  return `${items.slice(0, -1).join(", ")} y ${items.at(-1)}`;
+}
+
+/** Date and time of an offer deadline in UTC, as the design shows it: "sáb 31 oct 2026 14:11 UTC". */
+export const utcDateTime = (iso: string) =>
+  `${formatDate(iso, { year: true })} ${new Date(iso).toISOString().slice(11, 16)} UTC`;
+
+/** Time of an offer deadline in UTC: "14:11". */
+export const utcTime = (iso: string) => new Date(iso).toISOString().slice(11, 16);

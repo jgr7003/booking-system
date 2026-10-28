@@ -1,0 +1,35 @@
+Tu reserva está confirmada
+
+Hola, {{ greeting_name }}.
+{% if paid_on %}Pagaste {{ total }} el {{ paid_on }}{% else %}El total es {{ total }}{% endif %}{% if tickets %} y los tickets ya están emitidos.{% else %}. Los tickets se emiten al pagar.{% endif %}
+
+
+CÓDIGO DE RESERVA: {{ reference }}
+Lo pide {{ owner }} para el check-in.
+
+TU VIAJE · {{ trip_kind | upper }}
+{% for slice in slices %}
+
+{{ slice.label }} · {{ slice.route }}
+{{ slice.summary }}
+{% for segment in slice.segments %}
+  {{ segment.flight }} · Operado por {{ segment.operator }} · {{ segment.aircraft }}
+  Salida  {{ segment.departure_time }}  {{ segment.departure_place }}
+  Llegada {{ segment.arrival_time }}  {{ segment.arrival_place }}
+{% if segment.connection %}
+  {{ segment.connection }}
+{% endif %}
+{% endfor %}
+{% endfor %}
+
+PASAJERO
+{{ passenger }} · Adulto · {% if tickets %}Ticket electrónico {{ tickets | join(", ") }}{% else %}Los tickets se emiten al pagar{% endif %}
+
+
+PRECIO FINAL: {{ total }}
+{% if paid_on %}Pagado el {{ paid_on }} · {% endif %}vendido por {{ owner }}
+
+Ver tu reserva: {{ booking_url }}
+
+--
+Recibís este correo porque hiciste una reserva en Vuelos con esta dirección. Guardalo: tiene tu código de reserva.

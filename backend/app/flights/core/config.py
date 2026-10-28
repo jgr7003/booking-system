@@ -31,6 +31,15 @@ class DuffelSettings(BaseSettings):
         description="Timeout of our HTTP requests to Duffel; above `supplier_timeout_ms`.",
     )
 
+    order_timeout_s: float = Field(
+        default=130,
+        description=(
+            "Timeout of the request that creates an order. Airlines can take up to 120 s to answer and "
+            "Duffel advises at least 130 s: cutting earlier leaves the outcome unknown while the order "
+            "may still be created."
+        ),
+    )
+
 
 @lru_cache
 def get_duffel_settings() -> DuffelSettings:

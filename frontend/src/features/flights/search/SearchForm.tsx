@@ -2,11 +2,18 @@ import { useNavigate } from "@tanstack/react-router";
 import { type FormEvent, useId, useState } from "react";
 import type { CabinClass } from "@/api/client";
 import { cn } from "@/lib/cn";
+import { todayIso } from "@/lib/dates";
+import {
+  BOOKABLE_PASSENGERS,
+  CABIN_LABELS,
+  CABINS,
+  type FlightSearch,
+  searchErrors,
+} from "@/lib/flights/search";
 import { DateField } from "./DateField";
 import { controlClass, Field } from "./Field";
 import { PassengersField, type PassengersValue } from "./PassengersField";
 import { PlaceField } from "./PlaceField";
-import { CABIN_LABELS, CABINS, type FlightSearch, searchErrors, todayIso } from "./params";
 
 interface SearchFormProps {
   initial: FlightSearch;
@@ -139,7 +146,12 @@ export function SearchForm({ initial }: SearchFormProps) {
             disabledText={roundTrip ? undefined : "Solo ida"}
             error={shownErrors.ret}
           />
-          <PassengersField value={passengers} onChange={setPassengers} error={shownErrors.adults} />
+          <PassengersField
+            value={passengers}
+            onChange={setPassengers}
+            error={shownErrors.adults}
+            limit={BOOKABLE_PASSENGERS}
+          />
           <Field id={cabinId} label="Cabina">
             <select
               id={cabinId}

@@ -26,8 +26,8 @@ from app.core.cache import JsonCache, create_redis
 from app.core.config import get_settings
 from app.core.db import create_engine, create_session_factory
 from app.core.text import normalize_search_text
-from app.flights.domain.constants import PLACES_CACHE_PREFIX
-from app.flights.domain.models import Airport, City
+from app.flights.domain.constants.places import PLACES_CACHE_PREFIX
+from app.flights.domain.models.airports import Airport, City
 
 logger = logging.getLogger(__name__)
 

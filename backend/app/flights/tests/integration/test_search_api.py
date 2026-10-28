@@ -8,7 +8,8 @@ from fastapi.testclient import TestClient
 from app.core.http import get_http_client
 from app.core.pricing.fixed_fee_random_percent import FIXED_FEE, MAX_PERCENT, MIN_PERCENT
 from app.flights.api.dependencies import get_flight_provider
-from app.flights.domain.errors import InvalidSearchError, ProviderError, ProviderTimeoutError
+from app.flights.domain.errors.provider import ProviderError, ProviderTimeoutError
+from app.flights.domain.errors.search import InvalidSearchError
 from app.flights.tests.support import FakeFlightProvider, load_fixture
 from app.main import app
 

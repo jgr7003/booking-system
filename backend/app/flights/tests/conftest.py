@@ -2,7 +2,7 @@
 
 import pytest
 
-from app.flights.domain.dtos import SearchResult
+from app.flights.domain.dtos.offers import SearchResult
 from app.flights.providers.duffel import mapper
 from app.flights.tests.support import load_fixture
 

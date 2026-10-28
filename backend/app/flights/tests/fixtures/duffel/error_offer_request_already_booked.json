@@ -1,0 +1,19 @@
+{
+  "errors": [
+    {
+      "documentation_url": "https://duffel.com/docs/api/overview/response-handling",
+      "source": {
+        "field": "selected_offers",
+        "pointer": "/selected_offers"
+      },
+      "title": "Can't book multiple offers from the same offer request",
+      "type": "validation_error",
+      "message": "Field 'selected_offers' has offers included in a offer request that has already been booked; please perform a new search",
+      "code": "offer_request_already_booked"
+    }
+  ],
+  "meta": {
+    "request_id": "GOJns3-nDZP8rEIABsEH",
+    "status": 422
+  }
+}

@@ -6,7 +6,8 @@ import httpx2
 import pytest
 
 from app.flights.core.config import get_duffel_settings
-from app.flights.domain.errors import InvalidSearchError, ProviderError, ProviderTimeoutError
+from app.flights.domain.errors.provider import ProviderError, ProviderTimeoutError
+from app.flights.domain.errors.search import InvalidSearchError
 from app.flights.providers.duffel.client import DuffelClient
 from app.flights.providers.duffel.provider import DuffelFlightProvider
 from app.flights.tests.support import load_fixture, make_criteria

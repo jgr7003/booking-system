@@ -1,8 +1,8 @@
 import { useState } from "react";
 import type { Fare } from "@/api/client";
 import { ToneCell } from "@/components/ui/tone";
+import { bagCell, conditionCell, fareCarryOn, fareCheckedBags, fareName } from "@/lib/flights/fares";
 import { formatAmount, formatMoney } from "@/lib/format";
-import { bagCell, conditionCell, fareCarryOn, fareCheckedBags, fareName } from "./logic";
 
 interface FareMatrixProps {
   fares: Fare[];

@@ -7,8 +7,8 @@ Memoria compartida del proyecto para agentes de código (Claude Code, Codex, Cur
 Sistema de búsqueda y reserva de vuelos construido **para aprender patrones y tendencias actuales de desarrollo**. Los patrones se van incorporando por etapas según un cronograma del autor: **no introducir patrones o capas que no se hayan pedido**; proponerlos y esperar confirmación.
 
 - **Objetivo final:** viajes empresariales, de una o varias personas. Los viajes se guardan para consultar después el historial, como particular o como empresa.
-- **Versión actual ("vainilla"):** un viaje de **una sola persona** con un vuelo (ida o ida y vuelta). "Agregar otro vuelo", hoteles y varios pasajeros quedan para más adelante; no adelantarlos sin pedido.
-- Proveedor de vuelos: **Duffel** (API v2, modo test). Ver `docs/duffel-busqueda-y-reserva.md`.
+- **Versión actual ("vainilla"):** un viaje de **una sola persona** con un vuelo (ida o ida y vuelta), que ya se puede reservar (etapa 2). "Agregar otro vuelo", hoteles y varios pasajeros quedan para más adelante; no adelantarlos sin pedido.
+- Proveedor de vuelos: **Duffel** (API v2, modo test). Ver `docs/providers/duffel-busqueda-y-reserva.md`.
 - Arquitectura y decisiones: **`docs/architecture/`**. Primero `00-global.md` (reglas generales), luego el documento de la etapa en curso. Leerlos antes de tocar código y actualizarlos cuando cambie una decisión. Las decisiones nuevas se registran en `00-global.md` §13.
 
 ## Stack
@@ -16,22 +16,40 @@ Sistema de búsqueda y reserva de vuelos construido **para aprender patrones y t
 - Backend: Python 3.14 + FastAPI + Pydantic v2 + pydantic-settings, `httpx2` como cliente HTTP async. Tests con pytest.
 - Datos: PostgreSQL (SQLAlchemy 2 async + Alembic) y Redis como caché.
 - Frontend: React 19 + TypeScript + Vite, TanStack Query/Router, Zustand, Tailwind v4 + Radix (componentes propios al estilo de shadcn/ui, en `src/components/ui`). El detalle está en `docs/architecture/00-global.md` §10.
-- Mensajería (etapa 2, planificada): RabbitMQ + workers.
+- Mensajería: RabbitMQ (`aio-pika`) con Transactional Outbox/Inbox; workers `outbox-relay` y `booking-worker` (misma imagen que la API).
 - Todo corre en Docker. No hay Python instalado en el host; los comandos de Python se ejecutan dentro del contenedor.
 
 ## Estructura
 
 ```
-Makefile, docker-compose.yml   comandos y servicios (api, frontend, postgres, redis)
+Makefile, docker-compose.yml   comandos y servicios (api, outbox-relay, booking-worker, booking-notifier, frontend, postgres, redis, rabbitmq, mailpit)
 docs/           documentación: architecture/ (global + etapas), research/ (memoria de investigaciones), API de Duffel, prompts, samples
 backend/        API FastAPI (Dockerfile, requirements*.txt, alembic.ini, migrations/)
-  app/core/     transversal: config, cliente HTTP, errores, pricing, health
+  app/core/     transversal: config, cliente HTTP, errores, pricing, health, messaging (outbox, inbox, relay, SSE)
   app/flights/  módulo de vuelos: core, domain, providers (Adapter), services, api, tests
+  app/travellers/ viajeros: datos personales y pasaporte, compartidos por todas las verticales
+  app/payments/ cobro al viajero (PaymentGateway, simulado por ahora)
+  app/notifications/ correos (EmailSender: smtp → Mailpit en desarrollo, console)
+  app/workers/  puntos de entrada de los procesos (raíz de composición, como app/main.py)
   app/hotels/   (futuro) misma estructura que flights
 frontend/       app web React (Vite): src/api, src/features, src/components/ui, src/lib
 ```
 
 Cada módulo de `app/` es autocontenido e incluye sus propios tests.
+
+### Monolito modular
+
+El backend es un **monolito modular**: un solo código y una sola imagen, que se despliega como API y como workers, dividido en módulos con límites estrictos. Cada módulo podría extraerse a un servicio sin reescribir a los demás. Reglas:
+
+- **Módulo = capacidad de negocio:** una vertical (`flights`, `hotels`) o algo compartido entre verticales (`travellers`). `app/core` es solo técnico (config, HTTP, DB, mensajería, dinero, pricing) y no tiene reglas de negocio de ningún módulo.
+- **Interfaz pública:** cada módulo expone lo que ofrece en `app/<módulo>/public.py`, con funciones o servicios y sus DTOs. Otro módulo importa **solo** ese archivo, nunca `domain/`, `repositories/`, `models.py`, `providers/` ni `services/` ajenos.
+- **Dependencias sin ciclos:** `flights` → `travellers` está permitido; `travellers` no conoce a ninguna vertical.
+- **Cada módulo es dueño de sus datos:** solo él lee y escribe sus tablas. No hay claves foráneas ni joins entre tablas de módulos distintos; se referencian por id.
+- **Comunicación:**
+  - sincrónica, llamando a la interfaz pública en el mismo proceso. Una operación que abarca módulos puede compartir la transacción: el módulo que orquesta abre la sesión y se la pasa a la interfaz pública del otro;
+  - asincrónica, con eventos por el Outbox (`app/core/messaging`).
+- **Lo que cruza un límite son DTOs** de la interfaz pública, nunca modelos de SQLAlchemy.
+- **Tests:** cada módulo prueba lo suyo. Un módulo que consume otro lo usa por su interfaz pública o con un fake de ella.
 
 ## Comandos
 
@@ -39,16 +57,16 @@ Ejecutar desde la raíz:
 
 | Comando | Qué hace |
 |---|---|
-| `make up` | Levanta todo: frontend en http://localhost:5173, API en http://localhost:8000 (Swagger en `/docs`), PostgreSQL y Redis. Aplica las migraciones al arrancar |
+| `make up` | Levanta todo: frontend en http://localhost:5173, API en http://localhost:8000 (Swagger en `/docs`), PostgreSQL, Redis, RabbitMQ (consola en http://localhost:15672, `booking`/`booking`), Mailpit (correos en http://localhost:8025) y los workers. Aplica las migraciones al arrancar |
 | `make down` | Lo baja (los datos de PostgreSQL quedan en su volumen) |
 | `make test` | Tests de backend (pytest) y de frontend (vitest). También están `make test-backend` y `make test-frontend` |
-| `make lint` | Chequeo de tipos y Biome del frontend |
+| `make lint` | Límites entre módulos (`import-linter`) y chequeo de tipos y Biome del frontend. También `make lint-backend` y `make lint-frontend` |
 | `make seed-airports` | Carga o actualiza los aeropuertos (idempotente). Hace falta una vez, con la base vacía |
 | `make migrate` / `make migration m="..."` | Aplica migraciones / crea una nueva a partir de los modelos |
 | `make api-types` | Regenera `frontend/src/api/schema.d.ts` desde el OpenAPI. Correrlo cada vez que cambia un schema del backend |
 | `make fe-add p="paquete@x.y.z" [dev=1]` | Agrega una dependencia al frontend **desde el contenedor**. No usar pnpm en el host: el lockfile queda con permisos que el contenedor no puede leer |
-| `make logs` / `make ps` / `make restart` | Logs, estado y recreación de contenedores (`restart` hace falta si cambia un `.env`) |
-| `make shell` / `make psql` / `make redis-cli` | Consolas |
+| `make logs` / `make logs-workers` / `make ps` / `make restart` | Logs, estado y recreación de contenedores (`restart` hace falta si cambia un `.env`) |
+| `make shell` / `make psql` / `make redis-cli` | Consolas. `make rabbitmq` y `make mailpit` muestran la URL de sus consolas |
 
 El código (`backend/app`, `frontend/src`) está montado como volumen, con recarga automática. Solo hace falta `make up` si cambian dependencias o un `Dockerfile`.
 
@@ -85,14 +103,20 @@ El plugin [superpowers](https://github.com/obra/superpowers) está habilitado a 
   - **Tests:** el nombre de la función describe el caso. Solo llevan docstring los helpers, los fixtures y los casos que necesiten contexto.
 - **Dependencias:** con versión fijada (`==`). Runtime en `requirements.txt`, desarrollo en `requirements-dev.txt`.
 - **Herramientas del sistema:** si se necesitan, se agregan al `Dockerfile` (hay un bloque `apt-get` comentado).
-- **Capas:** el formato de Duffel solo existe dentro de `app/flights/providers/duffel/`. Fuera de ahí se usan los DTOs de `app/flights/domain/dtos.py`.
-- **Archivos del dominio** (`<módulo>/domain/`):
-  - `constants.py`: constantes de negocio.
-  - `validators.py`: reglas de validación y tipos validados, como `AirportCode`.
-  - `dtos.py`: los DTOs.
-  - `errors.py`: los errores.
-  - `models.py`: **reservado para modelos de base de datos**; no poner DTOs ahí.
-- **Precios:** internamente se llevan precio de compra (`cost`) y precio de venta (`price`). El costo y la ganancia **nunca** salen por la API pública: los schemas de `api/schemas.py` no tienen esos campos.
+- **Capas:** el formato de Duffel solo existe dentro de `app/flights/providers/duffel/`. Fuera de ahí se usan los DTOs de `app/flights/domain/dtos/`.
+- **Archivos del dominio** (`<módulo>/domain/`). Cada tipo es un archivo mientras el módulo es chico (`travellers`, `payments`) y **pasa a ser un paquete con un archivo por tema** cuando junta temas distintos (`flights`: `dtos/search.py`, `dtos/itinerary.py`, `dtos/offers.py`, `dtos/places.py`, `dtos/results.py`, `dtos/bookings.py`, `dtos/orders.py`…). El `__init__.py` del paquete solo tiene el docstring: se importa siempre desde el archivo del tema, nunca re-exportando.
+  - `constants`: constantes de negocio.
+  - `validators`: reglas de validación y tipos validados, como `AirportCode`.
+  - `dtos`: los DTOs.
+  - `errors`: los errores.
+  - `models`: **reservado para modelos de base de datos**; no poner DTOs ahí.
+- **Capa `api/`** (`<módulo>/api/`), con una responsabilidad por carpeta:
+  - `routes/`: solo endpoints, un archivo por tema; `routes/__init__.py` arma el router del módulo.
+  - `schemas/`: solo la **forma** de las respuestas públicas (Pydantic), sin lógica ni imports de `services`.
+  - `mappers/`: convierte dominio → schema (`to_booking_response`, `to_search_response`). Es el único lugar que decide qué sale hacia el cliente.
+  - `dependencies.py`: dependencias de FastAPI: el armado (qué adapter, repositorio o política se usa) y las que leen o validan el request antes del endpoint (`idempotency_key`, `existing_booking`).
+  - `errors.py`: error de dominio → código HTTP.
+- **Precios:** internamente se llevan precio de compra (`cost`) y precio de venta (`price`). El costo y la ganancia **nunca** salen por la API pública: los schemas de `api/schemas/` no tienen esos campos.
 
 ### Frontend
 
@@ -104,8 +128,12 @@ El plugin [superpowers](https://github.com/obra/superpowers) está habilitado a 
 - **Estructura:**
   - `src/api/`: cliente tipado (`openapi-fetch`) y hooks de TanStack Query.
   - `src/features/<flujo>/`: componentes y lógica de cada flujo. La lógica pura va en archivos aparte (por ejemplo `logic.ts`), con tests.
-  - `src/components/ui/`: componentes base.
-  - `src/lib/`: formato y utilidades.
+  - `src/components/ui/`: componentes base. `src/components/flight/`: piezas de vuelo que usan varias pantallas (`SliceTimeline`, `AirlineBadge`).
+  - `src/lib/`: formato, utilidades y hooks sin interfaz (`useNow`, `useExpiry`). `src/lib/flights/`: reglas de vuelos que comparten varias features (tarifas, itinerario, criterios de búsqueda).
+- **Límites entre features**, como el monolito modular del backend (Biome, `noRestrictedImports` en `frontend/biome.json`, lo verifica `make lint`):
+  - una feature importa otra **solo por su `public.ts`** (`@/features/trip/public`), nunca sus archivos internos ni con rutas `../`;
+  - `api/`, `components/` y `lib/` nunca importan una feature, y `lib/` no importa componentes;
+  - lo que necesitan dos features no se expone en `public.ts`: va a `components/` o `lib/`. `public.ts` es para las dependencias del flujo (por ejemplo, «Tu viaje»).
 - **Tipos de la API:** salen siempre del OpenAPI generado (`src/api/schema.d.ts`, con `make api-types`). No se escriben a mano.
 - **Estado:**
   - criterios, filtros y orden van en la URL (TanStack Router + Zod);
@@ -149,3 +177,7 @@ El plugin [superpowers](https://github.com/obra/superpowers) está habilitado a 
 | 2026-10-26 | Objetivo de la plataforma anotado (viajes empresariales, historial por particular o empresa; versión actual: una persona, un vuelo). "Agregar otro vuelo" deshabilitado y su formulario eliminado. Las vueltas respetan el orden elegido. |
 | 2026-10-26 | **Cierre de la etapa 1.** Documentación actualizada con el estado final (`01-busqueda-vuelos.md`, decisiones 28-31 en `00-global.md`) y PR con todo lo hecho. Hallazgo: el sandbox de Duffel no cubre todas las rutas (BAQ-EOH solo trae Duffel Airways; BAQ-MDE, 621 vuelos). |
 | 2026-10-27 | Herramientas para agentes: grafo de conocimiento con graphify (instalado en el host con `uv`; hook `PreToolUse` y skill en `.claude/`) y plugin superpowers habilitado a nivel proyecto. Reglas de convivencia con este archivo en "Herramientas para agentes". |
+| 2026-10-27 | **Etapa 2: reserva de vuelos.** Monolito modular como regla (interfaz `public.py`, schema por módulo, `import-linter` en los tests); módulos `travellers` y `payments` (gateway simulado). Reserva asíncrona: Idempotency-Key en PostgreSQL, Outbox/Inbox, RabbitMQ con reintentos y DLQ, worker con lease y reconciliación por `metadata.booking_id`, SSE nativo de FastAPI. Bifurcación por precio: `awaiting_price_approval` hasta que el viajero acepta. Pantallas 5 y 6 en desktop y mobile. Hallazgos de Duffel test: ignora `Idempotency-Key`; una oferta vencida responde `not_found`. 194 tests de backend y 87 de frontend; reserva real verificada en navegador. Detalle en `02-reserva-vuelos.md`. |
+| 2026-10-27 | Confirmación v2 (Propuesta A v2: confirmada, confirmando, no se pudo reservar) y correo de confirmación asíncrono por `booking.confirmed`: módulo `notifications` con adapters por ambiente (`EMAIL_BACKEND`), Mailpit en compose y proceso `booking-notifier`. Plantillas Jinja2 con autoescape (un test detectó que `.html.j2` no se escapaba). 212 tests de backend y 100 de frontend; correo real verificado en Mailpit. |
+| 2026-10-28 | Arreglo del lease del worker: ante una falla transitoria del proveedor suelta la reserva para que el reintento la tome enseguida (antes se gastaban 7 de 10 intentos esperando un lease propio). Aviso «Está tardando más de lo habitual» a partir de 1 minuto en las pantallas 5 y 6. Análisis de qué pasa si fallan los 10 reintentos y qué no está cubierto en `02-reserva-vuelos.md` §8.1. 214 tests de backend y 103 de frontend. |
+| 2026-10-28 | **Estado «Error de emisión» (`issuance_error`)**: captura rechazada después de emitir o emisión sin verificar conservan la retención y la orden y quedan para una persona o un agente de IA; la API no muestra localizador ni orden fuera de `confirmed`; el checkout no cierra el intento. **Verificación de la tarjeta** con una compra pequeña y su reversión (`verify_card`). Timeout de 130 s al crear la orden. Inventario de errores de emisión verificado en la documentación de Duffel (`docs/research/duffel-errores-de-emision.md`) y plan de failover entre proveedores (`docs/architecture/XX-failover-proveedores.md`, sin etapa asignada). |

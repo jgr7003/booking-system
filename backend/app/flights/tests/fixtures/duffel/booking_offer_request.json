@@ -1,0 +1,340 @@
+{
+  "data": {
+    "airline_credit_ids": [],
+    "cabin_class": "economy",
+    "slices": [
+      {
+        "origin_type": "airport",
+        "destination_type": "airport",
+        "departure_date": "2026-12-15",
+        "destination": {
+          "city_name": "New York",
+          "icao_code": "KJFK",
+          "iata_country_code": "US",
+          "iata_city_code": "NYC",
+          "iata_code": "JFK",
+          "latitude": 40.640556,
+          "longitude": -73.778519,
+          "city": {
+            "city_name": null,
+            "icao_code": null,
+            "iata_country_code": "US",
+            "iata_city_code": "NYC",
+            "iata_code": "NYC",
+            "latitude": null,
+            "longitude": null,
+            "time_zone": null,
+            "type": "city",
+            "name": "New York",
+            "id": "cit_nyc_us"
+          },
+          "time_zone": "America/New_York",
+          "type": "airport",
+          "name": "John F. Kennedy International Airport",
+          "id": "arp_jfk_us"
+        },
+        "origin": {
+          "city_name": "London",
+          "icao_code": "EGLL",
+          "iata_country_code": "GB",
+          "iata_city_code": "LON",
+          "iata_code": "LHR",
+          "latitude": 51.470311,
+          "longitude": -0.458118,
+          "city": {
+            "city_name": null,
+            "icao_code": null,
+            "iata_country_code": "GB",
+            "iata_city_code": "LON",
+            "iata_code": "LON",
+            "latitude": null,
+            "longitude": null,
+            "time_zone": null,
+            "type": "city",
+            "name": "London",
+            "id": "cit_lon_gb"
+          },
+          "time_zone": "Europe/London",
+          "type": "airport",
+          "name": "Heathrow Airport",
+          "id": "arp_lhr_gb"
+        }
+      }
+    ],
+    "created_at": "2026-10-27T14:00:17.727502Z",
+    "live_mode": false,
+    "passengers": [
+      {
+        "loyalty_programme_accounts": [],
+        "fare_type": null,
+        "family_name": null,
+        "given_name": null,
+        "user_id": null,
+        "age": null,
+        "type": "adult",
+        "id": "pas_0000BBq6AZuVnyKVD7xG8Q"
+      }
+    ],
+    "client_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3OTMxOTYwMTksImxpdmVfbW9kZSI6ZmFsc2UsIm9yZ2FuaXNhdGlvbl9pZCI6Im9yZ18wMDAwQkJpT3JsWXRLcUkxSmliOHlnIiwicGxhdGZvcm1fdXNlcl9pZCI6bnVsbH0.4cMVBiV9rZzoXM34eL74zAn-zjpnhejty9l6JR9YfZk",
+    "id": "orq_0000BBq6AZuVnyKVD7xG8O",
+    "offers": [
+      {
+        "created_at": "2026-10-27T14:00:17.756528Z",
+        "updated_at": "2026-10-27T14:00:17.756528Z",
+        "id": "off_034nDasbn3bsLTwi7Lxldw",
+        "live_mode": false,
+        "expires_at": "2026-10-27T14:30:17.756540Z",
+        "supported_loyalty_programmes": [],
+        "base_amount": "192.16",
+        "intended_base_amount": "192.16",
+        "base_currency": "USD",
+        "tax_amount": "34.59",
+        "tax_currency": "USD",
+        "total_amount": "226.75",
+        "intended_total_amount": "226.75",
+        "total_currency": "USD",
+        "total_emissions_kg": "32",
+        "passenger_identity_documents_required": false,
+        "supported_passenger_identity_document_types": [
+          "passport",
+          "known_traveler_number",
+          "passenger_redress_number"
+        ],
+        "partial": false,
+        "private_fares": [],
+        "conditions": {
+          "change_before_departure": {
+            "allowed": false,
+            "penalty_amount": null,
+            "penalty_currency": null
+          },
+          "refund_before_departure": {
+            "allowed": true,
+            "penalty_amount": "40.00",
+            "penalty_currency": "USD"
+          }
+        },
+        "owner": {
+          "conditions_of_carriage_url": "https://duffelairways.com/dummy-url/conditions-of-carriage",
+          "iata_code": "ZZ",
+          "id": "arl_00009VME7D6ivUu8dn35WK",
+          "logo_lockup_url": null,
+          "logo_symbol_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/ZZ.svg",
+          "name": "Duffel Airways"
+        },
+        "slices": [
+          {
+            "id": "sli_0000BBq6Aa6D6TgfnPQbMw",
+            "duration": "PT7H58M",
+            "destination_type": "airport",
+            "origin_type": "airport",
+            "fare_brand_name": "Basic",
+            "ngs_shelf": 1,
+            "conditions": {
+              "change_before_departure": {
+                "allowed": false,
+                "penalty_amount": null,
+                "penalty_currency": null
+              },
+              "advance_seat_selection": null,
+              "priority_boarding": null,
+              "priority_check_in": null
+            },
+            "comparison_key": "AS1Igg==",
+            "origin": {
+              "iata_code": "LHR",
+              "iata_country_code": "GB",
+              "id": "arp_lhr_gb",
+              "name": "Heathrow Airport",
+              "latitude": 51.470311,
+              "longitude": -0.458118,
+              "icao_code": "EGLL",
+              "time_zone": "Europe/London",
+              "city_name": "London",
+              "iata_city_code": "LON",
+              "type": "airport",
+              "city": {
+                "iata_code": "LON",
+                "iata_country_code": "GB",
+                "id": "cit_lon_gb",
+                "name": "London",
+                "latitude": null,
+                "longitude": null,
+                "icao_code": null,
+                "time_zone": null,
+                "city_name": null,
+                "iata_city_code": "LON",
+                "type": "city"
+              }
+            },
+            "destination": {
+              "iata_code": "JFK",
+              "iata_country_code": "US",
+              "id": "arp_jfk_us",
+              "name": "John F. Kennedy International Airport",
+              "latitude": 40.640556,
+              "longitude": -73.778519,
+              "icao_code": "KJFK",
+              "time_zone": "America/New_York",
+              "city_name": "New York",
+              "iata_city_code": "NYC",
+              "type": "airport",
+              "city": {
+                "iata_code": "NYC",
+                "iata_country_code": "US",
+                "id": "cit_nyc_us",
+                "name": "New York",
+                "latitude": null,
+                "longitude": null,
+                "icao_code": null,
+                "time_zone": null,
+                "city_name": null,
+                "iata_city_code": "NYC",
+                "type": "city"
+              }
+            },
+            "segments": [
+              {
+                "id": "seg_0000BBq6Aa6D6TgfnPQbMv",
+                "arriving_at": "2026-12-15T13:48:00",
+                "departing_at": "2026-12-15T10:50:00",
+                "destination_terminal": "1",
+                "distance": "5539.8359982030115",
+                "duration": "PT7H58M",
+                "marketing_carrier_flight_number": "0812",
+                "operating_carrier_flight_number": "0812",
+                "origin_terminal": "2",
+                "media": [],
+                "passengers": [
+                  {
+                    "passenger_id": "pas_0000BBq6AZuVnyKVD7xG8Q",
+                    "cabin_class": "economy",
+                    "cabin_class_marketing_name": "Economy",
+                    "fare_basis_code": "Y20LGTN2",
+                    "baggages": [
+                      {
+                        "type": "checked",
+                        "quantity": 1
+                      },
+                      {
+                        "type": "carry_on",
+                        "quantity": 1
+                      }
+                    ],
+                    "cabin": {
+                      "marketing_name": "Economy",
+                      "name": "economy",
+                      "amenities": {
+                        "wifi": {
+                          "available": true,
+                          "cost": "paid"
+                        },
+                        "seat": {
+                          "type": null,
+                          "legroom": "n/a",
+                          "pitch": "30"
+                        },
+                        "power": {
+                          "available": true
+                        }
+                      }
+                    }
+                  }
+                ],
+                "stops": [],
+                "aircraft": null,
+                "marketing_carrier": {
+                  "conditions_of_carriage_url": "https://duffelairways.com/dummy-url/conditions-of-carriage",
+                  "iata_code": "ZZ",
+                  "id": "arl_00009VME7D6ivUu8dn35WK",
+                  "logo_lockup_url": null,
+                  "logo_symbol_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/ZZ.svg",
+                  "name": "Duffel Airways"
+                },
+                "operating_carrier": {
+                  "conditions_of_carriage_url": "https://duffelairways.com/dummy-url/conditions-of-carriage",
+                  "iata_code": "ZZ",
+                  "id": "arl_00009VME7D6ivUu8dn35WK",
+                  "logo_lockup_url": null,
+                  "logo_symbol_url": "https://assets.duffel.com/img/airlines/for-light-background/full-color-logo/ZZ.svg",
+                  "name": "Duffel Airways"
+                },
+                "origin": {
+                  "iata_code": "LHR",
+                  "iata_country_code": "GB",
+                  "id": "arp_lhr_gb",
+                  "name": "Heathrow Airport",
+                  "latitude": 51.470311,
+                  "longitude": -0.458118,
+                  "icao_code": "EGLL",
+                  "time_zone": "Europe/London",
+                  "city_name": "London",
+                  "iata_city_code": "LON",
+                  "type": "airport",
+                  "city": {
+                    "iata_code": "LON",
+                    "iata_country_code": "GB",
+                    "id": "cit_lon_gb",
+                    "name": "London",
+                    "latitude": null,
+                    "longitude": null,
+                    "icao_code": null,
+                    "time_zone": null,
+                    "city_name": null,
+                    "iata_city_code": "LON",
+                    "type": "city"
+                  }
+                },
+                "destination": {
+                  "iata_code": "JFK",
+                  "iata_country_code": "US",
+                  "id": "arp_jfk_us",
+                  "name": "John F. Kennedy International Airport",
+                  "latitude": 40.640556,
+                  "longitude": -73.778519,
+                  "icao_code": "KJFK",
+                  "time_zone": "America/New_York",
+                  "city_name": "New York",
+                  "iata_city_code": "NYC",
+                  "type": "airport",
+                  "city": {
+                    "iata_code": "NYC",
+                    "iata_country_code": "US",
+                    "id": "cit_nyc_us",
+                    "name": "New York",
+                    "latitude": null,
+                    "longitude": null,
+                    "icao_code": null,
+                    "time_zone": null,
+                    "city_name": null,
+                    "iata_city_code": "NYC",
+                    "type": "city"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "passengers": [
+          {
+            "id": "pas_0000BBq6AZuVnyKVD7xG8Q",
+            "type": "adult",
+            "fare_type": null,
+            "age": null,
+            "given_name": null,
+            "family_name": null,
+            "loyalty_programme_accounts": []
+          }
+        ],
+        "available_services": null,
+        "payment_requirements": {
+          "requires_instant_payment": false,
+          "payment_required_by": "2026-10-30T14:00:17Z",
+          "price_guarantee_expires_at": "2026-10-29T14:00:17Z"
+        },
+        "intended_services": null,
+        "available_airline_credit_ids": []
+      }
+    ]
+  }
+}

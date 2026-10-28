@@ -7,6 +7,9 @@ import {
   formatPassengers,
   formatRemaining,
   formatTime,
+  formatTotal,
+  formatUtcDateTime,
+  utcTime,
 } from "./format";
 
 describe("format", () => {
@@ -39,5 +42,21 @@ describe("format", () => {
     expect(formatRemaining(45_000)).toBe("45 s");
     expect(formatRemaining(0)).toBe("vencido");
     expect(formatPassengers(2, 1)).toBe("2 adultos · 1 menor");
+  });
+});
+
+describe("booking formats", () => {
+  it("puts the currency after the amount", () => {
+    expect(formatTotal({ amount: "524.44", currency: "USD" })).toBe("524,44 USD");
+  });
+
+  it("shows an instant in UTC", () => {
+    expect(formatUtcDateTime("2026-10-27T14:00:21Z")).toBe("27 oct 2026 14:00 UTC");
+  });
+});
+
+describe("utcTime", () => {
+  it("reads the time in UTC", () => {
+    expect(utcTime("2026-10-23T21:26:50.636757Z")).toBe("21:26");
   });
 });

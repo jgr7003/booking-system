@@ -1,33 +1,73 @@
 name: booking-system
 
+# Shared by the api and the workers: same image and code, different command.
+x-backend: &backend
+  build:
+    context: ./backend
+    args:
+      REQUIREMENTS: requirements-dev.txt
+  env_file:
+    - path: ./backend/.env
+      required: false
+  environment:
+    DATABASE_URL: postgresql+asyncpg://booking:booking@postgres:5432/booking
+    REDIS_URL: redis://redis:6379/0
+    RABBITMQ_URL: amqp://booking:booking@rabbitmq:5672/
+    # Emails go to Mailpit (http://localhost:8025). Another environment changes only these.
+    EMAIL_BACKEND: smtp
+    SMTP_HOST: mailpit
+    SMTP_PORT: "1025"
+    APP_URL: http://localhost:5173
+    # Used by the integration tests only; isolated from development data.
+    TEST_DATABASE_URL: postgresql+asyncpg://booking:booking@postgres:5432/booking_test
+    TEST_REDIS_URL: redis://redis:6379/15
+    TEST_RABBITMQ_URL: amqp://booking:booking@rabbitmq:5672/test
+    TEST_MAILPIT_URL: http://mailpit:8025
+  volumes:
+    - ./backend/app:/code/app
+    - ./backend/migrations:/code/migrations
+    - ./backend/alembic.ini:/code/alembic.ini
+    - ./backend/pyproject.toml:/code/pyproject.toml
+  depends_on:
+    postgres:
+      condition: service_healthy
+    redis:
+      condition: service_healthy
+    rabbitmq:
+      condition: service_healthy
+    mailpit:
+      condition: service_started
+
 services:
   api:
-    build:
-      context: ./backend
-      args:
-        REQUIREMENTS: requirements-dev.txt
+    <<: *backend
     ports:
       - "8000:8000"
-    env_file:
-      - path: ./backend/.env
-        required: false
-    environment:
-      DATABASE_URL: postgresql+asyncpg://booking:booking@postgres:5432/booking
-      REDIS_URL: redis://redis:6379/0
-      # Used by the integration tests only; isolated from development data.
-      TEST_DATABASE_URL: postgresql+asyncpg://booking:booking@postgres:5432/booking_test
-      TEST_REDIS_URL: redis://redis:6379/15
-    volumes:
-      - ./backend/app:/code/app
-      - ./backend/migrations:/code/migrations
-      - ./backend/alembic.ini:/code/alembic.ini
-      - ./backend/pyproject.toml:/code/pyproject.toml
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
     command: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+
+  # Publishes the events saved in messaging.outbox to RabbitMQ.
+  outbox-relay:
+    <<: *backend
+    command: python -m app.workers.outbox_relay
+    depends_on:
+      api:
+        condition: service_started
+
+  # Sends the confirmation email of each booking (booking.confirmed).
+  booking-notifier:
+    <<: *backend
+    command: python -m app.workers.booking_notifier
+    depends_on:
+      api:
+        condition: service_started
+
+  # Processes bookings: reconfirms the price, charges and books with Duffel.
+  booking-worker:
+    <<: *backend
+    command: python -m app.workers.booking_worker
+    depends_on:
+      api:
+        condition: service_started
 
   frontend:
     build:
@@ -70,6 +110,28 @@ services:
       interval: 2s
       timeout: 3s
       retries: 20
+
+  rabbitmq:
+    image: rabbitmq:4-management
+    ports:
+      - "5672:5672"
+      # Management console: http://localhost:15672 (booking / booking).
+      - "15672:15672"
+    volumes:
+      - ./backend/docker/rabbitmq/rabbitmq.conf:/etc/rabbitmq/conf.d/20-booking.conf:ro
+      - ./backend/docker/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "check_port_connectivity"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  # Local mail server that keeps every email: inbox at http://localhost:8025, SMTP on 1025.
+  mailpit:
+    image: axllent/mailpit:v1.27
+    ports:
+      - "8025:8025"
+      - "1025:1025"
 
 volumes:
   pgdata:

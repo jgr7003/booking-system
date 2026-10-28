@@ -1,17 +1,12 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useCallback, useMemo } from "react";
 import type { Flight } from "@/api/client";
+import { AirlineBadge } from "@/components/flight/AirlineBadge";
+import { SliceTimeline } from "@/components/flight/SliceTimeline";
+import { flightNumbersOf } from "@/lib/flights/itinerary";
 import { formatDate } from "@/lib/format";
-import { AirlineBadge, FlightCard } from "./FlightCard";
-import {
-  flightInsights,
-  flightNumbersOf,
-  groupByOutbound,
-  returnView,
-  type SortKey,
-  sortFlights,
-} from "./logic";
-import { SliceTimeline } from "./SliceTimeline";
+import { FlightCard } from "./FlightCard";
+import { flightInsights, groupByOutbound, returnView, type SortKey, sortFlights } from "./logic";
 
 interface RoundTripStepsProps {
   /** Every combination (outbound + return), already filtered and sorted. */

@@ -5,8 +5,8 @@ from sqlalchemy import delete
 
 from app.core.cache import JsonCache, create_redis
 from app.core.text import normalize_search_text
-from app.flights.domain.constants import PLACES_CACHE_PREFIX
-from app.flights.domain.models import Airport, City
+from app.flights.domain.constants.places import PLACES_CACHE_PREFIX
+from app.flights.domain.models.airports import Airport, City
 from app.flights.repositories.places import PlaceRepository
 
 pytestmark = pytest.mark.anyio

@@ -2,7 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.flights.api.dependencies import get_place_search_service
-from app.flights.domain.dtos import PlaceSuggestion, PlaceType
+from app.flights.domain.dtos.places import PlaceSuggestion, PlaceType
 from app.main import app
 
 client = TestClient(app)

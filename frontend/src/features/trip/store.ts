@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { Fare, Flight } from "@/api/client";
-import type { CompleteSearch } from "../flights/search/params";
+import type { CompleteSearch } from "@/lib/flights/search";
 
 /**
  * A flight saved in "Tu viaje" with the chosen fare.

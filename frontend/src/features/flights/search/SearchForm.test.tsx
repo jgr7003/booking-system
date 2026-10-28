@@ -1,7 +1,15 @@
-import { screen, within } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { useState } from "react";
 import { describe, expect, it } from "vitest";
 import { renderApp } from "@/test/render";
+import { PassengersField, type PassengersValue } from "./PassengersField";
+
+/** The passengers field without the current limit of one adult. */
+function UnlimitedPassengers() {
+  const [value, setValue] = useState<PassengersValue>({ adults: 1, children: [] });
+  return <PassengersField value={value} onChange={setValue} />;
+}
 
 describe("search form", () => {
   it("suggests cities and airports and picks one with the keyboard", async () => {
@@ -24,11 +32,22 @@ describe("search form", () => {
     expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
   });
 
-  it("each infant needs a different adult", async () => {
+  it("books one adult for now", async () => {
     const user = userEvent.setup();
     renderApp("/");
 
     await user.click(await screen.findByRole("button", { name: /Pasajeros/ }));
+
+    expect(screen.getByRole("button", { name: "Agregar adulto" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /Agregar menor/ })).toBeDisabled();
+    expect(screen.getByText(/Más pasajeros, próximamente/)).toBeInTheDocument();
+  });
+
+  it("each infant needs a different adult (when more passengers are allowed)", async () => {
+    const user = userEvent.setup();
+    render(<UnlimitedPassengers />);
+
+    await user.click(screen.getByRole("button", { name: /Pasajeros/ }));
     await user.click(screen.getByRole("button", { name: /Agregar menor/ }));
     await user.selectOptions(screen.getByRole("combobox", { name: "Menor 1" }), "0");
     await user.click(screen.getByRole("button", { name: /Agregar menor/ }));

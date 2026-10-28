@@ -9,8 +9,13 @@ from sqlalchemy.engine import Connection
 from app.core.config import get_settings
 from app.core.db import Base, create_engine
 
-# Every module's models must be imported so autogenerate sees their tables.
-import app.flights.domain.models  # noqa: F401
+# Every module's models must be imported so autogenerate sees their tables. Each module keeps
+# them in its own PostgreSQL schema (00-global.md §4.1); `alembic_version` stays in `public`.
+import app.core.messaging.models  # noqa: F401
+import app.flights.domain.models.airports  # noqa: F401
+import app.flights.domain.models.bookings  # noqa: F401
+import app.payments.domain.models  # noqa: F401
+import app.travellers.domain.models  # noqa: F401
 
 config = context.config
 if config.config_file_name is not None:
@@ -24,6 +29,7 @@ def run_migrations_offline() -> None:
     context.configure(
         url=get_settings().database_url,
         target_metadata=target_metadata,
+        include_schemas=True,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
     )
@@ -33,7 +39,7 @@ def run_migrations_offline() -> None:
 
 def do_run_migrations(connection: Connection) -> None:
     """Runs the migrations on an open connection."""
-    context.configure(connection=connection, target_metadata=target_metadata)
+    context.configure(connection=connection, target_metadata=target_metadata, include_schemas=True)
     with context.begin_transaction():
         context.run_migrations()
 

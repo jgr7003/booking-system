@@ -123,3 +123,20 @@ export const SpinnerIcon = (p: IconProps) => (
     <path d="M21 12a9 9 0 1 1-9-9" />
   </Stroke>
 );
+
+/** Identity document (passengers: passport notice). */
+export const DocumentIcon = (p: IconProps) => (
+  <Stroke size={18} {...p}>
+    <rect x="5" y="3" width="14" height="18" rx="2" />
+    <circle cx="12" cy="10" r="3" />
+    <path d="M9 17h6" />
+  </Stroke>
+);
+
+/** Circle with a check (confirmation: "Reserva confirmada y pagada"). */
+export const CheckCircleIcon = (p: IconProps) => (
+  <Stroke size={20} strokeWidth={2.4} {...p}>
+    <circle cx="12" cy="12" r="10" />
+    <path d="M7.5 12.5l3 3 6-6" />
+  </Stroke>
+);

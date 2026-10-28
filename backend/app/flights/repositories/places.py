@@ -4,14 +4,14 @@ from sqlalchemy import case, func, or_, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.cache import JsonCache
-from app.flights.domain.constants import (
+from app.flights.domain.constants.places import (
     PLACE_MAX_CITIES,
     PLACE_WORD_SIMILARITY_THRESHOLD,
     PLACES_CACHE_PREFIX,
     PLACES_CACHE_TTL_S,
 )
-from app.flights.domain.dtos import PlaceSuggestion, PlaceType
-from app.flights.domain.models import Airport, City
+from app.flights.domain.dtos.places import PlaceSuggestion, PlaceType
+from app.flights.domain.models.airports import Airport, City
 
 
 class PlaceRepository:

@@ -1,14 +1,12 @@
 import { createRootRoute, createRoute, createRouter } from "@tanstack/react-router";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { BookingPage } from "@/features/booking/BookingPage";
+import { CheckoutPage } from "@/features/checkout/CheckoutPage";
 import { FlightDetailPage } from "@/features/flights/detail/FlightDetailPage";
 import { ResultsPage } from "@/features/flights/results/ResultsPage";
-import {
-  detailSearchSchema,
-  flightSearchSchema,
-  resultsSearchSchema,
-} from "@/features/flights/search/params";
 import { SearchPage } from "@/features/flights/search/SearchPage";
 import { TripPage } from "@/features/trip/TripPage";
+import { detailSearchSchema, flightSearchSchema, resultsSearchSchema } from "@/lib/flights/search";
 
 const rootRoute = createRootRoute({ component: AppLayout });
 
@@ -39,7 +37,26 @@ const tripRoute = createRoute({
   component: TripPage,
 });
 
-export const routeTree = rootRoute.addChildren([searchRoute, resultsRoute, detailRoute, tripRoute]);
+const checkoutRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/checkout/$itemKey",
+  component: CheckoutPage,
+});
+
+const bookingRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/bookings/$bookingId",
+  component: BookingPage,
+});
+
+export const routeTree = rootRoute.addChildren([
+  searchRoute,
+  resultsRoute,
+  detailRoute,
+  tripRoute,
+  checkoutRoute,
+  bookingRoute,
+]);
 
 export function createAppRouter() {
   return createRouter({ routeTree, defaultPreload: "intent", scrollRestoration: true });

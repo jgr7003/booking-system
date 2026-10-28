@@ -1,10 +1,13 @@
 /**
- * Pure rules of the results page: filters, sort, tags and how each fare value is shown.
+ * Pure rules of the results page: filters, sort, tags and round trips in two steps. How fare values
+ * and itineraries are shown is shared, in `@/lib/flights`.
  * Kept apart from the components so they can be tested with the real API response.
  */
-import type { Fare, FareCondition, Flight, FlightSlice } from "@/api/client";
-import { formatDuration, formatPenalty, isZero } from "@/lib/format";
-import type { ResultsSearch, SORTS, TIME_WINDOWS } from "../search/params";
+import type { Fare, Flight, FlightSlice } from "@/api/client";
+import { fareHasCheckedBag, fareIsRefundable } from "@/lib/flights/fares";
+import { flightNumbersOf, type StopMarker, stopMarkers } from "@/lib/flights/itinerary";
+import type { ResultsSearch, SORTS, TIME_WINDOWS } from "@/lib/flights/search";
+import { formatDuration, joinSpanish } from "@/lib/format";
 
 export type SortKey = (typeof SORTS)[number];
 export type TimeWindow = (typeof TIME_WINDOWS)[number];
@@ -16,9 +19,6 @@ export interface ResultFilters {
   time?: TimeWindow;
   airlines?: string[];
 }
-
-/** Connections shorter than this are highlighted (design: "Conexión corta"). */
-export const SHORT_CONNECTION_MINUTES = 60;
 
 /** Duffel's test airline. */
 export const TEST_AIRLINE = "ZZ";
@@ -46,63 +46,6 @@ export function activeFilterCount(filters: ResultFilters): number {
 function isActive(filters: ResultFilters, key: keyof ResultFilters): boolean {
   const value = filters[key];
   return Array.isArray(value) ? value.length > 0 : Boolean(value);
-}
-
-// --- Fare values ---
-
-/** Checked bags of the fare on the whole trip: the lowest of every slice and passenger; `null` if any is unknown. */
-export function fareCheckedBags(fare: Fare): number | null {
-  return lowest(fare.slices.flatMap((s) => s.baggage.map((b) => b.checked ?? null)));
-}
-
-/** Cabin bags of the fare on the whole trip; `null` if any is unknown. */
-export function fareCarryOn(fare: Fare): number | null {
-  return lowest(fare.slices.flatMap((s) => s.baggage.map((b) => b.carry_on ?? null)));
-}
-
-function lowest(values: (number | null)[]): number | null {
-  if (values.length === 0 || values.some((v) => v === null)) return null;
-  return Math.min(...(values as number[]));
-}
-
-/** "Con valija" only counts a checked bag the airline reports; unknown doesn't count. */
-export function fareHasCheckedBag(fare: Fare): boolean {
-  return (fareCheckedBags(fare) ?? 0) >= 1;
-}
-
-export function fareIsRefundable(fare: Fare): boolean {
-  return fare.conditions.refund.allowed === true;
-}
-
-/** Fare names of every slice, e.g. "Economy Light" or "Basic / Economy Flex". */
-export function fareName(fare: Fare): string {
-  const names = [...new Set(fare.slices.map((s) => s.fare_brand).filter(Boolean))];
-  return names.length ? names.join(" / ") : "Tarifa";
-}
-
-export type Tone = "ok" | "warn" | "bad" | "na";
-
-export interface Cell {
-  label: string;
-  tone: Tone;
-}
-
-/** `null` → «Sin dato»; 0 → «No incluida»; n → «n incluida(s)». */
-export function bagCell(quantity: number | null, kind: "checked" | "carry_on"): Cell {
-  if (quantity === null) return { label: "Sin dato", tone: "na" };
-  const [one, many, none] =
-    kind === "checked" ? ["incluida", "incluidas", "No incluida"] : ["incluido", "incluidos", "No incluido"];
-  if (quantity === 0) return { label: none, tone: "bad" };
-  return { label: `${quantity} ${quantity === 1 ? one : many}`, tone: "ok" };
-}
-
-/** Change or refund: «No permite», «Gratis», the penalty in its own currency, or «Sin dato». */
-export function conditionCell(condition: FareCondition): Cell {
-  if (condition.allowed === false) return { label: "No permite", tone: "bad" };
-  if (condition.allowed !== true) return { label: "Sin dato", tone: "na" };
-  if (!condition.penalty) return { label: "Permite · cargo sin dato", tone: "na" };
-  if (isZero(condition.penalty)) return { label: "Gratis", tone: "ok" };
-  return { label: formatPenalty(condition.penalty), tone: "warn" };
 }
 
 // --- Flights ---
@@ -177,65 +120,6 @@ export function airlinesOf(flights: Flight[]): { code: string; name: string }[] 
 
 // --- Card details ---
 
-/** "Operado por SWISS" / "Operado por City Airlines, Lufthansa y SWISS". */
-export function operatorsLabel(slice: FlightSlice): string {
-  const names = [...new Set(slice.segments.map((s) => s.operating_carrier.name))];
-  return `Operado por ${joinSpanish(names)}`;
-}
-
-export function joinSpanish(items: string[]): string {
-  if (items.length <= 1) return items.join("");
-  return `${items.slice(0, -1).join(", ")} y ${items.at(-1)}`;
-}
-
-export function stopsLabel(stops: number): string {
-  if (stops === 0) return "Directo";
-  return stops === 1 ? "1 escala" : `${stops} escalas`;
-}
-
-export interface StopMarker {
-  airport: string;
-  minutes: number | null;
-  short: boolean;
-  /** Position of the layover on the timeline, 0-100. */
-  left: number;
-  width: number;
-}
-
-/**
- * Layovers placed on the slice timeline by real time: segment and connection durations come
- * from the API, so no time zone conversion is needed.
- */
-export function stopMarkers(slice: FlightSlice): StopMarker[] {
-  const durations = slice.segments.map((s) => s.duration_minutes);
-  const layovers = slice.connections.map((c) => c.duration_minutes);
-  const known = [...durations, ...layovers].every((d) => d !== null && d !== undefined);
-  const total = known ? [...durations, ...layovers].reduce<number>((a, b) => a + (b ?? 0), 0) : 0;
-
-  let elapsed = 0;
-  return slice.connections.map((connection, i) => {
-    const minutes = connection.duration_minutes ?? null;
-    let left: number;
-    let width: number;
-    if (known && total > 0) {
-      elapsed += durations[i] ?? 0;
-      left = (elapsed / total) * 100;
-      width = ((minutes ?? 0) / total) * 100;
-      elapsed += minutes ?? 0;
-    } else {
-      left = ((i + 1) / (slice.connections.length + 1)) * 100;
-      width = 0;
-    }
-    return {
-      airport: connection.airport,
-      minutes,
-      short: minutes !== null && minutes < SHORT_CONNECTION_MINUTES,
-      left,
-      width,
-    };
-  });
-}
-
 export interface FlightTag {
   label: string;
   tone: "ok" | "warn" | "info" | "neutral";
@@ -246,20 +130,6 @@ function operatingSignature(flight: Flight): string {
   return flight.slices
     .map((s) => s.segments.map((g) => `${g.operating_carrier.code}@${g.departing_at}`).join(">"))
     .join("|");
-}
-
-/** "LX 317 · LX 14" for every slice of a flight. */
-export function flightNumbersOf(flight: Pick<Flight, "slices">): string {
-  return flight.slices
-    .map((s) =>
-      s.segments
-        .map(
-          (g) =>
-            `${g.marketing_carrier.code} ${/^\d+$/.test(g.flight_number) ? Number(g.flight_number) : g.flight_number}`,
-        )
-        .join(" · "),
-    )
-    .join(" / ");
 }
 
 /** What a card shows about its flight relative to the others in the list. */

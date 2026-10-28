@@ -1,12 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import type { Fare, Flight } from "@/api/client";
+import { AirlineBadge } from "@/components/flight/AirlineBadge";
+import { SliceTimeline } from "@/components/flight/SliceTimeline";
 import { Dialog } from "@/components/ui/dialog";
-import { useNow } from "@/lib/useNow";
-import type { FlightSearch } from "../search/params";
+import { flightNumbersOf } from "@/lib/flights/itinerary";
+import type { FlightSearch } from "@/lib/flights/search";
+import { useExpiry } from "@/lib/useExpiry";
 import { FareMatrix } from "./FareMatrix";
-import { AirlineBadge } from "./FlightCard";
-import { type FlightInsight, flightNumbersOf } from "./logic";
-import { SliceTimeline } from "./SliceTimeline";
+import type { FlightInsight } from "./logic";
 
 interface FaresDialogProps {
   flight: Flight | undefined;
@@ -23,8 +24,8 @@ interface FaresDialogProps {
  */
 export function FaresDialog({ flight, insight, search, onChoose, onClose }: FaresDialogProps) {
   // Expired fares can't be chosen: the dialog closes and the "precios vencidos" one takes over.
-  const now = useNow(1000);
-  const expired = flight !== undefined && new Date(flight.fares[0]?.expires_at ?? 0).getTime() <= now;
+  const faresExpiry = useExpiry(flight?.fares[0]?.expires_at);
+  const expired = flight !== undefined && faresExpiry.expired;
   return (
     <Dialog
       open={flight !== undefined && !expired}

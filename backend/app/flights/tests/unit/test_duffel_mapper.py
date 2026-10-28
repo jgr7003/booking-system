@@ -5,7 +5,7 @@ from decimal import Decimal
 import pytest
 
 from app.core.money import Money
-from app.flights.domain.dtos import CabinClass, PassengerCount
+from app.flights.domain.dtos.search import CabinClass, PassengerCount
 from app.flights.providers.duffel import mapper
 from app.flights.tests.support import make_criteria
 

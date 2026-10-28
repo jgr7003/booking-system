@@ -1,4 +1,4 @@
-import type { Cell, Tone } from "@/features/flights/results/logic";
+import type { Cell, Tone } from "@/lib/cell";
 import { cn } from "@/lib/cn";
 
 const PILLS: Record<Tone, string> = {

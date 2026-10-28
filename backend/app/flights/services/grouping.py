@@ -6,17 +6,16 @@ Pure functions, independent of the provider: the itinerary key is built from pla
 import hashlib
 from collections import defaultdict
 
-from app.flights.domain.dtos import (
+from app.flights.domain.dtos.itinerary import Segment, Slice
+from app.flights.domain.dtos.offers import Offer
+from app.flights.domain.dtos.results import (
     Fare,
     FareSlice,
     FlightOption,
     FlightSegment,
     FlightSlice,
-    Offer,
     PassengerBaggage,
-    Segment,
     SegmentCabin,
-    Slice,
 )
 
 # Length of the itinerary key (hex characters of a SHA-256 digest).

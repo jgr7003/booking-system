@@ -18,5 +18,99 @@
   },
   "assist": {
     "actions": { "source": { "organizeImports": "on" } }
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["src/features/booking/**", "src/features/checkout/**", "src/features/trip/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": ["@/features/*/**", "!@/features/*/public"],
+                    "message": "Another feature is imported only through its public.ts."
+                  },
+                  {
+                    "group": ["../*", "../**"],
+                    "message": "A feature doesn't leave its folder with relative paths: use @/ and the other feature's public.ts."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/features/flights/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": ["@/features/*/**", "!@/features/*/public"],
+                    "message": "Another feature is imported only through its public.ts."
+                  },
+                  {
+                    "group": ["../../*", "../../**"],
+                    "message": "A feature doesn't leave its folder with relative paths: use @/ and the other feature's public.ts."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/api/**", "src/components/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": ["@/features/**", "**/features/**"],
+                    "message": "Shared code never imports a feature."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "includes": ["src/lib/**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": ["@/features/**", "**/features/**"],
+                    "message": "Shared code never imports a feature."
+                  },
+                  {
+                    "group": ["@/components/**", "**/components/**"],
+                    "message": "lib/ is pure logic and hooks: it doesn't import components."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }

@@ -1,9 +1,9 @@
 import { useId } from "react";
 import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/cn";
+import { INFANT_MAX_AGE, MAX_CHILD_AGE, MAX_PASSENGERS } from "@/lib/flights/search";
 import { formatPassengers } from "@/lib/format";
 import { controlClass, Field } from "./Field";
-import { INFANT_MAX_AGE, MAX_CHILD_AGE, MAX_PASSENGERS } from "./params";
 
 export interface PassengersValue {
   adults: number;
@@ -15,6 +15,8 @@ interface PassengersFieldProps {
   value: PassengersValue;
   onChange: (value: PassengersValue) => void;
   error?: string;
+  /** Passengers that can be booked today, when fewer than airlines accept. */
+  limit?: number;
 }
 
 const AGES = Array.from({ length: MAX_CHILD_AGE + 1 }, (_, age) => age);
@@ -24,9 +26,10 @@ const STEPPER =
 const STEPPER_ON = "border-action bg-white text-action";
 
 /** Adults and minors with their age. Blocks a second infant per adult and explains why. */
-export function PassengersField({ value, onChange, error }: PassengersFieldProps) {
+export function PassengersField({ value, onChange, error, limit = MAX_PASSENGERS }: PassengersFieldProps) {
   const id = useId();
   const total = value.adults + value.children.length;
+  const max = Math.min(limit, MAX_PASSENGERS);
   const infants = value.children.filter((age) => age !== null && age <= INFANT_MAX_AGE).length;
 
   function setChild(index: number, age: number | null) {
@@ -70,7 +73,7 @@ export function PassengersField({ value, onChange, error }: PassengersFieldProps
               <button
                 type="button"
                 aria-label="Agregar adulto"
-                disabled={total >= MAX_PASSENGERS}
+                disabled={total >= max}
                 onClick={() => onChange({ ...value, adults: value.adults + 1 })}
                 className={cn(STEPPER, STEPPER_ON)}
               >
@@ -86,7 +89,7 @@ export function PassengersField({ value, onChange, error }: PassengersFieldProps
             </span>
             <button
               type="button"
-              disabled={total >= MAX_PASSENGERS}
+              disabled={total >= max}
               onClick={() => onChange({ ...value, children: [...value.children, null] })}
               className="h-11 shrink-0 rounded-md border border-action bg-white px-3.5 text-[14px] font-semibold text-action disabled:border-line disabled:text-subtle"
             >
@@ -130,6 +133,12 @@ export function PassengersField({ value, onChange, error }: PassengersFieldProps
             );
           })}
 
+          {max < MAX_PASSENGERS && (
+            <p className="rounded-md bg-action-tint px-3 py-2.5 text-[12px] leading-normal text-ink-2">
+              Por ahora se reserva un viaje para {max === 1 ? "una persona adulta" : `${max} personas`}. Más
+              pasajeros, próximamente.
+            </p>
+          )}
           <p className="rounded-md bg-canvas px-3 py-2.5 text-[12px] leading-normal text-muted">
             Cada menor de 0 o 1 año viaja en brazos de un adulto distinto.
             {infants >= value.adults && value.children.length > 0

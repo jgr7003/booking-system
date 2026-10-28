@@ -1,6 +1,6 @@
 import { Link, useSearch } from "@tanstack/react-router";
 import { TopBar } from "@/components/layout/TopBar";
-import { useTrip } from "@/features/trip/store";
+import { useTrip } from "@/features/trip/public";
 import { SearchForm } from "./SearchForm";
 
 /** Design board "Búsqueda". */

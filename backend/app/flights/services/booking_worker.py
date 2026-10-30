@@ -124,14 +124,14 @@ class BookingProcessor:
     async def _release(self, booking: Booking) -> None:
         """Frees a booking this worker holds, leaving it `processing`, so a retry can take it at once."""
         async with self._session_factory() as session, session.begin():
-            locked = await BookingRepository(session).get(booking.id, for_update=True)
+            locked = await BookingRepository(session).get_for_processing(booking.id, for_update=True)
             if locked.status == BookingStatus.PROCESSING:
                 locked.lease_until = None
 
     async def _when_not_claimable(self, booking_id: uuid.UUID, delivery: Delivery) -> None:
         """Decides what to do with a command whose booking couldn't be taken."""
         async with self._session_factory() as session:
-            booking = await BookingRepository(session).get(booking_id)
+            booking = await BookingRepository(session).get_for_processing(booking_id)
         if booking is None or booking.status != BookingStatus.PROCESSING:
             # Already decided (final, or waiting for the traveler): nothing to do.
             return
@@ -271,7 +271,7 @@ class BookingProcessor:
             await self._issuance_error(booking, message_id, FailureCode.CAPTURE_FAILED, order=order)
             return
         async with self._session_factory() as session, session.begin():
-            locked = await BookingRepository(session).get(booking.id, for_update=True)
+            locked = await BookingRepository(session).get_for_processing(booking.id, for_update=True)
             if locked.status == BookingStatus.PROCESSING:
                 change_status(
                     session,
@@ -308,7 +308,7 @@ class BookingProcessor:
                 "order": order.model_dump(mode="json", exclude={"id", "offer_id", "booking_id", "total"}),
             }
         async with self._session_factory() as session, session.begin():
-            locked = await BookingRepository(session).get(booking.id, for_update=True)
+            locked = await BookingRepository(session).get_for_processing(booking.id, for_update=True)
             if locked.status == BookingStatus.PROCESSING:
                 change_status(session, locked, BookingStatus.ISSUANCE_ERROR, **fields)
             await mark_processed(session, message_id, CONSUMER)
@@ -325,7 +325,7 @@ class BookingProcessor:
         """Stops before charging and waits for the traveler to answer the new price."""
         await self._void(booking)
         async with self._session_factory() as session, session.begin():
-            locked = await BookingRepository(session).get(booking.id, for_update=True)
+            locked = await BookingRepository(session).get_for_processing(booking.id, for_update=True)
             if locked.status == BookingStatus.PROCESSING:
                 change_status(
                     session,
@@ -343,7 +343,7 @@ class BookingProcessor:
         """Releases the charge, if any, and marks the booking as failed."""
         await self._void(booking)
         async with self._session_factory() as session, session.begin():
-            locked = await BookingRepository(session).get(booking.id, for_update=True)
+            locked = await BookingRepository(session).get_for_processing(booking.id, for_update=True)
             if locked.status == BookingStatus.PROCESSING:
                 change_status(session, locked, BookingStatus.FAILED, failure_code=code, lease_until=None)
             await mark_processed(session, message_id, CONSUMER)
@@ -352,13 +352,13 @@ class BookingProcessor:
     async def _save_authorization(self, booking: Booking, authorization_id: uuid.UUID) -> None:
         """Keeps the authorization id, so a later attempt can capture or void it."""
         async with self._session_factory() as session, session.begin():
-            locked = await BookingRepository(session).get(booking.id, for_update=True)
+            locked = await BookingRepository(session).get_for_processing(booking.id, for_update=True)
             locked.payment_authorization_id = authorization_id
 
     async def _authorization_of(self, booking: Booking) -> uuid.UUID | None:
         """Reads the authorization id saved by this or an earlier attempt."""
         async with self._session_factory() as session:
-            return (await BookingRepository(session).get(booking.id)).payment_authorization_id
+            return (await BookingRepository(session).get_for_processing(booking.id)).payment_authorization_id
 
     async def _void(self, booking: Booking) -> None:
         """Releases the authorized charge of the booking, if there is one."""

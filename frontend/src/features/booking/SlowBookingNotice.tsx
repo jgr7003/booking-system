@@ -11,7 +11,7 @@ export function SlowBookingNotice({ createdAt, className }: { createdAt: string;
   if (!isTakingLong(createdAt, now)) return null;
   return (
     <Notice tone="warn" role="status" title="Está tardando más de lo habitual" className={className}>
-      La aerolínea todavía no confirmó tu reserva. No hace falta que esperes acá: apenas se confirme te la
+      La aerolínea todavía no confirmó tu reserva. No hace falta que esperes aquí: apenas se confirme te la
       enviamos por correo. El cobro solo se concreta cuando la aerolínea emite el ticket.
     </Notice>
   );

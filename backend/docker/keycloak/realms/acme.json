@@ -1,0 +1,53 @@
+{
+  "realm": "acme",
+  "displayName": "Acme SSO (prueba)",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "internationalizationEnabled": true,
+  "supportedLocales": ["es"],
+  "defaultLocale": "es",
+  "clients": [
+    {
+      "clientId": "booking-acme",
+      "name": "Vuelos para Acme (desarrollo)",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "dev-acme-secret",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": ["http://acme.localhost:5173/auth/callback"],
+      "webOrigins": ["http://acme.localhost:5173"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://acme.localhost:5173/*"
+      }
+    }
+  ],
+  "users": [
+    {
+      "username": "viajero@acme.test",
+      "email": "viajero@acme.test",
+      "emailVerified": true,
+      "firstName": "Viajero",
+      "lastName": "Acme",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "colombia1/", "temporary": false }]
+    },
+    {
+      "username": "intruso@acme.test",
+      "email": "intruso@acme.test",
+      "emailVerified": true,
+      "firstName": "Intruso",
+      "lastName": "Acme",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "colombia1/", "temporary": false }]
+    }
+  ]
+}

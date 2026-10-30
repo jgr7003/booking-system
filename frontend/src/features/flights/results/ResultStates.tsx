@@ -110,7 +110,7 @@ export function SearchErrorState({
       <div className="flex gap-3 rounded-md border border-bad-line bg-bad-soft p-3.5">
         <AlertIcon className="shrink-0 text-bad" />
         <div className="flex flex-col gap-1.5 text-[14px] text-bad-ink">
-          <strong>{invalid ? "Revisá los datos de la búsqueda" : "No pudimos completar la búsqueda"}</strong>
+          <strong>{invalid ? "Revisa los datos de la búsqueda" : "No pudimos completar la búsqueda"}</strong>
           <span>{message}</span>
         </div>
       </div>
@@ -169,7 +169,7 @@ export function NoFlightsState({ search }: { search: ResultsSearch }) {
 
 const FILTER_LABELS: Record<keyof ResultFilters, string> = {
   direct: "Vuelos directos",
-  bag: "Con valija",
+  bag: "Con maleta",
   refund: "Reembolsable",
   time: "Horario de salida",
   airlines: "Aerolínea",
@@ -202,7 +202,7 @@ export function NoMatchesState({
       <h2 className="text-[17px] font-semibold">
         Ningún vuelo cumple {activeCount === 1 ? "el filtro" : `los ${activeCount} filtros`}
       </h2>
-      <p className="text-[14px] text-ink-2">Probá quitando uno; al lado ves cuántos vuelos aparecerían:</p>
+      <p className="text-[14px] text-ink-2">Prueba quitando uno; al lado ves cuántos vuelos aparecerían:</p>
       <div className="flex flex-wrap gap-2">
         {suggestions.map((s) => (
           <button

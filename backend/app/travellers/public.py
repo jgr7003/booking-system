@@ -11,17 +11,24 @@ from app.travellers.domain.dtos import (
     Gender,
     IdentityDocumentDetails,
     IdentityDocumentType,
+    Title,
     TravellerDetails,
+    TravellerProfile,
     TravellerRef,
 )
+from app.travellers.services.profiles import get_profile, save_profile
 from app.travellers.services.travellers import create_traveller, get_traveller
 
 __all__ = [
     "Gender",
     "IdentityDocumentDetails",
     "IdentityDocumentType",
+    "Title",
     "TravellerDetails",
+    "TravellerProfile",
     "TravellerRef",
     "create_traveller",
+    "get_profile",
     "get_traveller",
+    "save_profile",
 ]

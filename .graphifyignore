@@ -9,3 +9,4 @@ frontend/pnpm-lock.yaml
 # Agent configuration
 .claude/
 CLAUDE.md
+frontend/src/assets/

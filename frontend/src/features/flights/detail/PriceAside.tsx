@@ -90,7 +90,7 @@ export function PriceAside({
         </div>
         {fare.payment.can_hold && fare.payment.payment_required_by && (
           <div className="flex flex-col gap-1.5 rounded-lg border border-line bg-white px-4 py-3.5 text-[13px] leading-normal">
-            <strong className="text-[14px]">Reservá ahora, pagá después</strong>
+            <strong className="text-[14px]">Reserva ahora, paga después</strong>
             <span>
               Esta tarifa se puede reservar sin pagar y pagar hasta el{" "}
               <strong className="font-mono">{utcDateTime(fare.payment.payment_required_by)}</strong>. La

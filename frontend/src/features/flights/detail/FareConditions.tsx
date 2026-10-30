@@ -15,7 +15,7 @@ export function FareConditions({ flight, fare }: { flight: Flight; fare: Fare })
   const conditions: { k: string; cell: Cell }[] = [
     { k: "Cambio antes de la salida", cell: penaltyCell(fare.conditions.change) },
     { k: "Reembolso antes de la salida", cell: penaltyCell(fare.conditions.refund) },
-    { k: "Valija despachada", cell: bagCell(fareCheckedBags(fare), "checked") },
+    { k: "Maleta de bodega", cell: bagCell(fareCheckedBags(fare), "checked") },
     { k: "Equipaje de mano", cell: bagCell(fareCarryOn(fare), "carry_on") },
     { k: "Selección de asiento anticipada", cell: benefitCell(benefits?.advance_seat_selection, "Incluida") },
     { k: "Embarque prioritario", cell: benefitCell(benefits?.priority_boarding, "Incluido") },

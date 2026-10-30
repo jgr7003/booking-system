@@ -1,0 +1,18 @@
+Vuelos{% if organization_name %} · Viajes de {{ organization_name }}{% endif %}
+
+
+Hola, {{ first_name }}. Ya tienes tu cuenta.
+
+{{ intro }}
+
+1. Busca y compara varias aerolíneas en una sola búsqueda.
+2. Arma tu viaje con uno o más vuelos; pronto, también hotel.
+3. Reserva y recibe el código y los tickets en este correo.
+
+Buscar vuelos: {{ link }}
+{% if password_email_follows %}
+
+También te enviamos otro correo para crear una contraseña, por si quieres entrar con tu email. Es opcional.
+{% endif %}
+
+Si no fuiste tú, ignora este correo.

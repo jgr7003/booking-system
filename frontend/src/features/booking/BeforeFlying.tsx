@@ -10,9 +10,9 @@ export function BeforeFlying({
   reference: string;
 }) {
   const steps: [string, string][] = [
-    ["Llevá tu documento.", ` El nombre tiene que coincidir con el del ticket: ${passenger}.`],
-    [`Hacé el check-in con ${airline}`, `, que es quien opera los vuelos, usando el código ${reference}.`],
-    ["Llegá con tiempo al aeropuerto.", " Revisá con la aerolínea cuánto antes conviene presentarse."],
+    ["Lleva tu documento.", ` El nombre tiene que coincidir con el del ticket: ${passenger}.`],
+    [`Haz el check-in con ${airline}`, `, que es quien opera los vuelos, usando el código ${reference}.`],
+    ["Llega con tiempo al aeropuerto.", " Revisa con la aerolínea cuánto antes conviene presentarse."],
   ];
   return (
     <section aria-labelledby="before" className={`${CARD} flex flex-col gap-3 px-5 py-[18px] max-sm:p-3.5`}>

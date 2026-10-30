@@ -1,12 +1,20 @@
 import pytest
 from fastapi.testclient import TestClient
 
+from app.core.db import get_session_factory
 from app.flights.api.dependencies import get_place_search_service
 from app.flights.domain.dtos.places import PlaceSuggestion, PlaceType
 from app.main import app
 
 client = TestClient(app)
 URL = "/api/v1/flights/places"
+
+
+@pytest.fixture(autouse=True)
+def main_platform():
+    """Requests arrive at the main platform, where the session is optional: its database is never read."""
+    app.dependency_overrides[get_session_factory] = lambda: None
+
 
 NYC = PlaceSuggestion(type=PlaceType.CITY, code="NYC", name="New York", country_code="US", airports=["JFK", "LGA"])
 JFK = PlaceSuggestion(

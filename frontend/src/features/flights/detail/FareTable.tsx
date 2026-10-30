@@ -51,7 +51,7 @@ export function FareTable({
               <span className="flex-1">
                 <strong>{fareName(fare)}</strong>
                 <span className="block text-muted">
-                  Valija {checked.label.toLowerCase()} · mano {carryOn.label.toLowerCase()} · cambio{" "}
+                  Maleta {checked.label.toLowerCase()} · mano {carryOn.label.toLowerCase()} · cambio{" "}
                   {change.label.toLowerCase()}
                 </span>
               </span>
@@ -67,7 +67,7 @@ export function FareTable({
             <span />
             <span className="px-2 py-2.5">Tarifa</span>
             <span className="px-2 py-2.5 text-right">Total</span>
-            <span className="px-2 py-2.5">Valija</span>
+            <span className="px-2 py-2.5">Maleta</span>
             <span className="px-2 py-2.5">Mano</span>
             <span className="px-2 py-2.5">Cambio</span>
             <span className="px-2 py-2.5">Reembolso</span>

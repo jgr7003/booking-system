@@ -21,7 +21,7 @@ export const MAX_NAME_LENGTH = 40;
 export const ADULT_AGE = 18;
 
 /** Country of the phone and passport selectors before the traveler picks one. */
-export const DEFAULT_COUNTRY: CountryCode = "AR";
+export const DEFAULT_COUNTRY: CountryCode = "CO";
 
 /** Titles in the order of the design, with their labels. */
 export const TITLES: { value: PassengerTitle; label: string }[] = [
@@ -117,6 +117,11 @@ export function toE164(country: string, national: string): string | null {
 }
 
 const regionNames = new Intl.DisplayNames([LOCALE], { type: "region" });
+
+/** The calling code of a country for the phone hint, e.g. `CO` → `57`. */
+export function callingCodeOf(country: string): string {
+  return getCountryCallingCode(country as CountryCode);
+}
 
 /** Countries for the phone and passport selectors, sorted by name in Spanish. */
 export function countries(): { code: CountryCode; name: string; callingCode: string }[] {
@@ -215,7 +220,7 @@ export function draftOf(values: CheckoutValues): PassengerDraft {
 // Loose on purpose (the backend uses the same shape): the address is confirmed by writing to it.
 const EMAIL = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
-export const NAME_ERROR = "Usá solo letras, espacios, guion (-) o apóstrofo (').";
+export const NAME_ERROR = "Usa solo letras, espacios, guion (-) o apóstrofo (').";
 
 /**
  * Validation of the form for one fare.
@@ -260,49 +265,57 @@ export function checkoutSchema({
       const issue = (path: keyof CheckoutValues, message: string) =>
         ctx.addIssue({ code: "custom", path: [path], message });
 
-      if (!v.title) issue("title", "Elegí el tratamiento.");
-      if (!v.givenName.trim()) issue("givenName", "Escribí el nombre.");
+      if (!v.title) issue("title", "Elige el tratamiento.");
+      if (!v.givenName.trim()) issue("givenName", "Escribe el nombre.");
       else if (toAirlineName(v.givenName) === null) issue("givenName", NAME_ERROR);
-      if (!v.familyName.trim()) issue("familyName", "Escribí el apellido.");
+      if (!v.familyName.trim()) issue("familyName", "Escribe el apellido.");
       else if (toAirlineName(v.familyName) === null) issue("familyName", NAME_ERROR);
       else if (airlineNameLength(v.givenName, v.familyName) > MAX_NAME_LENGTH) {
         issue("familyName", `Nombre y apellido juntos no pueden superar los ${MAX_NAME_LENGTH} caracteres.`);
       }
-      if (!v.gender) issue("gender", "Elegí el género que figura en el documento.");
+      if (!v.gender) issue("gender", "Elige el género que figura en el documento.");
 
       const bornOn = isoDateOf(v.birthDay, v.birthMonth, v.birthYear);
-      if (!bornOn || bornOn >= today) issue("birthDay", "Revisá la fecha de nacimiento.");
+      if (!bornOn || bornOn >= today) issue("birthDay", "Revisa la fecha de nacimiento.");
       else if (departureDate && ageOn(bornOn, departureDate) < ADULT_AGE) {
         issue("birthDay", `Un adulto debe tener ${ADULT_AGE} años o más el día del vuelo.`);
       }
 
       if (!EMAIL.test(v.email.trim()))
-        issue("email", v.email.trim() ? "Revisá el email." : "Escribí el email.");
-      if (!v.phoneNumber.trim()) issue("phoneNumber", "Escribí el teléfono.");
+        issue("email", v.email.trim() ? "Revisa el email." : "Escribe el email.");
+      if (!v.phoneNumber.trim()) issue("phoneNumber", "Escribe el teléfono.");
       else if (toE164(v.phoneCountry, v.phoneNumber) === null) {
-        issue("phoneNumber", "Revisá el teléfono: no es un número válido de ese país.");
+        issue("phoneNumber", "Revisa el teléfono: no es un número válido de ese país.");
       }
 
       if (requiresPassport) {
         if (!/^[A-Za-z0-9 -]{1,20}$/.test(v.passportNumber.trim())) {
-          issue("passportNumber", "Escribí el número de pasaporte.");
+          issue("passportNumber", "Escribe el número de pasaporte.");
         }
         const expires = isoDateOfText(v.passportExpiry);
         if (!expires || expires <= today) {
-          issue("passportExpiry", "Revisá el vencimiento: el pasaporte tiene que estar vigente.");
+          issue("passportExpiry", "Revisa el vencimiento: el pasaporte tiene que estar vigente.");
         }
       }
 
-      if (!isValidCardNumber(v.cardNumber)) issue("cardNumber", "Revisá el número de tarjeta.");
-      if (!v.cardHolder.trim()) issue("cardHolder", "Escribí el nombre del titular.");
-      if (!isValidCardExpiry(v.cardExpiry, today)) issue("cardExpiry", "Revisá el vencimiento (MM/AA).");
-      if (!/^\d{3,4}$/.test(v.cardCode.trim())) issue("cardCode", "Revisá el código.");
-      if (!v.acceptConditions) issue("acceptConditions", "Aceptá las condiciones para continuar.");
+      if (!isValidCardNumber(v.cardNumber)) issue("cardNumber", "Revisa el número de tarjeta.");
+      if (!v.cardHolder.trim()) issue("cardHolder", "Escribe el nombre del titular.");
+      if (!isValidCardExpiry(v.cardExpiry, today)) issue("cardExpiry", "Revisa el vencimiento (MM/AA).");
+      if (!/^\d{3,4}$/.test(v.cardCode.trim())) issue("cardCode", "Revisa el código.");
+      if (!v.acceptConditions) issue("acceptConditions", "Acepta las condiciones para continuar.");
     });
 }
 
 /** Body of `POST /bookings` from valid values. */
-export function buildBookingRequest(values: CheckoutValues, fare: Fare): BookingRequest {
+/**
+ * The body of `POST /bookings`. `isAccountHolder` says the signed-in user travels: the backend then
+ * keeps their title, date of birth and gender for their next booking (nothing for someone else).
+ */
+export function buildBookingRequest(
+  values: CheckoutValues,
+  fare: Fare,
+  isAccountHolder = false,
+): BookingRequest {
   const bornOn = isoDateOf(values.birthDay, values.birthMonth, values.birthYear) ?? "";
   const passport = fare.requires_identity_documents
     ? [
@@ -328,6 +341,7 @@ export function buildBookingRequest(values: CheckoutValues, fare: Fare): Booking
         phone_number: toE164(values.phoneCountry, values.phoneNumber) ?? values.phoneNumber,
         identity_documents: passport,
       },
+      is_account_holder: isAccountHolder,
     },
     payment_token: paymentToken(values.cardNumber),
   };
@@ -344,31 +358,31 @@ export function failureMessage(code: FailureCode | null | undefined): {
     case "offer_unavailable":
       return {
         title: "La tarifa ya no está disponible",
-        body: "La aerolínea la dio de baja o venció. No se hizo ningún cobro. En Tu viaje podés actualizar el precio y volver a intentar; los datos del pasajero quedan guardados.",
+        body: "La aerolínea la dio de baja o venció. No se hizo ningún cobro. En Tu viaje puedes actualizar el precio y volver a intentar; los datos del pasajero quedan guardados.",
         backToTrip: true,
       };
     case "payment_declined":
       return {
         title: "La tarjeta fue rechazada",
-        body: "No se hizo ningún cobro. Probá con otra tarjeta.",
+        body: "No se hizo ningún cobro. Prueba con otra tarjeta.",
         backToTrip: false,
       };
     case "passenger_rejected":
       return {
         title: "La aerolínea no aceptó los datos del pasajero",
-        body: "Revisá que coincidan con el documento de viaje y que el pasajero sea mayor de edad el día del vuelo. No se hizo ningún cobro.",
+        body: "Revisa que coincidan con el documento de viaje y que el pasajero sea mayor de edad el día del vuelo. No se hizo ningún cobro.",
         backToTrip: false,
       };
     case "provider_rejected":
       return {
         title: "La aerolínea rechazó la reserva",
-        body: "No se hizo ningún cobro. Revisá los datos y probá de nuevo; si se repite, elegí otra tarifa.",
+        body: "No se hizo ningún cobro. Revisa los datos y prueba de nuevo; si se repite, elige otra tarifa.",
         backToTrip: false,
       };
     default:
       return {
         title: "No pudimos confirmar con la aerolínea",
-        body: "No se hizo ningún cobro. Probá de nuevo en unos minutos.",
+        body: "No se hizo ningún cobro. Prueba de nuevo en unos minutos.",
         backToTrip: false,
       };
   }
@@ -386,16 +400,52 @@ export function conditionsSummary(fare: Fare): string {
   return `${conditionText(fare.conditions.change, "cambio")}, ${conditionText(fare.conditions.refund, "reembolso")}`;
 }
 
-/** "1 valija + mano" (design: flight summary). `null` → "sin dato", never assumed. */
+/** "1 maleta + mano" (design: flight summary). `null` → "sin dato", never assumed. */
 export function bagsSummary(fare: Fare): string {
   const checked = fareCheckedBags(fare);
   const carryOn = fareCarryOn(fare);
   const checkedText =
     checked === null
-      ? "valija: sin dato"
+      ? "maleta: sin dato"
       : checked === 0
-        ? "sin valija"
-        : `${checked} ${checked === 1 ? "valija" : "valijas"}`;
+        ? "sin maleta"
+        : `${checked} ${checked === 1 ? "maleta" : "maletas"}`;
   const carryOnText = carryOn === null ? "mano: sin dato" : carryOn === 0 ? "sin mano" : "mano";
   return `${checkedText} + ${carryOnText}`;
+}
+
+/**
+ * The passenger fields filled from the signed-in account (design board "5 · con sesión"): given and
+ * family name in capitals without accents, as the airline takes them, and the email. The rest of
+ * the name goes to the family name («Pepe Perez» → PEPE / PEREZ).
+ */
+export function accountPassenger(account: {
+  name: string;
+  email: string;
+}): Pick<CheckoutValues, "givenName" | "familyName" | "email"> {
+  const [given = "", ...rest] = account.name.trim().split(/\s+/);
+  const asAirline = (value: string) => toAirlineName(value) ?? value.toUpperCase();
+  return { givenName: asAirline(given), familyName: asAirline(rest.join(" ")), email: account.email };
+}
+
+/**
+ * The passenger data kept from the user's last booking for themselves («1990-08-23» → 23 / 08 / 1990).
+ */
+export function accountTraveller(profile: {
+  title: PassengerTitle;
+  born_on: string;
+  gender: "m" | "f";
+}): Pick<CheckoutValues, "title" | "gender" | "birthDay" | "birthMonth" | "birthYear"> {
+  const [birthYear = "", birthMonth = "", birthDay = ""] = profile.born_on.split("-");
+  return { title: profile.title, gender: profile.gender, birthDay, birthMonth, birthYear };
+}
+
+/**
+ * The phone of the account split for the country selector and the number field
+ * («+573105826464» → CO / «3105826464»), or `null` if it can't be read.
+ */
+export function accountPhone(e164: string): Pick<CheckoutValues, "phoneCountry" | "phoneNumber"> | null {
+  const phone = parsePhoneNumberFromString(e164);
+  if (!phone?.country) return null;
+  return { phoneCountry: phone.country, phoneNumber: phone.nationalNumber };
 }

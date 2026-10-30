@@ -71,7 +71,7 @@
       <td class="seg-time" width="33%" valign="top" style="padding: 12px 0 0; font-size: 13px; line-height: 1.5; color: #374151"><strong style="display: block; color: #111827">Llegada</strong><span style="display: block; font-family: {{ mono }}; font-size: 18px; font-weight: 600; color: #111827">{{ segment.arrival_time }}</span>{{ segment.arrival_place }}</td>
     </tr></table>
     {% if segment.connection %}
-    <p style="margin: 12px 0 0; padding: 8px 12px; font-size: 13px; {% if segment.connection_is_short %}background: #FDF3E2; color: #5C3A00; border: 1px solid #F0D29B{% else %}background: #F9FAFB; color: #374151{% endif %}">{{ segment.connection }}{% if segment.connection_is_short %}. Conexión corta: buscá la puerta del próximo vuelo apenas aterrices.{% endif %}</p>
+    <p style="margin: 12px 0 0; padding: 8px 12px; font-size: 13px; {% if segment.connection_is_short %}background: #FDF3E2; color: #5C3A00; border: 1px solid #F0D29B{% else %}background: #F9FAFB; color: #374151{% endif %}">{{ segment.connection }}{% if segment.connection_is_short %}. Conexión corta: busca la puerta del próximo vuelo apenas aterrices.{% endif %}</p>
     {% endif %}
     {% endfor %}
   </td></tr>
@@ -117,16 +117,16 @@
   <tr><td class="pad" style="padding: 24px 32px; font-family: {{ sans }}">
     <h2 style="margin: 0 0 10px; font-size: 18px; font-weight: 600; color: #111827">Antes de volar</h2>
     <ul style="margin: 0; padding-left: 20px; font-size: 14px; line-height: 1.6; color: #374151">
-      <li>Llevá tu documento: el nombre tiene que coincidir con el del ticket ({{ passenger }}).</li>
-      <li>Hacé el check-in con {{ owner }} usando el código {{ reference }}.</li>
-      <li>Llegá con tiempo al aeropuerto. Revisá con la aerolínea cuánto antes conviene presentarse.</li>
+      <li>Lleva tu documento: el nombre tiene que coincidir con el del ticket ({{ passenger }}).</li>
+      <li>Haz el check-in con {{ owner }} usando el código {{ reference }}.</li>
+      <li>Llega con tiempo al aeropuerto. Revisa con la aerolínea cuánto antes conviene presentarse.</li>
     </ul>
     {% if conditions_url %}<p style="margin: 12px 0 0; font-size: 13px; color: #374151">Más detalles en las <a href="{{ conditions_url }}" style="color: #1D4ED8">condiciones de transporte de {{ owner }}</a>.</p>{% endif %}
   </td></tr>
 
   <tr><td class="pad" style="background: #111827; padding: 22px 32px; color: #D1D5DB; font-family: {{ sans }}; font-size: 12px; line-height: 1.6">
-    Recibís este correo porque hiciste una reserva en Vuelos con esta dirección. Guardalo: tiene tu código de reserva.<br>
-    Pronto vas a poder cambiar o cancelar desde la web. Mientras tanto, consultá a {{ owner }} con el código {{ reference }}.<br>
+    Recibes este correo porque hiciste una reserva en Vuelos con esta dirección. Guardalo: tiene tu código de reserva.<br>
+    Pronto vas a poder cambiar o cancelar desde la web. Mientras tanto, consulta a {{ owner }} con el código {{ reference }}.<br>
     <span style="color: #9CA3AF">[Razón social, dirección y datos de contacto de la empresa]</span>
   </td></tr>
 

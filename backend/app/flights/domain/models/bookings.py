@@ -5,7 +5,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Any
 
-from sqlalchemy import DateTime, Integer, Numeric, String, Text, func
+from sqlalchemy import DateTime, Index, Integer, Numeric, String, Text, func
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -42,6 +42,14 @@ class Booking(Base):
 
     # Provider id of the offer.
     offer_id: Mapped[str] = mapped_column(Text)
+
+    # User who made the booking (identity module, by id without a foreign key). Never null: there are
+    # no bookings without an owner.
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
+
+    # Organization of that user (by id without a foreign key); `None` for a private traveller. Every
+    # read made for a user filters by it (`BookingOwner`).
+    organization_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True))
 
     # Traveller in the travellers module (by id, without a foreign key between modules).
     traveller_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True))
@@ -96,7 +104,10 @@ class Booking(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    __table_args__ = ({"schema": SCHEMA},)
+    __table_args__ = (
+        Index("ix_bookings_owner", "organization_id", "user_id"),
+        {"schema": SCHEMA},
+    )
 
     # Fetch the timestamps the database generates in the same INSERT/UPDATE (RETURNING), so they
     # never have to be loaded lazily, which async sessions can't do.

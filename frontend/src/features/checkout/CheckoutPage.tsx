@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useMe } from "@/api/auth";
 import { isFinal, useBooking, useBookingEvents, useCreateBooking, usePriceDecision } from "@/api/bookings";
 import { ApiError, type Booking } from "@/api/client";
 import { SpinnerIcon } from "@/components/icons";
@@ -11,6 +12,7 @@ import { TopBar } from "@/components/layout/TopBar";
 import { Notice } from "@/components/ui/notice";
 import { SlowBookingNotice } from "@/features/booking/public";
 import { type TripItem, useTrip } from "@/features/trip/public";
+import { useSessionState } from "@/lib/auth/tokens";
 import { cn } from "@/lib/cn";
 import { todayIso } from "@/lib/dates";
 import { fareName } from "@/lib/flights/fares";
@@ -19,6 +21,9 @@ import { expiryOf } from "@/lib/useExpiry";
 import { useNow } from "@/lib/useNow";
 import { FlightSummary } from "./FlightSummary";
 import {
+  accountPassenger,
+  accountPhone,
+  accountTraveller,
   buildBookingRequest,
   type CheckoutValues,
   checkoutSchema,
@@ -37,7 +42,14 @@ import { useCheckout } from "./store";
 export function CheckoutPage() {
   const { itemKey } = useParams({ from: "/checkout/$itemKey" });
   const item = useTrip((s) => s.items[itemKey]);
+  // Drafts and attempts are of one user: another user who signs in on this tab starts clean.
+  const userId = useSessionState().claims?.sub ?? null;
+  const owner = useCheckout((s) => s.owner);
+  useEffect(() => {
+    if (userId) useCheckout.getState().ownBy(userId);
+  }, [userId]);
   if (!item) return <MissingItem />;
+  if (!userId || owner !== userId) return <div aria-busy="true" className="min-h-[50vh]" />;
   return <Checkout item={item} />;
 }
 
@@ -65,10 +77,38 @@ function Checkout({ item }: { item: TripItem }) {
     () => checkoutSchema({ departureDate, requiresPassport: fare.requires_identity_documents, today }),
     [departureDate, fare.requires_identity_documents, today],
   );
+  // With a session and nothing typed yet, the passenger starts with the data of the account.
+  const { claims } = useSessionState();
+  // Whether the passenger is the user is kept with the draft, so a reload doesn't forget it.
+  const holder = useCheckout((s) => s.holders[itemKey]);
+  const fromAccount = claims !== null && (draft ? holder === true : holder !== false);
+  useEffect(() => {
+    if (claims !== null && holder === undefined) useCheckout.getState().setHolder(itemKey, !draft);
+  }, [claims, holder, draft, itemKey]);
   const form = useForm<CheckoutValues>({
-    defaultValues: { ...EMPTY_VALUES, ...draft },
+    defaultValues: { ...EMPTY_VALUES, ...(fromAccount && claims ? accountPassenger(claims) : {}), ...draft },
     resolver: zodResolver(schema),
   });
+
+  // The phone isn't in the access token: it comes from the account, if the traveler gave one.
+  const me = useMe(fromAccount);
+  const savedPhone = me.data?.phone_number;
+  const savedProfile = me.data?.traveller_profile;
+  useEffect(() => {
+    if (!fromAccount || !savedPhone || form.getValues("phoneNumber")) return;
+    const phone = accountPhone(savedPhone);
+    if (!phone) return;
+    form.setValue("phoneCountry", phone.phoneCountry);
+    form.setValue("phoneNumber", phone.phoneNumber);
+  }, [fromAccount, savedPhone, form]);
+  // Title, date of birth and gender of the last booking for themselves, without overwriting what was typed.
+  useEffect(() => {
+    if (!fromAccount || !savedProfile) return;
+    for (const [field, value] of Object.entries(accountTraveller(savedProfile))) {
+      const name = field as keyof ReturnType<typeof accountTraveller>;
+      if (!form.getValues(name)) form.setValue(name, value);
+    }
+  }, [fromAccount, savedProfile, form]);
 
   // The typed data survives an expired fare or a reload (design board "Estados"); the card doesn't.
   useEffect(() => {
@@ -117,19 +157,22 @@ function Checkout({ item }: { item: TripItem }) {
     // Same attempt, same key: a double click or a retry after a network error books once.
     const { idempotencyKey } = attemptFor(itemKey, fare.offer_id);
     try {
-      const created = await create.mutateAsync({ body: buildBookingRequest(values, fare), idempotencyKey });
+      const created = await create.mutateAsync({
+        body: buildBookingRequest(values, fare, fromAccount),
+        idempotencyKey,
+      });
       setBooking(itemKey, created.id);
     } catch (error) {
       setOutcome(
         error instanceof ApiError && error.status < 500
           ? {
               title: "No pudimos enviar la reserva",
-              body: "Revisá los datos e intentá de nuevo.",
+              body: "Revisa los datos e intenta de nuevo.",
               backToTrip: false,
             }
           : {
               title: "No pudimos enviar la reserva",
-              body: "Probá de nuevo: no se reserva dos veces.",
+              body: "Prueba de nuevo: no se reserva dos veces.",
               backToTrip: false,
             },
       );
@@ -183,7 +226,7 @@ function Checkout({ item }: { item: TripItem }) {
             <Notice tone="warn" title="El precio de esta tarifa venció">
               Los datos que cargaste quedan guardados.{" "}
               <Link to="/trip" className="font-semibold">
-                Volvé a Tu viaje
+                Vuelve a Tu viaje
               </Link>{" "}
               para actualizar el precio.
             </Notice>
@@ -210,7 +253,28 @@ function Checkout({ item }: { item: TripItem }) {
           {processing && booking && <SlowBookingNotice createdAt={booking.created_at} />}
 
           <fieldset disabled={processing} className="flex min-w-0 flex-col gap-4">
-            <PassengerSection form={form} fare={fare} departureDate={departureDate} />
+            <PassengerSection
+              form={form}
+              fare={fare}
+              departureDate={departureDate}
+              fromAccount={fromAccount}
+              onAnotherPerson={() => {
+                for (const field of [
+                  "title",
+                  "givenName",
+                  "familyName",
+                  "gender",
+                  "birthDay",
+                  "birthMonth",
+                  "birthYear",
+                  "email",
+                  "phoneNumber",
+                ] as const) {
+                  form.setValue(field, "");
+                }
+                useCheckout.getState().setHolder(itemKey, false);
+              }}
+            />
             <PaymentSection form={form} fare={fare} airline={flight.owner.name} />
             <label className="flex items-start gap-2.5 text-[14px]">
               <input
@@ -275,7 +339,7 @@ function outcomeOf(booking: Booking): Outcome {
   if (booking.status === "cancelled") {
     return {
       title: "No se hizo la reserva",
-      body: "No aceptaste el precio nuevo, así que no se cobró nada. En Tu viaje podés actualizar el precio o elegir otra tarifa.",
+      body: "No aceptaste el precio nuevo, así que no se cobró nada. En Tu viaje puedes actualizar el precio o elegir otra tarifa.",
       backToTrip: true,
     };
   }

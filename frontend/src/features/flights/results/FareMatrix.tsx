@@ -14,7 +14,7 @@ export function FareMatrix({ fares, onChoose }: FareMatrixProps) {
   const [chosen, setChosen] = useState<string | null>(null);
   const currency = fares[0]?.price.total.currency ?? "";
   const rows = [
-    { label: "Valija despachada", cell: (f: Fare) => bagCell(fareCheckedBags(f), "checked") },
+    { label: "Maleta de bodega", cell: (f: Fare) => bagCell(fareCheckedBags(f), "checked") },
     { label: "Equipaje de mano", cell: (f: Fare) => bagCell(fareCarryOn(f), "carry_on") },
     { label: "Cambio", cell: (f: Fare) => conditionCell(f.conditions.change) },
     { label: "Reembolso", cell: (f: Fare) => conditionCell(f.conditions.refund) },

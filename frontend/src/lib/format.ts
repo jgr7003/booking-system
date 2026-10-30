@@ -1,7 +1,7 @@
 import type { Money } from "@/api/client";
 
 /** Locale of numbers and dates: "6.146,64", "mar 15 dic". */
-export const LOCALE = "es-AR";
+export const LOCALE = "es-CO";
 
 const amountFormat = new Intl.NumberFormat(LOCALE, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 

@@ -20,7 +20,7 @@ const byNumbers = (numbers: string) =>
 const lx317 = byNumbers("0317+0014"); // Lufthansa, flown by SWISS via ZRH, 5 fares
 
 describe("filters and sort", () => {
-  it("«Con valija» only keeps fares with a reported checked bag", () => {
+  it("«Con maleta» only keeps fares with a reported checked bag", () => {
     const result = applyFilters(flights, { bag: true });
     const filtered = result.find((f) => f.key === lx317.key) as Flight;
 

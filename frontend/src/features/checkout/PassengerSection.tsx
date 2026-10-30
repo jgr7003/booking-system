@@ -7,6 +7,7 @@ import {
   ADULT_AGE,
   airlineNameLength,
   type CheckoutValues,
+  callingCodeOf,
   countries,
   isTransliterated,
   MAX_NAME_LENGTH,
@@ -22,10 +23,15 @@ export function PassengerSection({
   form,
   fare,
   departureDate,
+  fromAccount = false,
+  onAnotherPerson,
 }: {
   form: UseFormReturn<CheckoutValues>;
   fare: Fare;
   departureDate: string;
+  /** The fields were filled from the signed-in account: shows the notice and «Viaja otra persona». */
+  fromAccount?: boolean;
+  onAnotherPerson?: () => void;
 }) {
   const {
     register,
@@ -42,8 +48,25 @@ export function PassengerSection({
     <FormSection
       id="passenger-1"
       title="Pasajero 1 · Adulto"
-      aside="Escribí los datos tal como figuran en el documento de viaje"
+      aside="Escribe los datos tal como figuran en el documento de viaje"
     >
+      {fromAccount ? (
+        <div
+          role="note"
+          className="mx-[18px] mt-4 flex flex-wrap items-center gap-x-3.5 gap-y-2 rounded-md border border-action-ring bg-action-soft px-3.5 py-2.5 text-[14px] text-action-hover"
+        >
+          <span className="min-w-[260px] flex-1">
+            Completamos con los datos de tu cuenta. Si viaja otra persona, cámbialos por los suyos.
+          </span>
+          <button
+            type="button"
+            onClick={onAnotherPerson}
+            className="h-9 cursor-pointer rounded-md border border-action bg-white px-3 font-semibold text-[13px] text-action"
+          >
+            Viaja otra persona
+          </button>
+        </div>
+      ) : null}
       <div className="grid grid-cols-1 gap-x-3 gap-y-3.5 p-[18px] sm:grid-cols-6">
         <FormField className="sm:col-span-1" id="title" label="Tratamiento">
           <select
@@ -218,7 +241,7 @@ export function PassengerSection({
             <FieldError id="phoneNumber-error" message={err("phoneNumber")} />
           ) : (
             <span id="phone-hint" className="text-[12px] text-muted">
-              Se envía en formato internacional: +54911…
+              Se envía en formato internacional: +{callingCodeOf(watch("phoneCountry"))}…
             </span>
           )}
         </div>

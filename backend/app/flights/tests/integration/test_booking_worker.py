@@ -34,7 +34,7 @@ from app.flights.repositories.bookings import BookingRepository
 from app.flights.services.booking_worker import CONSUMER, BookingProcessor
 from app.flights.services.bookings import BookingService
 from app.flights.services.pricing import apply_pricing
-from app.flights.tests.support import BOOKING_OFFER_ID, load_fixture, make_booking_passenger
+from app.flights.tests.support import BOOKING_OFFER_ID, TEST_OWNER, load_fixture, make_booking_passenger
 from app.payments.public import Authorization, PaymentError, PaymentGateway, create_payment_gateway
 
 pytestmark = pytest.mark.anyio
@@ -170,7 +170,7 @@ async def create_booking(session_factory, provider, *, payment_token: str = "tok
         payment_token=payment_token,
     )
     async with session_factory() as session:
-        booking, _ = await BookingService(session, "duffel").create(uuid.uuid4(), request)
+        booking, _ = await BookingService(session, "duffel").create(uuid.uuid4(), request, TEST_OWNER)
     return booking.id
 
 
@@ -283,7 +283,7 @@ async def test_after_approval_it_books_at_the_approved_price(processor, provider
 
     async with db_session_factory() as session:
         await BookingService(session, "duffel").decide_price(
-            booking_id, PriceDecisionRequest(decision=PriceDecision.ACCEPT, price=new_price)
+            booking_id, PriceDecisionRequest(decision=PriceDecision.ACCEPT, price=new_price), TEST_OWNER
         )
     await processor.handle(delivery(booking_id))
 
@@ -299,7 +299,7 @@ async def test_a_second_change_after_the_approval_asks_again(processor, provider
     await processor.handle(delivery(booking_id))
     async with db_session_factory() as session:
         await BookingService(session, "duffel").decide_price(
-            booking_id, PriceDecisionRequest(decision=PriceDecision.ACCEPT, price=sale_price(provider))
+            booking_id, PriceDecisionRequest(decision=PriceDecision.ACCEPT, price=sale_price(provider)), TEST_OWNER
         )
     provider.change_cost("250.00")
 

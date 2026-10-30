@@ -18,6 +18,7 @@ from app.core.http import get_http_client
 from app.core.pricing.base import PricingPolicy
 from app.core.pricing.dependencies import get_pricing_policy
 from app.flights.core.config import DuffelSettings, get_duffel_settings
+from app.flights.domain.dtos.bookings import BookingOwner
 from app.flights.domain.errors.bookings import IdempotencyKeyRequiredError
 from app.flights.providers.base import FlightProvider
 from app.flights.providers.duffel.client import DuffelClient
@@ -26,6 +27,7 @@ from app.flights.repositories.places import PlaceRepository
 from app.flights.services.bookings import BookingService
 from app.flights.services.flight_search import FlightSearchService
 from app.flights.services.places import PlaceSearchService
+from app.identity.public import Principal, current_principal
 
 
 def get_flight_provider(
@@ -120,21 +122,37 @@ def idempotency_key(
         raise IdempotencyKeyRequiredError("The Idempotency-Key header is required and must be a UUID.") from exc
 
 
+def booking_owner(principal: Annotated[Principal, Depends(current_principal)]) -> BookingOwner:
+    """Who is asking for bookings: the signed-in user, within their organization.
+
+    Every booking endpoint depends on it, so none can run without a session or skip the owner filter.
+
+    Args:
+        principal: The signed-in user (from their access token, on their device).
+
+    Returns:
+        The owner to filter bookings by.
+    """
+    return BookingOwner(organization_id=principal.organization_id, user_id=principal.user_id)
+
+
 async def existing_booking(
     booking_id: uuid.UUID,
+    owner: Annotated[BookingOwner, Depends(booking_owner)],
     service: Annotated[BookingService, Depends(get_booking_service)],
 ) -> uuid.UUID:
-    """Checks that a booking exists before opening its event stream.
+    """Checks that a booking of the user exists before opening its event stream.
 
     Args:
         booking_id: Id of the booking, from the path.
+        owner: Who asks.
         service: Booking use cases.
 
     Returns:
         The id.
 
     Raises:
-        BookingNotFoundError: There is no such booking.
+        BookingNotFoundError: There is no such booking, or it belongs to someone else.
     """
-    await service.get(booking_id)
+    await service.get(booking_id, owner)
     return booking_id

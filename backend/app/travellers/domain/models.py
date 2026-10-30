@@ -79,3 +79,26 @@ class IdentityDocument(Base):
     traveller: Mapped[Traveller] = relationship(back_populates="identity_documents")
 
     __table_args__ = ({"schema": SCHEMA},)
+
+
+class Profile(Base):
+    """Passenger data of a user for their own trips (`TravellerProfile`); one per user."""
+
+    __tablename__ = "profiles"
+
+    # Id of the user (identity module); kept without a foreign key, as between every module.
+    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True)
+
+    # `mr`, `ms`, `mrs`, `miss` or `dr`.
+    title: Mapped[str] = mapped_column(Text)
+
+    # Date of birth.
+    born_on: Mapped[date] = mapped_column(Date)
+
+    # `m` or `f`, as in the identity document.
+    gender: Mapped[str] = mapped_column(Text)
+
+    # Last time the user booked for themselves and the data were saved.
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+
+    __table_args__ = ({"schema": SCHEMA},)

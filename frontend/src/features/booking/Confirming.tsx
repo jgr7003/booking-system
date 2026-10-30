@@ -71,7 +71,7 @@ export function Confirming({ booking }: { booking?: Booking }) {
             >
               ······
             </span>
-            <span className="text-[13px] text-muted">Aparece acá cuando la aerolínea confirme.</span>
+            <span className="text-[13px] text-muted">Aparece aquí cuando la aerolínea confirme.</span>
           </div>
         </div>
         {booking && (
@@ -87,7 +87,7 @@ export function Confirming({ booking }: { booking?: Booking }) {
               recién cuando la aerolínea confirma.
             </span>
           )}
-          <span>Si cerrás esta página, la reserva sigue. Volvé con este mismo link.</span>
+          <span>Si cierras esta página, la reserva sigue. Vuelve con este mismo link.</span>
         </div>
       </section>
       <section aria-hidden className="flex flex-col gap-3">

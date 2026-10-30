@@ -7,10 +7,14 @@ import { makeTripItem, useTrip } from "@/features/trip/public";
 import { installFakeEventSource } from "@/test/eventSource";
 import { renderApp } from "@/test/render";
 import { fixtures, server } from "@/test/server";
+import { signInForTests } from "@/test/session";
 
 const { confirmedRoundTrip: roundTrip, failedDeclined, processing } = fixtures.bookings;
 
-beforeEach(() => installFakeEventSource());
+beforeEach(async () => {
+  installFakeEventSource();
+  await signInForTests();
+});
 
 function serve(booking: JsonBodyType, status = 200) {
   server.use(http.get("*/api/v1/flights/bookings/:id", () => HttpResponse.json(booking, { status })));

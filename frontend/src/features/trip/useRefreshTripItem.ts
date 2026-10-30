@@ -32,10 +32,10 @@ export function useRefreshTripItem(item: TripItem) {
         add(makeTripItem(sameFlight, sameFare, item.search, fresh.search_id));
         show({ message: `Precio actualizado: ${formatMoney(sameFare.price.total)}.` });
       } else {
-        show({ message: "Ese vuelo o tarifa ya no está disponible. Elegí otra opción en los resultados." });
+        show({ message: "Ese vuelo o tarifa ya no está disponible. Elige otra opción en los resultados." });
       }
     },
-    onError: () => show({ message: "No pudimos actualizar el precio. Probá de nuevo en unos segundos." }),
+    onError: () => show({ message: "No pudimos actualizar el precio. Prueba de nuevo en unos segundos." }),
   });
 
   return { refresh: () => mutation.mutate(), refreshing: mutation.isPending };

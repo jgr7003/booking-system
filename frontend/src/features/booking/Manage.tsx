@@ -16,7 +16,7 @@ export function Manage({ order, reference }: { order: Order; reference: string }
         </span>
       </div>
       <p className="text-[13px] leading-[1.45] text-ink-2">
-        Pronto vas a poder hacer esto desde acá. Mientras tanto, consultá a {order.owner.name} con tu código{" "}
+        Pronto vas a poder hacer esto desde aquí. Mientras tanto, consulta a {order.owner.name} con tu código{" "}
         {reference}.
       </p>
       <ul className="flex flex-col gap-1.5">

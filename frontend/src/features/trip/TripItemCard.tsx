@@ -16,7 +16,7 @@ import { useRefreshTripItem } from "./useRefreshTripItem";
 
 const ACTION = "inline-flex h-[38px] items-center gap-1.5 rounded-md border px-3.5 text-[14px] font-semibold";
 
-/** Short summary of what a fare includes, colored like the design ("✓ Mano ✓ Valija"). */
+/** Short summary of what a fare includes, colored like the design ("✓ Mano ✓ Maleta"). */
 function bagMark(cell: Cell, label: string) {
   const mark = cell.tone === "ok" ? "✓" : cell.tone === "bad" ? "✗" : "?";
   return (
@@ -88,7 +88,7 @@ export function TripItemCard({
           <strong className="text-[14px]">{fareName(fare)}</strong>
           <span className="flex gap-3 text-[13px]">
             {bagMark(bagCell(fareCarryOn(fare), "carry_on"), "Mano")}
-            {bagMark(bagCell(fareCheckedBags(fare), "checked"), "Valija")}
+            {bagMark(bagCell(fareCheckedBags(fare), "checked"), "Maleta")}
           </span>
           <span className={cn("text-[13px]", toneTextClass(conditions.tone))}>{conditions.text}</span>
           <span className="data text-[16px] font-semibold sm:text-[20px]">

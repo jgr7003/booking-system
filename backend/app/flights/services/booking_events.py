@@ -8,7 +8,8 @@ from typing import Any
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app.core.messaging.broadcaster import EventBroadcaster
-from app.flights.domain.dtos.bookings import BookingStatus
+from app.flights.domain.dtos.bookings import BookingOwner, BookingStatus
+from app.flights.domain.errors.bookings import BookingNotFoundError
 from app.flights.repositories.bookings import BookingRepository
 from app.flights.services.booking_state import event_payload
 
@@ -19,6 +20,7 @@ RECHECK_INTERVAL_S = 15
 
 async def booking_status_stream(
     booking_id: uuid.UUID,
+    owner: BookingOwner,
     session_factory: async_sessionmaker[AsyncSession],
     broadcaster: EventBroadcaster,
     *,
@@ -32,6 +34,7 @@ async def booking_status_stream(
 
     Args:
         booking_id: Id of the booking; it must exist.
+        owner: Who watches it; every read is filtered by them.
         session_factory: Factory of database sessions (each read uses a short one, so the
             connection isn't held for the whole stream).
         broadcaster: Source of the booking events.
@@ -41,20 +44,24 @@ async def booking_status_stream(
         `{"booking_id", "status", "version"}`, the same body as the events.
     """
     async with broadcaster.subscribe(booking_id) as events:
-        current = await _read(session_factory, booking_id)
+        current = await _read(session_factory, booking_id, owner)
         yield current
         while not BookingStatus(current["status"]).is_final:
             try:
                 candidate = (await asyncio.wait_for(events.get(), recheck_interval_s)).payload
             except TimeoutError:
-                candidate = await _read(session_factory, booking_id)
+                candidate = await _read(session_factory, booking_id, owner)
             if candidate["version"] > current["version"]:
                 current = candidate
                 yield current
 
 
-async def _read(session_factory: async_sessionmaker[AsyncSession], booking_id: uuid.UUID) -> dict[str, Any]:
-    """Reads the current state of a booking."""
+async def _read(
+    session_factory: async_sessionmaker[AsyncSession], booking_id: uuid.UUID, owner: BookingOwner
+) -> dict[str, Any]:
+    """Reads the current state of a booking of the owner."""
     async with session_factory() as session:
-        booking = await BookingRepository(session).get(booking_id)
+        booking = await BookingRepository(session).get_owned(booking_id, owner)
+        if booking is None:
+            raise BookingNotFoundError("Booking not found.")
         return event_payload(booking)

@@ -19,7 +19,7 @@ export function lowest(values: (number | null | undefined)[]): number | null {
   return Math.min(...(values as number[]));
 }
 
-/** "Con valija" only counts a checked bag the airline reports; unknown doesn't count. */
+/** "Con maleta" only counts a checked bag the airline reports; unknown doesn't count. */
 export function fareHasCheckedBag(fare: Fare): boolean {
   return (fareCheckedBags(fare) ?? 0) >= 1;
 }

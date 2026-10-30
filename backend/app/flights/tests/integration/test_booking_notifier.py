@@ -13,7 +13,7 @@ from app.flights.domain.models.bookings import Booking
 from app.flights.notifications.booking_notifier import BookingConfirmationNotifier
 from app.flights.providers.duffel import mapper
 from app.flights.services.bookings import BookingService
-from app.flights.tests.support import BOOKING_OFFER_ID, load_fixture, make_booking_passenger
+from app.flights.tests.support import BOOKING_OFFER_ID, TEST_OWNER, load_fixture, make_booking_passenger
 from app.notifications.public import EmailDeliveryError, EmailMessage
 
 pytestmark = pytest.mark.anyio
@@ -56,7 +56,7 @@ async def confirmed_booking(session_factory, *, confirm: bool = True) -> uuid.UU
         payment_token="tok_fake_4242",
     )
     async with session_factory() as session:
-        booking, _ = await BookingService(session, "duffel").create(uuid.uuid4(), request)
+        booking, _ = await BookingService(session, "duffel").create(uuid.uuid4(), request, TEST_OWNER)
     if confirm:
         order = mapper.to_order(load_fixture("duffel/order_create_response.json")["data"])
         async with session_factory() as session, session.begin():

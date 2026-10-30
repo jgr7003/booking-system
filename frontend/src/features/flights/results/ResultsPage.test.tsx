@@ -40,12 +40,12 @@ describe("results", () => {
     expect(within(matrix).getAllByText("300 GBP").length).toBeGreaterThan(0);
   });
 
-  it("«Con valija» hides fares without a checked bag", async () => {
+  it("«Con maleta» hides fares without a checked bag", async () => {
     const user = userEvent.setup();
     renderApp(RESULTS_URL);
     await screen.findByText(/16 vuelos/);
 
-    await user.click(screen.getByRole("button", { name: "Con valija" }));
+    await user.click(screen.getByRole("button", { name: "Con maleta" }));
     await user.click(lufthansaCard());
 
     const matrix = screen.getByRole("table", { name: "Tarifas disponibles para este vuelo" });
@@ -152,12 +152,12 @@ describe("round trip in two steps", () => {
     const user = userEvent.setup();
     renderApp(ROUND_TRIP_URL);
 
-    expect(await screen.findByRole("heading", { name: /Elegí tu ida/ })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /Elige tu ida/ })).toBeInTheDocument();
     expect(screen.getByText(/7 idas/)).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /LX 339 · LX 14/ }));
 
-    expect(await screen.findByRole("heading", { name: /Elegí tu vuelta/ })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: /Elige tu vuelta/ })).toBeInTheDocument();
     expect(screen.getByText(/17 vueltas para esta ida/)).toBeInTheDocument();
     expect(screen.getByText("Ida elegida")).toBeInTheDocument();
   });
@@ -177,7 +177,7 @@ describe("round trip in two steps", () => {
     const user = userEvent.setup();
     renderApp(`${ROUND_TRIP_URL}&sort=departure`);
     await user.click(await screen.findByRole("button", { name: /LX 339 · LX 14/ }));
-    await screen.findByRole("heading", { name: /Elegí tu vuelta/ });
+    await screen.findByRole("heading", { name: /Elige tu vuelta/ });
 
     const departures = screen
       .getAllByRole("article")

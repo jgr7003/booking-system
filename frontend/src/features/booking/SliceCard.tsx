@@ -229,7 +229,7 @@ function SegmentRow({ slice, index }: { slice: OrderSlice; index: number }) {
               <span className="font-mono">{formatDuration(connection.duration_minutes)}</span>.
             </strong>
             {short &&
-              ` Cambiás de avión: buscá la puerta de ${next.marketing_carrier.code} ${next.flight_number} apenas aterrices.`}
+              ` Cambias de avión: busca la puerta de ${next.marketing_carrier.code} ${next.flight_number} apenas aterrices.`}
           </span>
         </div>
       )}

@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from app.core.messaging.envelope import Event
-from app.flights.domain.dtos.bookings import BookingPassenger
+from app.flights.domain.dtos.bookings import BookingOwner, BookingPassenger
 from app.flights.domain.dtos.offers import SearchResult
 from app.flights.domain.dtos.search import SearchCriteria
 
@@ -157,3 +157,8 @@ class FakeBroadcaster:
         event = Event(message_id=uuid.uuid4(), type=f"booking.{payload['status']}", aggregate_id=aggregate_id, payload=payload)
         for queue in self._subscribers.get(aggregate_id, []):
             queue.put_nowait(event)
+
+
+# Owner of the bookings created directly through the service (worker and notifier tests): a
+# private traveller. API tests sign in as a real user instead.
+TEST_OWNER = BookingOwner(organization_id=None, user_id=uuid.UUID("00000000-0000-4000-8000-000000000001"))

@@ -7,7 +7,7 @@ interface ChipProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   mark?: string;
 }
 
-/** Filter button of the design: "Con valija +" / "Con valija ×". */
+/** Filter button of the design: "Con maleta +" / "Con maleta ×". */
 export const Chip = forwardRef<HTMLButtonElement, ChipProps>(function Chip(
   { pressed, mark, className, children, ...props },
   ref,

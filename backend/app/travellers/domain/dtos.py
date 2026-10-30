@@ -81,7 +81,7 @@ class TravellerDetails(DTO):
     )
 
     phone_number: PhoneNumber = Field(
-        description="Phone number in international E.164 format, e.g. `+5491112345678`.",
+        description="Phone number in international E.164 format, e.g. `+573001234567`.",
     )
 
     identity_documents: list[IdentityDocumentDetails] = Field(
@@ -121,4 +121,34 @@ class TravellerRef(DTO):
 
     id: uuid.UUID = Field(
         description="Id of the traveller.",
+    )
+
+
+class Title(StrEnum):
+    """Title of the traveller, as airlines print it on the ticket."""
+
+    MR = "mr"
+    MS = "ms"
+    MRS = "mrs"
+    MISS = "miss"
+    DR = "dr"
+
+
+class TravellerProfile(DTO):
+    """Passenger data a user keeps for their own trips, so they don't type them every time.
+
+    Only the account holder has one: a booking for someone else keeps that person's data in the
+    booking (its traveller) and nothing else.
+    """
+
+    title: Title = Field(
+        description="Title printed on the ticket.",
+    )
+
+    born_on: BirthDate = Field(
+        description="Date of birth.",
+    )
+
+    gender: Gender = Field(
+        description="Gender as written in the identity document.",
     )

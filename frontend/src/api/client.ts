@@ -1,5 +1,6 @@
 import createClient from "openapi-fetch";
 import type { components, paths } from "./schema";
+import { authMiddleware } from "./session";
 
 /** Schemas of the backend API, generated from its OpenAPI (`pnpm gen:api`). */
 export type Schemas = components["schemas"];
@@ -42,6 +43,9 @@ export const api = createClient<paths>({
   // interceptors installed later (MSW in tests) see the requests.
   fetch: (request) => globalThis.fetch(request),
 });
+
+// Every request is signed by the device key and carries the session, if any (src/api/session.ts).
+api.use(authMiddleware);
 
 /**
  * Unwraps an openapi-fetch result, turning API errors into `ApiError`.

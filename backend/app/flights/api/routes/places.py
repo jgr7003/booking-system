@@ -13,8 +13,10 @@ from app.flights.domain.constants.places import (
 )
 from app.flights.domain.dtos.places import PlaceSuggestion
 from app.flights.services.places import PlaceSearchService
+from app.identity.public import installation_principal
 
-router = APIRouter()
+# In an organization's installation only its signed-in users may use it; on the main platform it is public.
+router = APIRouter(dependencies=[Depends(installation_principal)])
 
 
 # FastAPI publishes the docstring as the endpoint's description in Swagger, so it is written for

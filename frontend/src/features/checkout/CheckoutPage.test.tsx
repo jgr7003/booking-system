@@ -4,9 +4,12 @@ import { HttpResponse, http } from "msw";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Booking, BookingRequest } from "@/api/client";
 import { makeTripItem, useTrip } from "@/features/trip/public";
+import { clearSession } from "@/lib/auth/tokens";
 import { FakeEventSource, installFakeEventSource } from "@/test/eventSource";
 import { renderApp } from "@/test/render";
 import { FIXTURE_NOW, fixtures, server } from "@/test/server";
+import { signInForTests, TEST_ME, TEST_USER } from "@/test/session";
+import { EMPTY_VALUES } from "./logic";
 import { useCheckout } from "./store";
 
 const BOOKINGS = "*/api/v1/flights/bookings";
@@ -58,7 +61,13 @@ function bookingApi(created: Booking, states: Booking[] = []) {
   };
 }
 
+/** The traveler is someone else: empties the fields filled from the account. */
+async function anotherPerson(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(await screen.findByRole("button", { name: "Viaja otra persona" }));
+}
+
 async function fillValidForm(user: ReturnType<typeof userEvent.setup>) {
+  await anotherPerson(user);
   await user.selectOptions(await screen.findByLabelText("Tratamiento"), "ms");
   await user.type(screen.getByLabelText("Nombre"), "Ana");
   await user.type(screen.getByLabelText("Apellido"), "Muñoz");
@@ -67,7 +76,7 @@ async function fillValidForm(user: ReturnType<typeof userEvent.setup>) {
   await user.type(screen.getByLabelText("Mes"), "5");
   await user.type(screen.getByLabelText("Año"), "1990");
   await user.type(screen.getByLabelText("Email"), "ana.prueba@example.com");
-  await user.type(screen.getByRole("textbox", { name: "Teléfono" }), "9 11 1234-5678");
+  await user.type(screen.getByRole("textbox", { name: "Teléfono" }), "300 123 4567");
   await user.type(screen.getByLabelText("Número de tarjeta"), "4242 4242 4242 4242");
   await user.type(screen.getByLabelText("Titular"), "ANA MUNOZ");
   await user.type(screen.getByLabelText("Vencimiento"), "12/30");
@@ -78,7 +87,8 @@ async function fillValidForm(user: ReturnType<typeof userEvent.setup>) {
 const confirmButton = () =>
   screen.getAllByRole("button", { name: /Confirmar y pagar 230,01 USD/ })[0] as HTMLElement;
 
-beforeEach(() => {
+beforeEach(async () => {
+  await signInForTests();
   // Only the clock is faked: the fixture's offers are valid until 21:26 UTC.
   vi.useFakeTimers({ toFake: ["Date"] });
   vi.setSystemTime(FIXTURE_NOW);
@@ -105,12 +115,13 @@ describe("passengers and payment", () => {
     renderApp(`/checkout/${item.itemKey}`);
 
     await screen.findByRole("heading", { name: "Pasajeros y pago" });
+    await anotherPerson(user);
     await user.click(confirmButton());
 
-    expect(await screen.findByText("Elegí el tratamiento.")).toBeInTheDocument();
-    expect(screen.getByText("Escribí el apellido.")).toBeInTheDocument();
-    expect(screen.getByText("Revisá la fecha de nacimiento.")).toBeInTheDocument();
-    expect(screen.getByText("Revisá el número de tarjeta.")).toBeInTheDocument();
+    expect(await screen.findByText("Elige el tratamiento.")).toBeInTheDocument();
+    expect(screen.getByText("Escribe el apellido.")).toBeInTheDocument();
+    expect(screen.getByText("Revisa la fecha de nacimiento.")).toBeInTheDocument();
+    expect(screen.getByText("Revisa el número de tarjeta.")).toBeInTheDocument();
     expect(screen.getByLabelText("Apellido")).toHaveAttribute("aria-invalid", "true");
   });
 
@@ -120,13 +131,13 @@ describe("passengers and payment", () => {
     renderApp(`/checkout/${item.itemKey}`);
     await screen.findByRole("heading", { name: "Pasajeros y pago" });
     await user.click(confirmButton());
-    expect(await screen.findByText("Revisá la fecha de nacimiento.")).toBeInTheDocument();
+    expect(await screen.findByText("Revisa la fecha de nacimiento.")).toBeInTheDocument();
 
     await user.type(screen.getByLabelText("Día"), "20");
     await user.type(screen.getByLabelText("Mes"), "5");
     await user.type(screen.getByLabelText("Año"), "1990");
 
-    await waitFor(() => expect(screen.queryByText("Revisá la fecha de nacimiento.")).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByText("Revisa la fecha de nacimiento.")).not.toBeInTheDocument());
   });
 
   it("warns how the airline gets accented names and counts the 40 characters", async () => {
@@ -134,6 +145,7 @@ describe("passengers and payment", () => {
     const item = addFlightToTrip();
     renderApp(`/checkout/${item.itemKey}`);
 
+    await anotherPerson(user);
     await user.type(await screen.findByLabelText("Nombre"), "José");
     await user.type(screen.getByLabelText("Apellido"), "Muñoz");
 
@@ -154,7 +166,7 @@ describe("passengers and payment", () => {
     const [post] = apiMock.posts;
     expect(post?.key).toMatch(/^[0-9a-f-]{36}$/);
     expect(post?.body.payment_token).toBe("tok_fake_4242");
-    expect(post?.body.passenger.traveller.phone_number).toBe("+5491112345678");
+    expect(post?.body.passenger.traveller.phone_number).toBe("+573001234567");
     expect(JSON.stringify(post?.body)).not.toContain("4242 4242");
 
     apiMock.advance();
@@ -264,6 +276,7 @@ describe("passengers and payment", () => {
     const user = userEvent.setup();
     const item = addFlightToTrip();
     const first = renderApp(`/checkout/${item.itemKey}`);
+    await anotherPerson(user);
     await user.type(await screen.findByLabelText("Apellido"), "Muñoz");
     await user.type(screen.getByLabelText("Número de tarjeta"), "4242");
     first.unmount();
@@ -282,6 +295,114 @@ describe("passengers and payment", () => {
 
     expect(await screen.findByText("El precio de esta tarifa venció")).toBeInTheDocument();
     expect(confirmButton()).toBeDisabled();
-    expect(screen.getByRole("link", { name: "Volvé a Tu viaje" })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Vuelve a Tu viaje" })).toBeInTheDocument();
+  });
+});
+
+describe("passengers and payment with a session", () => {
+  it("fills the passenger with the account, as the airline takes it, until someone else travels", async () => {
+    const user = userEvent.setup();
+    const item = addFlightToTrip();
+    renderApp(`/checkout/${item.itemKey}`);
+
+    expect(await screen.findByLabelText("Nombre")).toHaveValue("PEPE");
+    expect(screen.getByLabelText("Apellido")).toHaveValue("PEREZ");
+    expect(screen.getByLabelText("Email")).toHaveValue("pepe.perez@ejemplo.com");
+    expect(screen.getByRole("note")).toHaveTextContent("Completamos con los datos de tu cuenta");
+
+    await anotherPerson(user);
+
+    expect(screen.getByLabelText("Nombre")).toHaveValue("");
+    expect(screen.queryByRole("note")).not.toBeInTheDocument();
+  });
+
+  it("fills the phone of the account, which isn't in the token", async () => {
+    server.use(
+      http.get("*/api/v1/me", () => HttpResponse.json({ ...TEST_ME, phone_number: "+573105826464" })),
+    );
+    const user = userEvent.setup();
+    const item = addFlightToTrip();
+    renderApp(`/checkout/${item.itemKey}`);
+
+    expect(await screen.findByDisplayValue("3105826464")).toBeInTheDocument();
+    expect(screen.getByDisplayValue(/\+57/)).toBeInTheDocument();
+
+    await anotherPerson(user);
+
+    expect(screen.queryByDisplayValue("3105826464")).not.toBeInTheDocument();
+  });
+
+  it("fills title, date of birth and gender from the last booking for themselves", async () => {
+    server.use(
+      http.get("*/api/v1/me", () =>
+        HttpResponse.json({
+          ...TEST_ME,
+          traveller_profile: { title: "mr", born_on: "1990-08-23", gender: "m" },
+        }),
+      ),
+    );
+    const user = userEvent.setup();
+    const item = addFlightToTrip();
+    renderApp(`/checkout/${item.itemKey}`);
+
+    expect(await screen.findByDisplayValue("1990")).toBeInTheDocument();
+    expect(screen.getByDisplayValue("23")).toBeInTheDocument();
+    expect(screen.getByLabelText("Tratamiento")).toHaveValue("mr");
+    expect(screen.getByRole("radio", { name: "Masculino" })).toBeChecked();
+
+    await anotherPerson(user);
+
+    expect(screen.queryByDisplayValue("1990")).not.toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: "Masculino" })).not.toBeChecked();
+  });
+
+  it("never shows the draft of another user who used this tab", async () => {
+    const item = addFlightToTrip();
+    const { cardNumber, cardHolder, cardExpiry, cardCode, ...empty } = EMPTY_VALUES;
+    useCheckout.setState({
+      owner: "otro-usuario",
+      drafts: {
+        [item.itemKey]: { ...empty, givenName: "MARIA", familyName: "LOPEZ", email: "m.lopez@keycloak.com" },
+      },
+      holders: { [item.itemKey]: false },
+    });
+    renderApp(`/checkout/${item.itemKey}`);
+
+    expect(await screen.findByLabelText("Nombre")).toHaveValue("PEPE");
+    expect(screen.getByRole("button", { name: "Viaja otra persona" })).toBeInTheDocument();
+    expect(useCheckout.getState().owner).toBe(TEST_USER.sub);
+  });
+
+  it("keeps that the user travels across a reload", async () => {
+    const item = addFlightToTrip();
+    const { cardNumber, cardHolder, cardExpiry, cardCode, ...empty } = EMPTY_VALUES;
+    useCheckout.setState({
+      owner: TEST_USER.sub,
+      drafts: { [item.itemKey]: { ...empty, givenName: "PEPE", familyName: "PEREZ", birthYear: "1980" } },
+      holders: { [item.itemKey]: true },
+    });
+    renderApp(`/checkout/${item.itemKey}`);
+
+    expect(await screen.findByDisplayValue("1980")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Viaja otra persona" })).toBeInTheDocument();
+  });
+
+  it("forgets every draft when the user signs out", async () => {
+    const item = addFlightToTrip();
+    useCheckout.getState().ownBy(TEST_USER.sub);
+    useCheckout.getState().saveDraft(item.itemKey, { ...EMPTY_VALUES, givenName: "PEPE" });
+
+    await clearSession("signed_out");
+
+    expect(useCheckout.getState().drafts).toEqual({});
+  });
+
+  it("without a session goes to the sign in, with the trip saved", async () => {
+    await clearSession("signed_out");
+    const item = addFlightToTrip();
+    renderApp(`/checkout/${item.itemKey}`);
+
+    expect(await screen.findByRole("heading", { name: "Ingresa para reservar" })).toBeInTheDocument();
+    expect(screen.getByText("Tu viaje queda guardado mientras ingresas.")).toBeInTheDocument();
   });
 });

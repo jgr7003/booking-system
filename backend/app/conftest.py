@@ -4,6 +4,7 @@ Safety nets: no test can reach a real provider, and tests only touch the test da
 Redis database and the test RabbitMQ vhost, never the development ones.
 """
 
+import json
 import os
 
 import aio_pika
@@ -16,13 +17,23 @@ from app.core.config import get_settings
 from app.core.db import Base, create_engine, create_session_factory
 from app.core.http import get_http_client
 from app.flights.core.config import get_duffel_settings
+from app.identity.core.config import get_identity_settings
+from app.identity.services.secrets import generate_secrets_key
+from app.identity.tokens.signing import generate_signing_key
 from app.notifications.core.config import get_email_settings
+from app.organizations.core.config import get_installation_settings
 from app.main import app
 
 # Isolated infrastructure for integration tests (see docker-compose.yml).
 TEST_DATABASE_URL = os.environ.get("TEST_DATABASE_URL")
 TEST_REDIS_URL = os.environ.get("TEST_REDIS_URL")
 TEST_RABBITMQ_URL = os.environ.get("TEST_RABBITMQ_URL")
+
+# One signing key for the whole test run, as AUTH_SIGNING_KEYS would hold it.
+TEST_SIGNING_KEYS = json.dumps([generate_signing_key("test")])
+
+# Key that encrypts the client secrets of identity providers in the tests.
+TEST_SECRETS_KEY = generate_secrets_key()
 
 
 def reject_unexpected_request(request: httpx2.Request) -> httpx2.Response:
@@ -52,6 +63,11 @@ def isolated_settings(monkeypatch):
     monkeypatch.setenv("PRICING_SECRET", "test-secret")
     # No test sends real email unless it builds its own sender (see the Mailpit tests).
     monkeypatch.setenv("EMAIL_BACKEND", "console")
+    # `test` and `testserver` are the hosts of the in-process test clients: they play the main platform.
+    monkeypatch.setenv("PLATFORM_HOSTS", "localhost,test,testserver")
+    monkeypatch.setenv("TRUSTED_PROXIES", "")
+    monkeypatch.setenv("AUTH_SIGNING_KEYS", TEST_SIGNING_KEYS)
+    monkeypatch.setenv("IDENTITY_SECRETS_KEY", TEST_SECRETS_KEY)
     if TEST_DATABASE_URL:
         monkeypatch.setenv("DATABASE_URL", TEST_DATABASE_URL)
     if TEST_REDIS_URL:
@@ -61,10 +77,14 @@ def isolated_settings(monkeypatch):
     get_settings.cache_clear()
     get_duffel_settings.cache_clear()
     get_email_settings.cache_clear()
+    get_installation_settings.cache_clear()
+    get_identity_settings.cache_clear()
     yield
     get_settings.cache_clear()
     get_duffel_settings.cache_clear()
     get_email_settings.cache_clear()
+    get_installation_settings.cache_clear()
+    get_identity_settings.cache_clear()
 
 
 @pytest.fixture(autouse=True)

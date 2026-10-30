@@ -12,7 +12,8 @@ name = "Verticals depend on shared modules, shared modules on core; never upward
 type = "layers"
 layers = [
     "app.flights | (app.hotels)",
-    "app.travellers | app.payments | app.notifications",
+    "app.identity",
+    "app.travellers | app.payments | app.notifications | app.organizations",
     "app.core",
 ]
 # Tests may start the whole application from its composition root.
@@ -24,18 +25,19 @@ unmatched_ignore_imports_alerting = "none"
 [[tool.importlinter.contracts]]
 name = "Other modules only import the public interface of travellers"
 type = "forbidden"
-source_modules = ["app.flights", "app.payments", "app.notifications"]
+source_modules = ["app.flights", "app.identity", "app.organizations", "app.payments", "app.notifications"]
 forbidden_modules = ["app.travellers"]
 allow_indirect_imports = true
 unmatched_ignore_imports_alerting = "none"
 ignore_imports = [
     "app.flights.** -> app.travellers.public",
+    "app.identity.** -> app.travellers.public",
 ]
 
 [[tool.importlinter.contracts]]
 name = "Other modules only import the public interface of payments"
 type = "forbidden"
-source_modules = ["app.flights", "app.travellers", "app.notifications"]
+source_modules = ["app.flights", "app.identity", "app.organizations", "app.travellers", "app.notifications"]
 forbidden_modules = ["app.payments"]
 allow_indirect_imports = true
 unmatched_ignore_imports_alerting = "none"
@@ -46,10 +48,36 @@ ignore_imports = [
 [[tool.importlinter.contracts]]
 name = "Other modules only import the public interface of notifications"
 type = "forbidden"
-source_modules = ["app.flights", "app.travellers", "app.payments"]
+source_modules = ["app.flights", "app.identity", "app.organizations", "app.travellers", "app.payments"]
 forbidden_modules = ["app.notifications"]
 allow_indirect_imports = true
 unmatched_ignore_imports_alerting = "none"
 ignore_imports = [
     "app.flights.** -> app.notifications.public",
+    "app.identity.** -> app.notifications.public",
+]
+
+[[tool.importlinter.contracts]]
+name = "Other modules only import the public interface of identity"
+type = "forbidden"
+source_modules = ["app.flights", "app.organizations", "app.travellers", "app.payments", "app.notifications"]
+forbidden_modules = ["app.identity"]
+allow_indirect_imports = true
+unmatched_ignore_imports_alerting = "none"
+ignore_imports = [
+    "app.flights.** -> app.identity.public",
+    # Tests sign in like a real device does, with the identity test helpers.
+    "app.flights.tests.** -> app.identity.testing",
+]
+
+[[tool.importlinter.contracts]]
+name = "Other modules only import the public interface of organizations"
+type = "forbidden"
+source_modules = ["app.flights", "app.identity", "app.travellers", "app.payments", "app.notifications"]
+forbidden_modules = ["app.organizations"]
+allow_indirect_imports = true
+unmatched_ignore_imports_alerting = "none"
+ignore_imports = [
+    "app.flights.** -> app.organizations.public",
+    "app.identity.** -> app.organizations.public",
 ]

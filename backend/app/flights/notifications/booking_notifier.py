@@ -57,7 +57,7 @@ class BookingConfirmationNotifier:
         async with self._session_factory() as session:
             if await was_processed(session, message_id, CONSUMER):
                 return
-            booking = await BookingRepository(session).get(booking_id)
+            booking = await BookingRepository(session).get_for_processing(booking_id)
             if booking is None or booking.status != BookingStatus.CONFIRMED:
                 logger.warning("Booking %s isn't confirmed; no email", booking_id)
                 await self._done(message_id)

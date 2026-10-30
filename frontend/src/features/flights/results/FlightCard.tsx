@@ -17,7 +17,7 @@ const TAG_TONES = {
   neutral: "bg-canvas text-ink-2",
 } as const;
 
-/** "Mano"/"Valija" of the cheapest fare: green if included, struck if not, plain if unknown. */
+/** "Mano"/"Maleta" of the cheapest fare: green if included, struck if not, plain if unknown. */
 function BagChip({ cell, label, icon }: { cell: Cell; label: string; icon: ReactNode }) {
   return (
     <span
@@ -112,12 +112,12 @@ export const FlightCard = memo(function FlightCard({
         <span className="flex items-center justify-between gap-1 border-t border-dashed border-line-dash px-3.5 py-2 sm:flex-col sm:items-start sm:justify-center sm:border-t-0 sm:border-l sm:px-6 sm:py-3.5">
           <span className="flex gap-2.5 sm:gap-3">
             <span className="sr-only">
-              Tarifa más barata: equipaje de mano {carryOn.label.toLowerCase()}, valija{" "}
+              Tarifa más barata: equipaje de mano {carryOn.label.toLowerCase()}, maleta{" "}
               {checked.label.toLowerCase()}.
             </span>
             <span aria-hidden className="flex gap-2.5 sm:gap-3">
               <BagChip cell={carryOn} label="Mano" icon={<CarryOnIcon />} />
-              <BagChip cell={checked} label="Valija" icon={<CheckedBagIcon />} />
+              <BagChip cell={checked} label="Maleta" icon={<CheckedBagIcon />} />
             </span>
           </span>
           <span className="flex items-baseline gap-1 sm:flex-col sm:items-start sm:gap-1">

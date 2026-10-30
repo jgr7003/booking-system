@@ -142,7 +142,7 @@ export function PassengersField({ value, onChange, error, limit = MAX_PASSENGERS
           <p className="rounded-md bg-canvas px-3 py-2.5 text-[12px] leading-normal text-muted">
             Cada menor de 0 o 1 año viaja en brazos de un adulto distinto.
             {infants >= value.adults && value.children.length > 0
-              ? " Para sumar otro infante, agregá un adulto."
+              ? " Para sumar otro infante, agrega un adulto."
               : ` Con ${value.adults} ${value.adults === 1 ? "adulto se puede" : "adultos se pueden"} sumar ${value.adults - infants} ${value.adults - infants === 1 ? "infante" : "infantes"} más.`}
             {total >= MAX_PASSENGERS &&
               ` Las aerolíneas aceptan hasta ${MAX_PASSENGERS} pasajeros por reserva.`}

@@ -57,7 +57,7 @@ export function FilterChips({
         Vuelos directos
       </Chip>
       <Chip pressed={Boolean(search.fBag)} onClick={() => update({ fBag: search.fBag ? undefined : true })}>
-        Con valija
+        Con maleta
       </Chip>
       <Chip
         pressed={Boolean(search.fRefund)}

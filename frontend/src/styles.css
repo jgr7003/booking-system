@@ -48,12 +48,25 @@
   --color-bad-strong: #b42318;
   --color-bad-ink-2: #7a150c;
   --color-short: #c2410c;
+  --color-night: #0b1530;
+  --color-night-line: #3b4d7a;
 
   --shadow-pop: 0 8px 24px rgba(17, 24, 39, 0.08);
   --shadow-dialog: 0 12px 32px rgba(17, 24, 39, 0.14);
 
   --animate-shimmer: shimmer 1.4s linear infinite;
   --animate-progress: progress 1.6s ease-in-out infinite;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-6px);
+    }
+  }
 
   @keyframes shimmer {
     from {

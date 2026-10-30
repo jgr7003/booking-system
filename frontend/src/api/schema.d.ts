@@ -85,7 +85,10 @@ export interface paths {
         put?: never;
         /**
          * Create Booking
-         * @description Books a fare for one traveler.
+         * @description Books a fare for one traveler, on behalf of the signed-in user.
+         *
+         *     Needs a session (`Authorization: DPoP` and its proof): the booking belongs to the user and
+         *     their organization, and only they can read it.
          *
          *     The booking is processed in the background: the answer comes right away (`202`, `pending`)
          *     and the changes of state arrive by `GET /bookings/{id}/events` (SSE). Send a new UUID in
@@ -113,7 +116,9 @@ export interface paths {
         };
         /**
          * Get Booking
-         * @description Returns a booking and its current state. Use it when the event stream isn't available.
+         * @description Returns a booking of the signed-in user and its current state. Use it when the event stream isn't available.
+         *
+         *     A booking of another user or organization is `404 booking_not_found`, as if it didn't exist.
          */
         get: operations["get_booking_api_v1_flights_bookings__booking_id__get"];
         put?: never;
@@ -165,6 +170,10 @@ export interface paths {
          *     `event: status`, `id: <version>` and `data: {"booking_id", "status", "version"}`: read the
          *     full booking with `GET /bookings/{id}` when it arrives. On reconnection the current state is
          *     sent again. A `: ping` comment keeps the connection alive.
+         *
+         *     Needs a session, like the other booking endpoints; send the headers with `fetch` (an
+         *     `EventSource` can't send them). The stream also closes when the access token expires: reconnect
+         *     with a fresh one.
          */
         get: operations["booking_events_api_v1_flights_bookings__booking_id__events_get"];
         put?: never;
@@ -175,10 +184,452 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/jwks.json": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Jwks
+         * @description Public keys that sign the access tokens (ES256), by `kid`.
+         *
+         *     Anyone can verify a token with them; only the platform can sign. During a key rotation the old
+         *     key stays here until the tokens it signed expire.
+         */
+        get: operations["jwks_api_v1_auth_jwks_json_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/token/refresh": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Refresh
+         * @description Exchanges the refresh token for a new pair; the old refresh token stops working.
+         *
+         *     Needs a `DPoP` proof signed by the same device key the session was opened with. A refresh token
+         *     used twice, or from another device, closes the session: `401 session_revoked`, and the device
+         *     must sign in again. Unknown token: `401 invalid_token`.
+         */
+        post: operations["refresh_api_v1_auth_token_refresh_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/logout": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Logout
+         * @description Closes the session of this device. Its tokens stop working at once.
+         */
+        post: operations["logout_api_v1_auth_logout_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/password/lookup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Lookup
+         * @description First step of the sign in: whether the email has an account here and whether it has a password.
+         *
+         *     `exists: false` shows «No encontramos tu cuenta». `has_password: false` means the account signs
+         *     in with an identity provider (or sets a password from `POST /auth/password/forgot`).
+         *     Unknown emails count against the address. A blocked address gets `401 login_failed`. In an
+         *     installation without passwords: `404`.
+         */
+        post: operations["lookup_api_v1_auth_password_lookup_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/password/signup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Sign Up
+         * @description Creates a private traveller's account and emails a link to verify it.
+         *
+         *     The account can't sign in until the link is opened (`POST /auth/email/verify`). An email that
+         *     already has a verified account: `409 user_already_exists`. Only in the main installation;
+         *     organizations create their users themselves (`404` there).
+         */
+        post: operations["sign_up_api_v1_auth_password_signup_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/email/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Verify Email
+         * @description Verifies the email with the token of the link and signs this device in.
+         *
+         *     Needs a `DPoP` proof of the device. Unknown, expired or used link: `410 invalid_link`.
+         */
+        post: operations["verify_email_api_v1_auth_email_verify_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/password/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Login
+         * @description Signs this device in with email and password.
+         *
+         *     Needs a `DPoP` proof of the device: the session is bound to its key. Any failure is `401
+         *     login_failed` with the same message («No pudimos iniciar sesión»), so an attacker can't tell a
+         *     wrong password from an unknown, blocked or unverified account. After `max_failed_logins` wrong
+         *     passwords in a row (setting of the installation, 3 by default) the password sign in is blocked
+         *     and the user gets an email to change it; too many failures from one address block it. In an
+         *     installation without passwords: `404`.
+         */
+        post: operations["login_api_v1_auth_password_login_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/password/forgot": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Forgot Password
+         * @description Emails a link to choose a new password, or to create the first one.
+         *
+         *     Always answers `202`, whether the account exists or not.
+         */
+        post: operations["forgot_password_api_v1_auth_password_forgot_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/password/set": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Set Password
+         * @description Sets the password from the token of an email link (first password or a reset).
+         *
+         *     It also unblocks an account blocked by wrong passwords.
+         *
+         *     A reset closes the session on every device of the user. Then sign in with
+         *     `POST /auth/password/login`. Unknown, expired or used link: `410 invalid_link`.
+         */
+        post: operations["set_password_api_v1_auth_password_set_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/password/link": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Password Link
+         * @description What a link to create or recover the password is for, without using it.
+         *
+         *     The screen shows the email of the account and, for a first password, what else it signs in with
+         *     («Vas a poder seguir entrando también con Google»). Unknown, expired or used link: `410
+         *     invalid_link`.
+         */
+        post: operations["password_link_api_v1_auth_password_link_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/methods": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Methods
+         * @description How people sign in to this installation: email and password (if allowed) and one button per provider.
+         */
+        get: operations["methods_api_v1_auth_methods_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/oidc/{provider}/authorize": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Authorize
+         * @description Starts a sign in through a provider; open `authorization_url` in the browser.
+         *
+         *     Needs a `DPoP` proof: only this device can finish the sign in. The provider sends the browser
+         *     back to `/auth/callback` of this app with `code` and `state`, which go to
+         *     `POST /auth/oidc/{provider}/callback`. Unknown provider: `404 provider_not_found`.
+         */
+        post: operations["authorize_api_v1_auth_oidc__provider__authorize_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/oidc/{provider}/callback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Callback
+         * @description Finishes the sign in with the `code` and `state` the provider sent back.
+         *
+         *     `status: signed_in` brings the tokens. `status: account_not_found` shows «No encontramos tu
+         *     cuenta»: create it (`POST /auth/signup/pending/{attempt_id}`, only if `can_create`) or try
+         *     another account (`DELETE` on the same path); those two answer `400 invalid_login_attempt` if the
+         *     decision expired or comes from another device. Needs a `DPoP` proof of the device that started
+         *     the sign in. Any failure of the sign in itself (expired or used sign in, another device, an answer of the provider
+         *     that isn't valid, an unverified email, a blocked address) is `401 login_failed`, always with
+         *     the same message: «No pudimos iniciar sesión».
+         */
+        post: operations["callback_api_v1_auth_oidc__provider__callback_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/signup/pending/{attempt_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Pending Signup
+         * @description The identity waiting for the «create account» decision, to show it again after a reload.
+         */
+        get: operations["pending_signup_api_v1_auth_signup_pending__attempt_id__get"];
+        put?: never;
+        /**
+         * Create Account
+         * @description «Crear cuenta»: creates the account with what the provider verified and signs this device in.
+         *
+         *     The account starts without a password; an email lets the person create one. Phone and language
+         *     are optional. Only for private travellers: in an organization, `403 signup_not_allowed`.
+         */
+        post: operations["create_account_api_v1_auth_signup_pending__attempt_id__post"];
+        /**
+         * Discard Signup
+         * @description «Usar otra cuenta»: forgets the identity; start the sign in again (Google shows its account picker).
+         */
+        delete: operations["discard_signup_api_v1_auth_signup_pending__attempt_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Me
+         * @description The signed-in user, read fresh (the access token may be up to 10 minutes old).
+         *
+         *     `traveller_profile` holds the passenger data of their last booking for themselves (title, date
+         *     of birth and gender), to fill the next one; `null` until they book for themselves.
+         */
+        get: operations["me_api_v1_me_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/sessions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Sessions
+         * @description Devices with an open session, most recently used first. `current` marks this one.
+         */
+        get: operations["sessions_api_v1_me_sessions_get"];
+        put?: never;
+        post?: never;
+        /**
+         * Close Other Sessions
+         * @description Closes the sessions of every device of the user except this one.
+         */
+        delete: operations["close_other_sessions_api_v1_me_sessions_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/sessions/{session_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Close Session
+         * @description Closes the session of one of the user's devices; on its next request it gets `401 session_revoked`.
+         *
+         *     A session of another user, or one already closed, is `404 session_not_found`.
+         */
+        delete: operations["close_session_api_v1_me_sessions__session_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /**
+         * AccountNotFoundResponse
+         * @description The provider's identity has no account here: «No encontramos tu cuenta».
+         */
+        AccountNotFoundResponse: {
+            /**
+             * Status
+             * @description Discriminator.
+             * @default account_not_found
+             * @constant
+             */
+            status: "account_not_found";
+            /**
+             * Attempt Id
+             * Format: uuid
+             * @description Use it in `POST` (create the account) or `DELETE` (try another account) `/auth/signup/pending/{attempt_id}`.
+             */
+            attempt_id: string;
+            /**
+             * Email
+             * @description Email the provider verified.
+             */
+            email: string;
+            /**
+             * Display Name
+             * @description Name the provider gave.
+             */
+            display_name: string;
+            /**
+             * Can Create
+             * @description `true` for private travellers; in an organization, it must give access first.
+             */
+            can_create: boolean;
+        };
         /**
          * Amenities
          * @description On-board amenities of a cabin. `null` means unknown.
@@ -204,6 +655,60 @@ export interface components {
              * @description `less`, `standard` or `more` than usual.
              */
             legroom?: string | null;
+        };
+        /**
+         * AuthMethodsResponse
+         * @description How people sign in to this installation.
+         */
+        AuthMethodsResponse: {
+            /**
+             * Organization Name
+             * @description Name of the organization of the installation; `null` for the main one.
+             */
+            organization_name: string | null;
+            /**
+             * Password Enabled
+             * @description Whether email and password are accepted.
+             */
+            password_enabled: boolean;
+            /**
+             * Signup Enabled
+             * @description Whether people can create their own account (only private travellers).
+             */
+            signup_enabled: boolean;
+            /**
+             * Providers
+             * @description Identity providers, one button each.
+             */
+            providers: components["schemas"]["ProviderOption"][];
+        };
+        /**
+         * AuthorizeRequest
+         * @description Body of `POST /auth/oidc/{provider}/authorize`.
+         */
+        AuthorizeRequest: {
+            /**
+             * Return To
+             * @description Path of the app to go back to after signing in, e.g. `/trip`. Only paths of this app.
+             */
+            return_to?: string | null;
+            /**
+             * Another Account
+             * @description «Usar otra cuenta»: asks the provider to sign in again (`prompt=login`) instead of reusing its session.
+             * @default false
+             */
+            another_account: boolean;
+        };
+        /**
+         * AuthorizeResponse
+         * @description Where to send the browser to sign in at the provider.
+         */
+        AuthorizeResponse: {
+            /**
+             * Authorization Url
+             * @description URL of the provider. It sends the browser back to `/auth/callback` of this app with `code` and `state`.
+             */
+            authorization_url: string;
         };
         /**
          * Baggage
@@ -232,6 +737,12 @@ export interface components {
             title: components["schemas"]["PassengerTitle"];
             /** @description Personal data, as written in the travel document. */
             traveller: components["schemas"]["TravellerDetails"];
+            /**
+             * Is Account Holder
+             * @description Whether the signed-in user travels. Then their title, date of birth and gender are kept to fill their next booking; for someone else nothing is kept beyond this booking.
+             * @default false
+             */
+            is_account_holder: boolean;
         };
         /**
          * BookingPassengerResponse
@@ -337,6 +848,27 @@ export interface components {
          */
         CabinClass: "economy" | "premium_economy" | "business" | "first";
         /**
+         * CallbackRequest
+         * @description Body of `POST /auth/oidc/{provider}/callback`: what the provider put in the redirect.
+         */
+        CallbackRequest: {
+            /**
+             * Code
+             * @description Authorization code.
+             */
+            code: string;
+            /**
+             * State
+             * @description `state` the provider sent back.
+             */
+            state: string;
+            /**
+             * Device Name
+             * @description Name of the device for the list of devices; if omitted, it comes from the `User-Agent`.
+             */
+            device_name?: string | null;
+        };
+        /**
          * Carrier
          * @description An airline.
          */
@@ -377,6 +909,83 @@ export interface components {
              * @description Time between landing and the next takeoff; `null` if a time zone is unknown.
              */
             duration_minutes: number | null;
+        };
+        /**
+         * DeviceSessionListResponse
+         * @description Connected devices of the signed-in user.
+         */
+        DeviceSessionListResponse: {
+            /**
+             * Sessions
+             * @description Open sessions, most recently used first.
+             */
+            sessions: components["schemas"]["DeviceSessionResponse"][];
+        };
+        /**
+         * DeviceSessionResponse
+         * @description A connected device.
+         */
+        DeviceSessionResponse: {
+            /**
+             * Id
+             * Format: uuid
+             * @description Id of the session.
+             */
+            id: string;
+            /**
+             * Device Name
+             * @description Name of the device, e.g. «Chrome en Windows».
+             */
+            device_name: string;
+            /**
+             * Created At
+             * Format: date-time
+             * @description When the device signed in.
+             */
+            created_at: string;
+            /**
+             * Last Seen At
+             * Format: date-time
+             * @description Last time it was used (precision: about a minute).
+             */
+            last_seen_at: string;
+            /**
+             * Last Ip
+             * @description Last address seen.
+             */
+            last_ip: string | null;
+            /**
+             * Current
+             * @description Whether it's the device making this request.
+             */
+            current: boolean;
+        };
+        /**
+         * EmailRequest
+         * @description Body of the endpoints that only send an email (forgot password, resend).
+         */
+        EmailRequest: {
+            /**
+             * Email
+             * @description Email of the account.
+             */
+            email: string;
+        };
+        /**
+         * EmailVerificationRequest
+         * @description Body of `POST /auth/email/verify`.
+         */
+        EmailVerificationRequest: {
+            /**
+             * Token
+             * @description Token of the link sent by email.
+             */
+            token: string;
+            /**
+             * Device Name
+             * @description Name of the device for the list of devices.
+             */
+            device_name?: string | null;
         };
         /**
          * FailureCode
@@ -627,6 +1236,115 @@ export interface components {
          */
         IdentityDocumentType: "passport";
         /**
+         * Language
+         * @description Language of the interface and the emails (only Spanish for now; English for future translations).
+         * @enum {string}
+         */
+        Language: "es" | "en";
+        /**
+         * LinkTokenRequest
+         * @description Body of `POST /auth/password/link`.
+         */
+        LinkTokenRequest: {
+            /**
+             * Token
+             * @description Token of the link sent by email.
+             */
+            token: string;
+        };
+        /**
+         * LoginRequest
+         * @description Body of `POST /auth/password/login`.
+         */
+        LoginRequest: {
+            /**
+             * Email
+             * @description Email of the account.
+             */
+            email: string;
+            /**
+             * Password
+             * @description Password of the account.
+             */
+            password: string;
+            /**
+             * Device Name
+             * @description Name of the device for the list of devices; the app sends its model. If omitted, it comes from the `User-Agent`.
+             */
+            device_name?: string | null;
+        };
+        /**
+         * LookupRequest
+         * @description Body of `POST /auth/password/lookup`: the first step of the sign in.
+         */
+        LookupRequest: {
+            /**
+             * Email
+             * @description Email the person typed.
+             */
+            email: string;
+        };
+        /**
+         * LookupResponse
+         * @description Answer of the first step of the sign in.
+         */
+        LookupResponse: {
+            /**
+             * Exists
+             * @description Whether the installation has an account with that email.
+             */
+            exists: boolean;
+            /**
+             * Has Password
+             * @description Whether the account can sign in with a password.
+             */
+            has_password: boolean;
+        };
+        /**
+         * MeResponse
+         * @description The signed-in user.
+         */
+        MeResponse: {
+            /**
+             * Id
+             * Format: uuid
+             * @description Id of the user.
+             */
+            id: string;
+            /**
+             * Email
+             * @description Email of the user.
+             */
+            email: string;
+            /**
+             * Display Name
+             * @description Name shown in the interface.
+             */
+            display_name: string;
+            /** @description Organization of the user; `null` for a private traveller. */
+            organization: components["schemas"]["OrganizationSummary"] | null;
+            /**
+             * Has Password
+             * @description Whether the user set a password; if not, they sign in with an identity provider.
+             */
+            has_password: boolean;
+            /**
+             * Phone Number
+             * @description Phone number in E.164 format, if the user gave one.
+             */
+            phone_number: string | null;
+            /** @description Language the user chose; `null` means the app uses the browser's or the system's. */
+            language: components["schemas"]["Language"] | null;
+            /** @description Passenger data of their last booking for themselves, to fill the next one; `null` until they book for themselves. */
+            traveller_profile: components["schemas"]["TravellerProfileSummary"] | null;
+            /**
+             * Session Id
+             * Format: uuid
+             * @description Device session of this request.
+             */
+            session_id: string;
+        };
+        /**
          * Money
          * @description An amount in a currency.
          *
@@ -722,6 +1440,23 @@ export interface components {
             available_actions: string[];
         };
         /**
+         * OrganizationSummary
+         * @description The organization of the current user.
+         */
+        OrganizationSummary: {
+            /**
+             * Id
+             * Format: uuid
+             * @description Id of the organization.
+             */
+            id: string;
+            /**
+             * Name
+             * @description Name shown to users.
+             */
+            name: string;
+        };
+        /**
          * PassengerBaggage
          * @description Bags a passenger has on a whole slice: the most restrictive allowance of its segments.
          */
@@ -765,6 +1500,28 @@ export interface components {
          * @enum {string}
          */
         PassengerTitle: "mr" | "ms" | "mrs" | "miss" | "dr";
+        /**
+         * PasswordLinkResponse
+         * @description What a password link is for.
+         */
+        PasswordLinkResponse: {
+            /**
+             * Email
+             * @description Email of the account.
+             */
+            email: string;
+            /**
+             * Kind
+             * @description `set`: first password; `reset`: the person forgot it.
+             * @enum {string}
+             */
+            kind: "set" | "reset";
+            /**
+             * Signs In With
+             * @description What else the account signs in with, e.g. «Google» or «el SSO de Acme»; `null` if only the password.
+             */
+            signs_in_with: string | null;
+        };
         /**
          * PaymentTerms
          * @description When the offer has to be paid.
@@ -891,6 +1648,33 @@ export interface components {
             decision: components["schemas"]["PriceDecision"];
             /** @description The new price being answered (`offered_price` of the booking). */
             price: components["schemas"]["Money-Input"];
+        };
+        /**
+         * ProviderOption
+         * @description An identity provider on the sign-in screen.
+         */
+        ProviderOption: {
+            /**
+             * Slug
+             * @description Name in the URLs of `/auth/oidc/{provider}/...`.
+             */
+            slug: string;
+            /**
+             * Display Name
+             * @description Text of the button, e.g. «Google» or «Acme SSO».
+             */
+            display_name: string;
+        };
+        /**
+         * RefreshRequest
+         * @description Body of `POST /auth/token/refresh`.
+         */
+        RefreshRequest: {
+            /**
+             * Refresh Token
+             * @description The last refresh token the device received.
+             */
+            refresh_token: string;
         };
         /**
          * SearchCriteria
@@ -1076,6 +1860,83 @@ export interface components {
             amenities?: components["schemas"]["Amenities"] | null;
         };
         /**
+         * SetPasswordRequest
+         * @description Body of `POST /auth/password/set`: the first password, or a new one after forgetting it.
+         */
+        SetPasswordRequest: {
+            /**
+             * Token
+             * @description Token of the link sent by email.
+             */
+            token: string;
+            /**
+             * Password
+             * @description New password: at least 10 characters.
+             */
+            password: string;
+        };
+        /**
+         * SignedInResponse
+         * @description The provider's identity has an account here: the device is signed in.
+         */
+        SignedInResponse: {
+            /**
+             * Status
+             * @description Discriminator.
+             * @default signed_in
+             * @constant
+             */
+            status: "signed_in";
+            /** @description Tokens of the new session, with `return_to`. */
+            tokens: components["schemas"]["TokenResponse"];
+        };
+        /**
+         * SignupDecision
+         * @description Body of `POST /auth/signup/pending/{attempt_id}`.
+         */
+        SignupDecision: {
+            /**
+             * Device Name
+             * @description Name of the device for the list of devices.
+             */
+            device_name?: string | null;
+            /**
+             * Phone Number
+             * @description Phone number in E.164 format, e.g. `+5491112345678`. Optional.
+             */
+            phone_number?: string | null;
+            /** @description Language the person chose. Omit it to let the app use the browser's or the system's. */
+            language?: components["schemas"]["Language"] | null;
+        };
+        /**
+         * SignupRequest
+         * @description Body of `POST /auth/password/signup` (private travellers only).
+         */
+        SignupRequest: {
+            /**
+             * Email
+             * @description Email of the new account; a link to verify it is sent there.
+             */
+            email: string;
+            /**
+             * Display Name
+             * @description Name shown in the interface.
+             */
+            display_name: string;
+            /**
+             * Password
+             * @description Password: at least 10 characters.
+             */
+            password: string;
+            /**
+             * Phone Number
+             * @description Phone number in E.164 format, e.g. `+5491112345678`. Optional.
+             */
+            phone_number?: string | null;
+            /** @description Language the person chose. Omit it to let the app use the browser's or the system's. */
+            language?: components["schemas"]["Language"] | null;
+        };
+        /**
          * Slice
          * @description One direction of the trip: outbound or inbound.
          */
@@ -1129,6 +1990,51 @@ export interface components {
             number: string;
         };
         /**
+         * Title
+         * @description Title of the traveller, as airlines print it on the ticket.
+         * @enum {string}
+         */
+        Title: "mr" | "ms" | "mrs" | "miss" | "dr";
+        /**
+         * TokenResponse
+         * @description Tokens of a device session. Send the access token as `Authorization: DPoP <access_token>`.
+         */
+        TokenResponse: {
+            /**
+             * Token Type
+             * @description Scheme of the `Authorization` header. Every request also needs a `DPoP` proof signed by the device key.
+             * @default DPoP
+             * @constant
+             */
+            token_type: "DPoP";
+            /**
+             * Access Token
+             * @description Signed JWT (ES256). Its claims (name, email, organization) are readable, only to decide what to show.
+             */
+            access_token: string;
+            /**
+             * Expires In
+             * @description Seconds until the access token expires.
+             */
+            expires_in: number;
+            /**
+             * Refresh Token
+             * @description Single-use: `POST /auth/token/refresh` returns a new one. Using it twice closes the session.
+             */
+            refresh_token: string;
+            /**
+             * Session Id
+             * Format: uuid
+             * @description Device session, as listed in `GET /me/sessions`.
+             */
+            session_id: string;
+            /**
+             * Return To
+             * @description Path of the app to go back to after signing in, if the sign in started with one.
+             */
+            return_to?: string | null;
+        };
+        /**
          * TravellerDetails
          * @description Personal data of a traveller, as written in their travel document.
          */
@@ -1166,6 +2072,22 @@ export interface components {
              * @description Identity documents; at most one of each type.
              */
             identity_documents?: components["schemas"]["IdentityDocumentDetails"][];
+        };
+        /**
+         * TravellerProfileSummary
+         * @description Passenger data the user keeps for their own trips.
+         */
+        TravellerProfileSummary: {
+            /** @description Title printed on the ticket. */
+            title: components["schemas"]["Title"];
+            /**
+             * Born On
+             * Format: date
+             * @description Date of birth.
+             */
+            born_on: string;
+            /** @description Gender as written in the identity document: `m` or `f`. */
+            gender: components["schemas"]["Gender"];
         };
         /** ValidationError */
         ValidationError: {
@@ -1408,6 +2330,619 @@ export interface operations {
                 content: {
                     "text/event-stream": unknown;
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    jwks_api_v1_auth_jwks_json_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+        };
+    };
+    refresh_api_v1_auth_token_refresh_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RefreshRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    logout_api_v1_auth_logout_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    lookup_api_v1_auth_password_lookup_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LookupRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LookupResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    sign_up_api_v1_auth_password_signup_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SignupRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    verify_email_api_v1_auth_email_verify_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EmailVerificationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    login_api_v1_auth_password_login_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LoginRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    forgot_password_api_v1_auth_password_forgot_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EmailRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    set_password_api_v1_auth_password_set_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetPasswordRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    password_link_api_v1_auth_password_link_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LinkTokenRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PasswordLinkResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    methods_api_v1_auth_methods_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthMethodsResponse"];
+                };
+            };
+        };
+    };
+    authorize_api_v1_auth_oidc__provider__authorize_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AuthorizeRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthorizeResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    callback_api_v1_auth_oidc__provider__callback_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CallbackRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignedInResponse"] | components["schemas"]["AccountNotFoundResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    pending_signup_api_v1_auth_signup_pending__attempt_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                attempt_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccountNotFoundResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_account_api_v1_auth_signup_pending__attempt_id__post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                attempt_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SignupDecision"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TokenResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    discard_signup_api_v1_auth_signup_pending__attempt_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                attempt_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    me_api_v1_me_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MeResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    sessions_api_v1_me_sessions_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DeviceSessionListResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    close_other_sessions_api_v1_me_sessions_delete: {
+        parameters: {
+            query: {
+                /** @description Only `others` is supported: every device but this one. */
+                scope: "others";
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    close_session_api_v1_me_sessions__session_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                session_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {

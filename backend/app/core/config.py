@@ -1,9 +1,11 @@
 """Application-wide settings, read from environment variables or `.env`."""
 
 from functools import lru_cache
+from ipaddress import IPv4Network, IPv6Network
+from typing import Annotated
 
-from pydantic import Field, SecretStr
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import Field, SecretStr, field_validator
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -50,6 +52,23 @@ class Settings(BaseSettings):
         default=0.5,
         description="Max wait for a Redis command; past it the cache is skipped and the database is used.",
     )
+
+    trusted_proxies: Annotated[tuple[IPv4Network | IPv6Network, ...], NoDecode] = Field(
+        default=(),
+        description=(
+            "Networks of the proxies in front of the API (`TRUSTED_PROXIES`, comma separated CIDRs). Only "
+            "from them are `X-Forwarded-Host` and `X-Forwarded-For` believed; from anyone else they could "
+            "be forged to reach another installation or to hide the real address."
+        ),
+    )
+
+    @field_validator("trusted_proxies", mode="before")
+    @classmethod
+    def _split_networks(cls, value: object) -> object:
+        """Reads a comma-separated list of CIDRs."""
+        if isinstance(value, str):
+            return tuple(n.strip() for n in value.split(",") if n.strip())
+        return value
 
 
 @lru_cache

@@ -9,8 +9,10 @@ from app.flights.api.mappers.search import to_search_response
 from app.flights.api.schemas.search import SearchResponse
 from app.flights.domain.dtos.search import SearchCriteria
 from app.flights.services.flight_search import FlightSearchService
+from app.identity.public import installation_principal
 
-router = APIRouter()
+# In an organization's installation only its signed-in users may use it; on the main platform it is public.
+router = APIRouter(dependencies=[Depends(installation_principal)])
 
 
 # FastAPI publishes the docstring as the endpoint's description in Swagger, so it is written for

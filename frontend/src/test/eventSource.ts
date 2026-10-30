@@ -1,10 +1,10 @@
-import { vi } from "vitest";
+import { setEventStreamFactory } from "@/api/eventStream";
 
 type Listener = (event: MessageEvent<string>) => void;
 
 /**
- * Stand-in for the browser's `EventSource` (jsdom has none): tests open no connection and push
- * the Server-Sent Events themselves with `emit`.
+ * Stand-in for the app's event streams (`src/api/eventStream.ts`): tests open no connection and
+ * push the Server-Sent Events themselves with `emit`.
  */
 export class FakeEventSource {
   static instances: FakeEventSource[] = [];
@@ -40,8 +40,8 @@ export class FakeEventSource {
   }
 }
 
-/** Replaces `EventSource` for the current test; `setup.ts` restores it. */
+/** Opens the app's event streams on `FakeEventSource` for the current test; `setup.ts` restores them. */
 export function installFakeEventSource() {
   FakeEventSource.instances = [];
-  vi.stubGlobal("EventSource", FakeEventSource);
+  setEventStreamFactory((url) => new FakeEventSource(url));
 }

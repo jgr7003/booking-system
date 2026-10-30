@@ -1,0 +1,42 @@
+{#- Design board "Cuenta 11 · Correos de cuenta" (Propuesta A v3): welcome, when the account is
+    created with Google or SSO, or when the email of a new account is verified. -#}
+{% set sans = "'IBM Plex Sans', Arial, Helvetica, sans-serif" %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ subject }}</title>
+</head>
+<body style="margin: 0; padding: 0; background: #E5E7EB; font-family: {{ sans }}; color: #111827">
+<div style="display: none; max-height: 0; overflow: hidden; opacity: 0">{{ intro }}</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background: #E5E7EB">
+<tr><td align="center" style="padding: 24px 12px">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width: 600px; max-width: 100%; border-collapse: collapse; background: #FFFFFF">
+  <tr><td style="background: #0B1530; padding: 28px 32px 0">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse"><tr>
+      <td style="color: #FFFFFF; font-family: {{ sans }}; font-size: 22px; font-weight: 700">✈ Vuelos</td>
+      {% if organization_name %}<td align="right" style="color: #C7D5FA; font-family: {{ sans }}; font-size: 14px">Viajes de {{ organization_name }}</td>{% endif %}
+    </tr></table>
+    <h1 style="margin: 28px 0 8px; color: #FFFFFF; font-family: {{ sans }}; font-size: 30px; line-height: 1.2">Hola, {{ first_name }}. Ya tienes tu cuenta.</h1>
+    <p style="margin: 0 0 28px; color: #C7D5FA; font-family: {{ sans }}; font-size: 16px; line-height: 1.5">{{ intro }}</p>
+  </td></tr>
+  <tr><td style="padding: 28px 32px 8px">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse; font-family: {{ sans }}; font-size: 15px; line-height: 1.5; color: #374151">
+      <tr><td width="40" valign="top" style="padding: 0 0 14px; font-size: 18px; color: #1D4ED8">①</td><td style="padding: 0 0 14px"><strong style="color: #111827">Busca</strong> y compara varias aerolíneas en una sola búsqueda.</td></tr>
+      <tr><td width="40" valign="top" style="padding: 0 0 14px; font-size: 18px; color: #1D4ED8">②</td><td style="padding: 0 0 14px"><strong style="color: #111827">Arma tu viaje</strong> con uno o más vuelos; pronto, también hotel.</td></tr>
+      <tr><td width="40" valign="top" style="padding: 0 0 14px; font-size: 18px; color: #1D4ED8">③</td><td style="padding: 0 0 14px"><strong style="color: #111827">Reserva</strong> y recibe el código y los tickets en este correo.</td></tr>
+    </table>
+  </td></tr>
+  <tr><td style="padding: 8px 32px 24px">
+    <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse"><tr><td style="background: #1D4ED8; border-radius: 8px">
+      <a href="{{ link }}" style="display: inline-block; padding: 14px 28px; color: #FFFFFF; font-family: {{ sans }}; font-size: 16px; font-weight: 600; text-decoration: none">Buscar vuelos</a>
+    </td></tr></table>
+  </td></tr>
+  <tr><td style="border-top: 1px solid #E5E7EB; padding: 18px 32px; font-family: {{ sans }}; font-size: 14px; line-height: 1.55; color: #374151">{% if password_email_follows %}También te enviamos otro correo para crear una contraseña, por si quieres entrar con tu email. Es opcional.<br>{% endif %}<strong>Si no fuiste tú, ignora este correo.</strong></td></tr>
+  <tr><td style="background: #111827; padding: 18px 32px; color: #9CA3AF; font-family: {{ sans }}; font-size: 12px; line-height: 1.6">[Razón social, dirección y datos de contacto de la empresa]</td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>

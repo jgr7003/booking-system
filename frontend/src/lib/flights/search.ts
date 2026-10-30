@@ -120,10 +120,10 @@ export function searchErrors(
   today: string,
 ): Partial<Record<keyof FlightSearch, string>> {
   const errors: Partial<Record<keyof FlightSearch, string>> = {};
-  if (!search.from) errors.from = "Elegí el origen.";
-  if (!search.to) errors.to = "Elegí el destino.";
+  if (!search.from) errors.from = "Elige el origen.";
+  if (!search.to) errors.to = "Elige el destino.";
   if (search.from && search.from === search.to) errors.to = "El destino tiene que ser distinto del origen.";
-  if (!search.depart) errors.depart = "Elegí la fecha de ida.";
+  if (!search.depart) errors.depart = "Elige la fecha de ida.";
   else if (search.depart < today) errors.depart = "La ida no puede ser en el pasado.";
   if (search.ret && search.depart && search.ret < search.depart)
     errors.ret = "La vuelta no puede ser antes de la ida.";

@@ -1,5 +1,6 @@
 """Bookings: states, the traveler's request and the passenger as the airline gets it."""
 
+import uuid
 from datetime import date
 from enum import StrEnum
 from typing import Self
@@ -72,6 +73,12 @@ class BookingPassenger(DTO):
 
     traveller: TravellerDetails = Field(
         description="Personal data, as written in the travel document.",
+    )
+
+    is_account_holder: bool = Field(
+        default=False,
+        description="Whether the signed-in user travels. Then their title, date of birth and gender are kept "
+        "to fill their next booking; for someone else nothing is kept beyond this booking.",
     )
 
     @model_validator(mode="after")
@@ -181,4 +188,23 @@ class PriceDecisionRequest(DTO):
 
     price: Money = Field(
         description="The new price being answered (`offered_price` of the booking).",
+    )
+
+
+class BookingOwner(DTO):
+    """Who may see a booking: its user, within their organization.
+
+    Every read of a booking made for a user takes one, with no defaults, and filters by both
+    fields: the organization so nobody ever sees another organization's bookings (nor a private
+    traveller an organization's, or the other way around), and the user so each person sees only
+    their own. When permissions exist, a role may relax the user filter inside its organization;
+    the organization filter never goes away.
+    """
+
+    organization_id: uuid.UUID | None = Field(
+        description="Organization of the user; `None` for a private traveller.",
+    )
+
+    user_id: uuid.UUID = Field(
+        description="The user.",
     )

@@ -102,7 +102,7 @@ export function PlaceField({ label, value, onChange, error, className }: PlaceFi
             <p aria-live="polite" className="px-3.5 py-3 text-[14px] text-muted">
               {suggestions.isFetching
                 ? "Buscando…"
-                : "Sin coincidencias. Probá con el código (por ejemplo, JFK)."}
+                : "Sin coincidencias. Prueba con el código (por ejemplo, JFK)."}
             </p>
           )}
           <div id={listId} role="listbox" aria-label={`Sugerencias para ${label.toLowerCase()}`}>

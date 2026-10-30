@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { fixtures } from "@/test/server";
 import {
+  accountPassenger,
+  accountPhone,
+  accountTraveller,
   ageOn,
   airlineNameLength,
   bagsSummary,
@@ -126,7 +129,7 @@ describe("checkout form", () => {
   });
 
   it("rejects names the airline can't take and more than 40 characters", () => {
-    expect(errorsOf({ ...VALID, familyName: "Prueba2" }).familyName).toMatch(/Usá solo letras/);
+    expect(errorsOf({ ...VALID, familyName: "Prueba2" }).familyName).toMatch(/Usa solo letras/);
     expect(errorsOf({ ...VALID, givenName: "A".repeat(20), familyName: "B".repeat(21) }).familyName).toMatch(
       /40/,
     );
@@ -173,9 +176,17 @@ describe("booking request", () => {
         phone_number: "+5491112345678",
         identity_documents: [],
       },
+      is_account_holder: false,
     });
     expect(body.payment_token).toBe("tok_fake_4242");
     expect(JSON.stringify(body)).not.toContain("4242 4242");
+  });
+
+  it("says when the signed-in user is the one who travels", () => {
+    const fare = fixtures.search.flights[0]?.fares[0];
+    if (!fare) throw new Error("fixture without fares");
+
+    expect(buildBookingRequest(VALID, fare, true).passenger.is_account_holder).toBe(true);
   });
 });
 
@@ -196,5 +207,34 @@ describe("summary texts", () => {
 
   it("never assumes an unreported cabin bag", () => {
     expect(bagsSummary(fareOf("Economy Impact"))).toContain("mano: sin dato");
+  });
+});
+
+describe("passenger from the account", () => {
+  it("fills the names as the airline takes them, and the email", () => {
+    expect(accountPassenger({ name: "José Muñoz de la Peña", email: "jose@ejemplo.com" })).toEqual({
+      givenName: "JOSE",
+      familyName: "MUNOZ DE LA PENA",
+      email: "jose@ejemplo.com",
+    });
+  });
+
+  it("splits the phone of the account into country and national number", () => {
+    expect(accountPhone("+573105826464")).toEqual({ phoneCountry: "CO", phoneNumber: "3105826464" });
+    expect(accountPhone("+5491112345678")).toEqual({ phoneCountry: "AR", phoneNumber: "91112345678" });
+  });
+
+  it("leaves the phone empty when the account's can't be read", () => {
+    expect(accountPhone("12345")).toBeNull();
+  });
+
+  it("fills title, date of birth and gender from the last booking for themselves", () => {
+    expect(accountTraveller({ title: "mr", born_on: "1990-08-23", gender: "m" })).toEqual({
+      title: "mr",
+      gender: "m",
+      birthDay: "23",
+      birthMonth: "08",
+      birthYear: "1990",
+    });
   });
 });

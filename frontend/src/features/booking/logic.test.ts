@@ -45,7 +45,7 @@ describe("confirmation rules", () => {
 
     expect(items.map((i) => [i.label, i.value])).toEqual([
       ["Equipaje de mano", "✓ 1 incluido"],
-      ["Valija despachada", "✓ 1 incluida"],
+      ["Maleta de bodega", "✓ 1 incluida"],
       ["Cambios", "✗ No permite"],
       ["Reembolso", "✗ No permite"],
       ["Selección de asiento", "Sin dato"],
@@ -63,8 +63,8 @@ describe("confirmation rules", () => {
   });
 
   it("describes the bags of a flight, never assuming", () => {
-    expect(bagsLine({ carryOn: 1, checked: 1 }).text).toBe("✓ 1 de mano · ✓ 1 valija");
-    expect(bagsLine({ carryOn: 1, checked: 0 }).text).toBe("✓ 1 de mano · ✗ Valija no incluida");
+    expect(bagsLine({ carryOn: 1, checked: 1 }).text).toBe("✓ 1 de mano · ✓ 1 maleta");
+    expect(bagsLine({ carryOn: 1, checked: 0 }).text).toBe("✓ 1 de mano · ✗ Maleta no incluida");
     expect(bagsLine({ carryOn: null, checked: null }).text).toBe("Equipaje: Sin dato");
   });
 

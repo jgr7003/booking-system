@@ -1,9 +1,10 @@
 """PostgreSQL access shared by every module: declarative base, engine and sessions."""
 
 from collections.abc import AsyncIterator
+from typing import Any
 
 from fastapi import Request
-from sqlalchemy import MetaData
+from sqlalchemy import ColumnElement, MetaData
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
 
@@ -73,3 +74,20 @@ def get_session_factory(request: Request) -> async_sessionmaker[AsyncSession]:
         The session factory.
     """
     return request.app.state.session_factory
+
+
+def equals_or_null(column: ColumnElement[Any], value: Any) -> ColumnElement[bool]:
+    """`column = value`, or `column IS NULL` when the value is `None`.
+
+    Use it instead of `IS NOT DISTINCT FROM` on indexed columns: with a bound parameter PostgreSQL
+    can't use an index for `IS NOT DISTINCT FROM`, so it scans and filters row by row. Both forms
+    here are indexable (e.g. `organization_id`, which is `NULL` for private travellers).
+
+    Args:
+        column: The column, e.g. `User.organization_id`.
+        value: The value to compare with.
+
+    Returns:
+        The condition.
+    """
+    return column.is_(None) if value is None else column == value

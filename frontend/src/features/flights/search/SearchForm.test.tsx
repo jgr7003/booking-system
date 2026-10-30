@@ -67,8 +67,8 @@ describe("search form", () => {
 
     await user.click(await screen.findByRole("button", { name: "Buscar" }));
 
-    expect(screen.getByText("Elegí el origen.")).toBeInTheDocument();
-    expect(screen.getByText("Elegí el destino.")).toBeInTheDocument();
-    expect(screen.getByText("Elegí la fecha de ida.")).toBeInTheDocument();
+    expect(screen.getByText("Elige el origen.")).toBeInTheDocument();
+    expect(screen.getByText("Elige el destino.")).toBeInTheDocument();
+    expect(screen.getByText("Elige la fecha de ida.")).toBeInTheDocument();
   });
 });

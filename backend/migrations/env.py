@@ -14,6 +14,12 @@ from app.core.db import Base, create_engine
 import app.core.messaging.models  # noqa: F401
 import app.flights.domain.models.airports  # noqa: F401
 import app.flights.domain.models.bookings  # noqa: F401
+import app.identity.domain.models.blocked_ips  # noqa: F401
+import app.identity.domain.models.email_tokens  # noqa: F401
+import app.identity.domain.models.providers  # noqa: F401
+import app.identity.domain.models.sessions  # noqa: F401
+import app.identity.domain.models.users  # noqa: F401
+import app.organizations.domain.models  # noqa: F401
 import app.payments.domain.models  # noqa: F401
 import app.travellers.domain.models  # noqa: F401
 

@@ -61,7 +61,7 @@ export function RoundTripSteps({
     const first = outbounds[0]?.flight.slices[0];
     return (
       <section aria-labelledby="step-outbound" className="flex flex-col gap-3">
-        <StepHeading id="step-outbound" step={1} title="Elegí tu ida">
+        <StepHeading id="step-outbound" step={1} title="Elige tu ida">
           {first &&
             `${first.origin.city ?? first.origin.code} → ${first.destination.city ?? first.destination.code}`}
           {first?.segments[0] && ` · ${formatDate(first.segments[0].departing_at)}`}
@@ -112,7 +112,7 @@ export function RoundTripSteps({
         </div>
       )}
 
-      <StepHeading id="step-return" step={2} title="Elegí tu vuelta">
+      <StepHeading id="step-return" step={2} title="Elige tu vuelta">
         {returnSlice &&
           `${returnSlice.origin.city ?? returnSlice.origin.code} → ${returnSlice.destination.city ?? returnSlice.destination.code}`}
         {returnSlice?.segments[0] && ` · ${formatDate(returnSlice.segments[0].departing_at)}`}

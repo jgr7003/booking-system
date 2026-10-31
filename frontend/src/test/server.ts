@@ -11,6 +11,7 @@ import processing from "@/test/fixtures/booking-processing.json";
 import places from "@/test/fixtures/places-new-y.json";
 import search from "@/test/fixtures/search-lhr-jfk.json";
 import roundTrip from "@/test/fixtures/search-lhr-jfk-roundtrip.json";
+import { TEST_ME } from "@/test/session";
 
 /**
  * Real API responses: the search fixture is the captured Duffel answer (LHR → JFK, 56 offers)
@@ -38,7 +39,17 @@ export const fixtures = {
 /** Expiry of the fixture's offers: tests set the clock before it so offers are valid. */
 export const FIXTURE_NOW = new Date("2026-10-23T21:00:00Z");
 
+/** Sign-in methods of the main installation: Google and email, as the backend answers them. */
+export const platformMethods = {
+  organization_name: null,
+  password_enabled: true,
+  signup_enabled: true,
+  providers: [{ slug: "google", display_name: "Google" }],
+};
+
 export const handlers = [
+  http.get("*/api/v1/auth/methods", () => HttpResponse.json(platformMethods)),
+  http.get("*/api/v1/me", () => HttpResponse.json(TEST_ME)),
   http.post("*/api/v1/flights/search", () => HttpResponse.json(fixtures.search)),
   http.get("*/api/v1/flights/places", () => HttpResponse.json(fixtures.places)),
 ];

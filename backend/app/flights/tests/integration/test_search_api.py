@@ -5,6 +5,7 @@ import httpx2
 import pytest
 from fastapi.testclient import TestClient
 
+from app.core.db import get_session_factory
 from app.core.http import get_http_client
 from app.core.pricing.fixed_fee_random_percent import FIXED_FEE, MAX_PERCENT, MIN_PERCENT
 from app.flights.api.dependencies import get_flight_provider
@@ -15,6 +16,12 @@ from app.main import app
 
 client = TestClient(app)
 URL = "/api/v1/flights/search"
+
+
+@pytest.fixture(autouse=True)
+def main_platform():
+    """Requests arrive at the main platform, where the session is optional: its database is never read."""
+    app.dependency_overrides[get_session_factory] = lambda: None
 
 
 def body(**overrides):

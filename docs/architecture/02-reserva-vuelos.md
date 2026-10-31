@@ -763,6 +763,7 @@ WHERE b.id = '<booking_id>';
 | "Tu viaje" en el servidor | `PUT /trips/{id}/items/{item_key}` cuando haya varios vuelos o cuentas |
 | Correo | PNG del check y del avión; datos legales del pie; correos de "reservado sin pagar" y "no se pudo reservar" |
 | Reconciliación manual | Si en el último intento Duffel tampoco responde a la consulta, la reserva queda en `issuance_error(order_unverified)` con la retención conservada y un log `error`: una persona revisa si existe una orden con ese `metadata.booking_id` (§8.2) |
+| Limpieza de `messaging.outbox` e `messaging.inbox` | Nada borra las filas: las del outbox ya publicadas y las del inbox ya procesadas quedan para siempre. En desarrollo no importa; en producción hace falta un borrado periódico (outbox con `published_at` viejo; inbox con `processed_at` más viejo que la ventana máxima de reentregas, hoy 10 intentos × 60 s, con margen, para no volver a procesar un duplicado tardío) |
 | Imagen del backend | `api` y los tres workers construyen la misma imagen por separado |
 | Suite e2e | El recorrido con Playwright se hizo a mano; falta sumarlo al repo (también de la etapa 1) |
 | Reintentar y reconciliar un «Error de emisión» | Mejora posterior acordada: hoy la reserva se queda en ese estado. Un reconciliador debería consultar la orden, capturar o anular y mover la reserva a `confirmed` o `failed` |

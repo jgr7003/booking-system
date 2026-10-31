@@ -1,0 +1,42 @@
+{#- Design board "Cuenta 11 · Correos de cuenta" (Propuesta A v3): verify the email, create or
+    recover the password. The account-locked notice has no board: it follows the recovery one.
+    Inline styles and tables only, as email clients need. -#}
+{% set sans = "'IBM Plex Sans', Arial, Helvetica, sans-serif" %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ subject }}</title>
+</head>
+<body style="margin: 0; padding: 0; background: #E5E7EB; font-family: {{ sans }}; color: #111827">
+<div style="display: none; max-height: 0; overflow: hidden; opacity: 0">{{ heading }}</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background: #E5E7EB">
+<tr><td align="center" style="padding: 24px 12px">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width: 600px; max-width: 100%; border-collapse: collapse; background: #FFFFFF">
+  <tr><td style="background: #111827; padding: 20px 32px">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse"><tr>
+      <td style="color: #FFFFFF; font-family: {{ sans }}; font-size: 22px; font-weight: 700">✈ Vuelos</td>
+      {% if organization_name %}<td align="right" style="color: #D1D5DB; font-family: {{ sans }}; font-size: 14px">Viajes de {{ organization_name }}</td>{% endif %}
+    </tr></table>
+  </td></tr>
+  <tr><td style="padding: 36px 32px 8px">
+    <h1 style="margin: 0 0 12px; font-family: {{ sans }}; font-size: 26px; line-height: 1.25">{{ heading }}</h1>
+    <p style="margin: 0; font-family: {{ sans }}; font-size: 16px; line-height: 1.55; color: #374151">Hola, {{ first_name }}. {{ lead_before }}<strong style="color: #111827">{{ email }}</strong>{{ lead_after }}</p>
+  </td></tr>
+  <tr><td style="padding: 24px 32px 8px">
+    <table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse: collapse"><tr><td style="background: #1D4ED8; border-radius: 6px">
+      <a href="{{ link }}" style="display: inline-block; padding: 14px 28px; color: #FFFFFF; font-family: {{ sans }}; font-size: 16px; font-weight: 600; text-decoration: none">{{ button }}</a>
+    </td></tr></table>
+  </td></tr>
+  <tr><td style="padding: 16px 32px 28px; font-family: {{ sans }}; font-size: 14px; line-height: 1.55; color: #374151">
+    {{ link_note }}<br>
+    <span style="color: #4B5563">Si el botón no funciona, copia este enlace en el navegador: <a href="{{ link }}" style="color: #1D4ED8; word-break: break-all">{{ link }}</a></span>
+  </td></tr>
+  <tr><td style="border-top: 1px solid #E5E7EB; padding: 18px 32px; font-family: {{ sans }}; font-size: 14px; color: #374151"><strong>{{ safety_strong }}</strong> {{ safety }}</td></tr>
+  <tr><td style="background: #111827; padding: 18px 32px; color: #9CA3AF; font-family: {{ sans }}; font-size: 12px; line-height: 1.6">[Razón social, dirección y datos de contacto de la empresa]</td></tr>
+</table>
+</td></tr>
+</table>
+</body>
+</html>

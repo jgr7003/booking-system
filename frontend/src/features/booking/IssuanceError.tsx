@@ -28,7 +28,7 @@ export function IssuanceError({ booking }: { booking: Booking }) {
           aparecer retenido en tu tarjeta hasta que se resuelva.
         </p>
         <p className="text-[14px]">
-          Si necesitás ayuda, indicá este número de reserva:{" "}
+          Si necesitas ayuda, indica este número de reserva:{" "}
           <code className="font-mono font-semibold text-ink">{booking.id}</code>
         </p>
       </div>

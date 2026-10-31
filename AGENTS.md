@@ -22,17 +22,19 @@ Sistema de búsqueda y reserva de vuelos construido **para aprender patrones y t
 ## Estructura
 
 ```
-Makefile, docker-compose.yml   comandos y servicios (api, outbox-relay, booking-worker, booking-notifier, frontend, postgres, redis, rabbitmq, mailpit)
+Makefile, docker-compose.yml   comandos y servicios (api, outbox-relay, booking-worker, booking-notifier, frontend, postgres, redis, rabbitmq, mailpit, keycloak)
 docs/           documentación: architecture/ (global + etapas), research/ (memoria de investigaciones), API de Duffel, prompts, samples
-backend/        API FastAPI (Dockerfile, requirements*.txt, alembic.ini, migrations/)
+backend/        API FastAPI (Dockerfile, requirements*.txt, alembic.ini, migrations/, docker/keycloak/ con los realms de desarrollo)
   app/core/     transversal: config, cliente HTTP, errores, pricing, health, messaging (outbox, inbox, relay, SSE)
   app/flights/  módulo de vuelos: core, domain, providers (Adapter), services, api, tests
-  app/travellers/ viajeros: datos personales y pasaporte, compartidos por todas las verticales
+  app/organizations/ empresas: instalación por hostname y settings (JSON)
+  app/identity/ usuarios, login (OIDC + PKCE y contraseña), tokens ES256, sesiones por dispositivo con DPoP
+  app/travellers/ viajeros: datos personales y pasaporte (snapshot por reserva) y el perfil del titular
   app/payments/ cobro al viajero (PaymentGateway, simulado por ahora)
   app/notifications/ correos (EmailSender: smtp → Mailpit en desarrollo, console)
   app/workers/  puntos de entrada de los procesos (raíz de composición, como app/main.py)
   app/hotels/   (futuro) misma estructura que flights
-frontend/       app web React (Vite): src/api, src/features, src/components/ui, src/lib
+frontend/       app web React (Vite): src/api, src/features, src/components/ui, src/lib, src/assets/login (fotos del login)
 ```
 
 Cada módulo de `app/` es autocontenido e incluye sus propios tests.
@@ -62,6 +64,10 @@ Ejecutar desde la raíz:
 | `make test` | Tests de backend (pytest) y de frontend (vitest). También están `make test-backend` y `make test-frontend` |
 | `make lint` | Límites entre módulos (`import-linter`) y chequeo de tipos y Biome del frontend. También `make lint-backend` y `make lint-frontend` |
 | `make seed-airports` | Carga o actualiza los aeropuertos (idempotente). Hace falta una vez, con la base vacía |
+| `make seed-dev` | Todos los datos de prueba de desarrollo (idempotente): aeropuertos y `make seed-dev-idps` (Keycloak como proveedor de particulares, la empresa Acme en `acme.localhost`, su proveedor y el usuario `viajero@acme.test`). Keycloak en http://localhost:8080 (`admin`/`admin`, `make keycloak`); los usuarios de prueba están en `backend/docker/keycloak/realms/` |
+| `make org-create slug= name= host= [nopassword=1] [nets=CIDR,...]` / `make org-user-add org= email= name= [phone=] [lang=]` | Crea una empresa / le da acceso a una persona (le llega el correo para crear su contraseña si la empresa la permite) |
+| `make idp-add [org=] slug= name= issuer= client_id= client_secret= [prompt=]` | Agrega o actualiza un proveedor OIDC (Google, el AS de una empresa); el secreto se guarda cifrado |
+| `make auth-keygen` | Imprime claves nuevas (`AUTH_SIGNING_KEYS`, `IDENTITY_SECRETS_KEY`) para pegar en `backend/.env`; no las escribe en ningún lado |
 | `make migrate` / `make migration m="..."` | Aplica migraciones / crea una nueva a partir de los modelos |
 | `make api-types` | Regenera `frontend/src/api/schema.d.ts` desde el OpenAPI. Correrlo cada vez que cambia un schema del backend |
 | `make fe-add p="paquete@x.y.z" [dev=1]` | Agrega una dependencia al frontend **desde el contenedor**. No usar pnpm en el host: el lockfile queda con permisos que el contenedor no puede leer |
@@ -79,6 +85,7 @@ El repo tiene un grafo de código y documentación en `graphify-out/` (ignorado 
 - **Primero el grafo.** Ante cualquier pregunta sobre el código, correr `graphify query "<pregunta>"` antes del primer grep, búsqueda o lectura de archivos fuente. Para relaciones, `graphify path "<A>" "<B>"`; para un concepto puntual, `graphify explain "<concepto>"`. Leer archivos solo en las líneas que el grafo ya ubicó. Incluir esta regla en el prompt de todo subagente que explore código.
 - `graphify-out/GRAPH_REPORT.md` resume la arquitectura (nodos centrales y comunidades). Se lee solo para una revisión amplia o cuando `query`, `path` y `explain` no alcanzan.
 - **Mantenerlo al día.** Después de modificar código, correr `graphify update .`, que es solo AST, sin costo de LLM. Si cambian documentos de `docs/`, regenerarlo con `/graphify . --update`.
+- **Antes de cada PR**, el grafo se regenera completo (`graphify update .` y `/graphify . --update`) como paso obligatorio del cierre, aunque ya se haya actualizado durante el trabajo.
 - Lo que no entra al grafo está en `.graphifyignore`: tablero de diseño, samples, fixtures, `schema.d.ts` generado y configuración de agentes.
 - Un hook `PreToolUse` en `.claude/settings.json` le recuerda a Claude Code consultar el grafo antes de buscar o leer.
 
@@ -145,7 +152,7 @@ El plugin [superpowers](https://github.com/obra/superpowers) está habilitado a 
   - `null` → «Sin dato»; `0` → «No incluida»; `"0.00"` → «Gratis»;
   - horarios en hora local del aeropuerto, leídos como texto, sin convertir con `Date`;
   - montos en su moneda, sin convertir.
-- **Textos y código:** textos de interfaz en español; código, comentarios y JSDoc en inglés.
+- **Textos y código:** textos de interfaz y correos en español neutro para Colombia (tuteo, sin voseo; decisión 67); código, comentarios y JSDoc en inglés.
 - **Accesibilidad:** Biome con el preset recomendado, incluidas sus reglas de a11y. El lint tiene que pasar sin `biome-ignore`, salvo que se justifique en el comentario.
 
 ## Reglas
@@ -181,3 +188,4 @@ El plugin [superpowers](https://github.com/obra/superpowers) está habilitado a 
 | 2026-10-27 | Confirmación v2 (Propuesta A v2: confirmada, confirmando, no se pudo reservar) y correo de confirmación asíncrono por `booking.confirmed`: módulo `notifications` con adapters por ambiente (`EMAIL_BACKEND`), Mailpit en compose y proceso `booking-notifier`. Plantillas Jinja2 con autoescape (un test detectó que `.html.j2` no se escapaba). 212 tests de backend y 100 de frontend; correo real verificado en Mailpit. |
 | 2026-10-28 | Arreglo del lease del worker: ante una falla transitoria del proveedor suelta la reserva para que el reintento la tome enseguida (antes se gastaban 7 de 10 intentos esperando un lease propio). Aviso «Está tardando más de lo habitual» a partir de 1 minuto en las pantallas 5 y 6. Análisis de qué pasa si fallan los 10 reintentos y qué no está cubierto en `02-reserva-vuelos.md` §8.1. 214 tests de backend y 103 de frontend. |
 | 2026-10-28 | **Estado «Error de emisión» (`issuance_error`)**: captura rechazada después de emitir o emisión sin verificar conservan la retención y la orden y quedan para una persona o un agente de IA; la API no muestra localizador ni orden fuera de `confirmed`; el checkout no cierra el intento. **Verificación de la tarjeta** con una compra pequeña y su reversión (`verify_card`). Timeout de 130 s al crear la orden. Inventario de errores de emisión verificado en la documentación de Duffel (`docs/research/duffel-errores-de-emision.md`) y plan de failover entre proveedores (`docs/architecture/XX-failover-proveedores.md`, sin etapa asignada). |
+| 2026-10-30 | **Etapa 3: usuarios, empresas e inicio de sesión.** Módulos `organizations` (instalación por hostname, `settings` JSON) e `identity`: OIDC + PKCE (Keycloak en compose para desarrollo) y contraseña Argon2id, «no encontramos tu cuenta», tokens propios ES256 con refresh rotado, sesiones por dispositivo atadas con DPoP, bloqueo por cuenta y límites por dispositivo e IP. Reservas con dueño (`user_id`, `organization_id`). Instalación de empresa cerrada sin sesión, también en la API de búsqueda. Frontend de cuentas según la Propuesta A v3 (login 70/30 con fotos al azar). Perfil de viajero del titular (`travellers.profiles`). Plataforma para Colombia: español neutro, `CO`/`es-CO`. 364 tests de backend y 181 de frontend. Detalle en `03-usuarios-y-acceso.md` y `XX-viajeros-y-viajes.md`. |

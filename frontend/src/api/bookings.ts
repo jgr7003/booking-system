@@ -8,6 +8,7 @@ import {
   type PriceDecisionRequest,
   unwrap,
 } from "./client";
+import { openEventStream } from "./eventStream";
 
 export const bookingKeys = {
   detail: (id: string) => ["bookings", id] as const,
@@ -21,7 +22,7 @@ export function isFinal(status: BookingStatus): boolean {
 }
 
 /**
- * Without events (no `EventSource`, or the stream dropped), the booking is read again this often
+ * Without events (the stream dropped or isn't allowed), the booking is read again this often
  * while it isn't final: the plan B of the design (`GET /bookings/{id}`).
  */
 export const BOOKING_POLL_MS = 5000;
@@ -94,14 +95,14 @@ export function useBooking(id: string | null) {
  * Listens to the state changes of a booking (Server-Sent Events) and refreshes it on each one.
  *
  * An event only says "it changed": the booking is read again with `GET`, so a lost or repeated
- * event never shows a wrong state. The stream is closed by hand on a final state, because the
- * browser would reconnect on its own when the server closes it.
+ * event never shows a wrong state. The stream is closed by hand on a final state, because it
+ * reconnects on its own when the server closes it (`src/api/eventStream.ts`).
  */
 export function useBookingEvents(id: string | null) {
   const queryClient = useQueryClient();
   useEffect(() => {
-    if (!id || typeof EventSource === "undefined") return;
-    const source = new EventSource(`/api/v1/flights/bookings/${id}/events`);
+    if (!id) return;
+    const source = openEventStream(`/api/v1/flights/bookings/${id}/events`);
     source.addEventListener("status", (event) => {
       const { status } = JSON.parse((event as MessageEvent<string>).data) as { status: BookingStatus };
       queryClient.invalidateQueries({ queryKey: bookingKeys.detail(id) });

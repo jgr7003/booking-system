@@ -6,7 +6,8 @@ from datetime import datetime, timedelta
 from sqlalchemy import or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.flights.domain.dtos.bookings import BookingStatus
+from app.core.db import equals_or_null
+from app.flights.domain.dtos.bookings import BookingOwner, BookingStatus
 from app.flights.domain.models.bookings import Booking
 
 
@@ -29,8 +30,10 @@ class BookingRepository:
         """
         self._session.add(booking)
 
-    async def get(self, booking_id: uuid.UUID, *, for_update: bool = False) -> Booking | None:
-        """Finds a booking by id.
+    async def get_for_processing(self, booking_id: uuid.UUID, *, for_update: bool = False) -> Booking | None:
+        """Finds a booking by id, whoever owns it. Only for the workers, never for a user's request.
+
+        Reads made for a user go through `get_owned`, which filters by owner.
 
         Args:
             booking_id: Id of the booking.
@@ -40,6 +43,28 @@ class BookingRepository:
             The booking, or `None`.
         """
         return await self._session.get(Booking, booking_id, with_for_update=for_update, populate_existing=for_update)
+
+    async def get_owned(
+        self, booking_id: uuid.UUID, owner: BookingOwner, *, for_update: bool = False
+    ) -> Booking | None:
+        """Finds a booking of an owner: same organization (or none, for private travellers) and same user.
+
+        Args:
+            booking_id: Id of the booking.
+            owner: Who asks; there is no default, so no read for a user can skip the filter.
+            for_update: Lock the row until the transaction ends, to change it safely.
+
+        Returns:
+            The booking, or `None` if it doesn't exist or belongs to someone else.
+        """
+        query = select(Booking).where(
+            Booking.id == booking_id,
+            equals_or_null(Booking.organization_id, owner.organization_id),
+            Booking.user_id == owner.user_id,
+        )
+        if for_update:
+            query = query.with_for_update()
+        return await self._session.scalar(query.execution_options(populate_existing=for_update))
 
     async def get_by_idempotency_key(self, idempotency_key: uuid.UUID) -> Booking | None:
         """Finds the booking created with an `Idempotency-Key`.

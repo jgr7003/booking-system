@@ -42,8 +42,8 @@ export function TripPage() {
             </h1>
             <p className="text-[15px] text-ink-2">
               {items.length
-                ? "Revisá tu vuelo y seguí con los datos del pasajero."
-                : "Buscá un vuelo para empezar."}
+                ? "Revisa tu vuelo y sigue con los datos del pasajero."
+                : "Busca un vuelo para empezar."}
             </p>
           </div>
 

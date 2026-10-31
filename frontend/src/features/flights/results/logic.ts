@@ -189,7 +189,7 @@ function tagFor(
 
 /** Note under the fare matrix (design): what to watch for in this flight. */
 function noteFor(flight: Flight, short: StopMarker[], twin: Flight | undefined): string {
-  if (twin) return `Mismo avión que ${flightNumbersOf(twin)}: compará qué incluye cada una.`;
+  if (twin) return `Mismo avión que ${flightNumbersOf(twin)}: compara qué incluye cada una.`;
   if (short.length > 0) {
     return `${short.length === 1 ? "Conexión corta" : "Conexiones cortas"}: ${joinSpanish(
       short.map((m) => `${formatDuration(m.minutes)} en ${m.airport}`),

@@ -1,0 +1,62 @@
+{
+  "realm": "particulares",
+  "displayName": "Particulares (prueba)",
+  "enabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "internationalizationEnabled": true,
+  "supportedLocales": ["es"],
+  "defaultLocale": "es",
+  "clients": [
+    {
+      "clientId": "booking-platform",
+      "name": "Vuelos (desarrollo)",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "publicClient": false,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "dev-particulares-secret",
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "redirectUris": ["http://localhost:5173/auth/callback"],
+      "webOrigins": ["http://localhost:5173"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "http://localhost:5173/*"
+      }
+    }
+  ],
+  "users": [
+    {
+      "username": "ana@example.test",
+      "email": "ana@example.test",
+      "emailVerified": true,
+      "firstName": "Ana",
+      "lastName": "Particular",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "colombia1/", "temporary": false }]
+    },
+    {
+      "username": "nuevo@example.test",
+      "email": "nuevo@example.test",
+      "emailVerified": true,
+      "firstName": "Nuevo",
+      "lastName": "Viajero",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "colombia1/", "temporary": false }]
+    },
+    {
+      "username": "sinverificar@example.test",
+      "email": "sinverificar@example.test",
+      "emailVerified": false,
+      "firstName": "Sin",
+      "lastName": "Verificar",
+      "enabled": true,
+      "credentials": [{ "type": "password", "value": "colombia1/", "temporary": false }]
+    }
+  ]
+}

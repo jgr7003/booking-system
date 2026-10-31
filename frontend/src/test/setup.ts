@@ -1,8 +1,10 @@
 import "@testing-library/jest-dom/vitest";
 import { cleanup } from "@testing-library/react";
 import { afterAll, afterEach, beforeAll, vi } from "vitest";
+import { setEventStreamFactory } from "@/api/eventStream";
 import { useCheckout } from "@/features/checkout/store";
 import { useTrip } from "@/features/trip/public";
+import { resetSessionForTests } from "@/lib/auth/tokens";
 import { server } from "./server";
 
 // Any request (or WebSocket frame) without a handler fails: tests never reach a real API.
@@ -17,9 +19,11 @@ afterEach(() => {
   server.resetHandlers();
   sessionStorage.clear();
   useTrip.getState().clear();
-  useCheckout.setState({ drafts: {}, attempts: {} });
+  useCheckout.setState({ owner: null, drafts: {}, attempts: {}, holders: {} });
   vi.useRealTimers();
   vi.unstubAllGlobals();
+  setEventStreamFactory(null);
+  resetSessionForTests();
 });
 
 afterAll(() => server.close());

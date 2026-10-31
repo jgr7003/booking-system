@@ -55,8 +55,8 @@ export function SearchForm({ initial }: SearchFormProps) {
     direct: direct || undefined,
   };
   const errors = searchErrors(search, today);
-  if (roundTrip && !ret) errors.ret = "Elegí la fecha de vuelta o cambiá a solo ida.";
-  if (missingAge) errors.adults = "Elegí la edad de cada menor.";
+  if (roundTrip && !ret) errors.ret = "Elige la fecha de vuelta o cambia a solo ida.";
+  if (missingAge) errors.adults = "Elige la edad de cada menor.";
   const shownErrors = submitted ? errors : {};
 
   function onSubmit(event: FormEvent) {

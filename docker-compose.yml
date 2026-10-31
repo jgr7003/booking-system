@@ -18,6 +18,8 @@ x-backend: &backend
     SMTP_HOST: mailpit
     SMTP_PORT: "1025"
     APP_URL: http://localhost:5173
+    # X-Forwarded-Host is trusted only from the docker network (the Vite dev server).
+    TRUSTED_PROXIES: 172.16.0.0/12,192.168.0.0/16
     # Used by the integration tests only; isolated from development data.
     TEST_DATABASE_URL: postgresql+asyncpg://booking:booking@postgres:5432/booking_test
     TEST_REDIS_URL: redis://redis:6379/15
@@ -132,6 +134,24 @@ services:
     ports:
       - "8025:8025"
       - "1025:1025"
+
+  # Development-only identity provider (OIDC), in place of Google and of an organization's own
+  # authorization server: http://localhost:8080 (admin / admin). Realms are imported from the repo
+  # on start; changes made in its console are lost unless exported back (03-usuarios-y-acceso.md §15.1).
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.8.0
+    command: start-dev --import-realm
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+      # Issuer and URLs the browser sees...
+      KC_HOSTNAME: http://localhost:8080
+      # ...while the API calls it inside the docker network (http://keycloak:8080).
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend/docker/keycloak/realms:/opt/keycloak/data/import:ro
 
 volumes:
   pgdata:

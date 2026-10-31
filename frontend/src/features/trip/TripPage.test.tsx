@@ -42,7 +42,7 @@ describe("trip summary", () => {
     await userEvent.click(await screen.findByRole("button", { name: "Actualizar precio" }));
 
     expect(
-      await screen.findByText("No pudimos actualizar el precio. Probá de nuevo en unos segundos."),
+      await screen.findByText("No pudimos actualizar el precio. Prueba de nuevo en unos segundos."),
     ).toBeInTheDocument();
   });
 

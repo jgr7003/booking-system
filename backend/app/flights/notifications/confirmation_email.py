@@ -55,7 +55,7 @@ class RenderedEmail:
 class IncludedItem:
     """A row of "Qué incluye tu tarifa"."""
 
-    # What it is, e.g. "Valija despachada".
+    # What it is, e.g. "Maleta de bodega".
     label: str
 
     # What the fare gives, e.g. "✓ 1 incluida" or "Sin dato".
@@ -220,7 +220,7 @@ def _included(slice_: Slice, order: OrderResponse) -> list[IncludedItem]:
     benefits = slice_.benefits
     return [
         _bag("Equipaje de mano", carry_on, "incluido", "incluidos", "No incluido"),
-        _bag("Valija despachada", checked, "incluida", "incluidas", "No incluida"),
+        _bag("Maleta de bodega", checked, "incluida", "incluidas", "No incluida"),
         _condition("Cambios", order.conditions.change),
         _condition("Reembolso", order.conditions.refund),
         _benefits(benefits.advance_seat_selection, benefits.priority_boarding),

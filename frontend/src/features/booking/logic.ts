@@ -66,7 +66,7 @@ export function sliceBags(slice: OrderSlice): { carryOn: number | null; checked:
   };
 }
 
-/** "✓ 1 de mano · ✓ 1 valija" (line under each flight); `null` when nothing is known. */
+/** "✓ 1 de mano · ✓ 1 maleta" (line under each flight); `null` when nothing is known. */
 export function bagsLine(bags: { carryOn: number | null; checked: number | null }): {
   text: string;
   tone: Tone;
@@ -80,10 +80,10 @@ export function bagsLine(bags: { carryOn: number | null; checked: number | null 
         : `✓ ${bags.carryOn} de mano`;
   const checked =
     bags.checked === null
-      ? "Valija: sin dato"
+      ? "Maleta: sin dato"
       : bags.checked === 0
-        ? "✗ Valija no incluida"
-        : `✓ ${bags.checked} ${bags.checked === 1 ? "valija" : "valijas"}`;
+        ? "✗ Maleta no incluida"
+        : `✓ ${bags.checked} ${bags.checked === 1 ? "maleta" : "maletas"}`;
   const tone = bags.carryOn === 0 || bags.checked === 0 ? "warn" : bags.carryOn && bags.checked ? "ok" : "na";
   return { text: `${carry} · ${checked}`, tone };
 }
@@ -119,7 +119,7 @@ export function includedItems(slice: OrderSlice, order: Order): Item[] {
   const bags = sliceBags(slice);
   return [
     bagItem("Equipaje de mano", bags.carryOn, "incluido", "incluidos", "No incluido"),
-    bagItem("Valija despachada", bags.checked, "incluida", "incluidas", "No incluida"),
+    bagItem("Maleta de bodega", bags.checked, "incluida", "incluidas", "No incluida"),
     conditionItem("Cambios", order.conditions.change),
     conditionItem("Reembolso", order.conditions.refund),
     benefitItem("Selección de asiento", slice.benefits.advance_seat_selection, "Incluida", "No incluida"),
@@ -156,7 +156,7 @@ export function manageRows(order: Order): ManageRow[] {
         ? isZero(change.penalty)
           ? "Tu tarifa permite cambios sin cargo."
           : `Con cargo de ${formatPenalty(change.penalty)}.`
-        : "Consultá las condiciones con la aerolínea.";
+        : "Consulta las condiciones con la aerolínea.";
   const cancelDetail =
     refund.allowed === false
       ? `Tu tarifa ${fare} no tiene reembolso.`
@@ -164,7 +164,7 @@ export function manageRows(order: Order): ManageRow[] {
         ? isZero(refund.penalty)
           ? "Con reembolso total."
           : `Reembolso con cargo de ${formatPenalty(refund.penalty)}.`
-        : "Consultá las condiciones con la aerolínea.";
+        : "Consulta las condiciones con la aerolínea.";
   const rows: Record<string, ManageRow> = {
     change: { key: "change", title: "Cambiar vuelo", detail: changeDetail, icon: "⇄" },
     cancel: { key: "cancel", title: "Cancelar reserva", detail: cancelDetail, icon: "✕" },
@@ -202,38 +202,38 @@ export function failureContent(
   if (status === "cancelled") {
     return {
       title: "No aceptaste el precio nuevo de la aerolínea.",
-      body: "La reserva se canceló sin ningún cobro. En «Tu viaje» podés actualizar el precio o elegir otra tarifa.",
+      body: "La reserva se canceló sin ningún cobro. En «Tu viaje» puedes actualizar el precio o elegir otra tarifa.",
     };
   }
   switch (code) {
     case "offer_expired":
       return {
         title: "La oferta venció antes de que la aerolínea la confirmara.",
-        body: "Los precios se mantienen 30 minutos. En «Tu viaje» podés actualizar el precio de este vuelo y volver a intentar.",
+        body: "Los precios se mantienen 30 minutos. En «Tu viaje» puedes actualizar el precio de este vuelo y volver a intentar.",
       };
     case "offer_unavailable":
       return {
         title: "La aerolínea ya no tiene lugar con esta tarifa.",
-        body: "Pasa cuando se agotan los asientos a ese precio mientras se completa la compra. Podés elegir otra tarifa del mismo vuelo u otro vuelo.",
+        body: "Pasa cuando se agotan los asientos a ese precio mientras se completa la compra. Puedes elegir otra tarifa del mismo vuelo u otro vuelo.",
         secondary: { label: "Buscar otro vuelo", to: "results" },
       };
     case "payment_declined":
       return {
         title: "La tarjeta fue rechazada.",
-        body: "El emisor no autorizó el pago. Revisá los datos de la tarjeta o probá con otra. La tarifa puede cambiar si pasa mucho tiempo.",
+        body: "El emisor no autorizó el pago. Revisa los datos de la tarjeta o prueba con otra. La tarifa puede cambiar si pasa mucho tiempo.",
         secondary: { label: "Probar con otra tarjeta", to: "checkout" },
       };
     case "provider_rejected":
     case "passenger_rejected":
       return {
         title: "La aerolínea rechazó los datos del pasajero.",
-        body: "Revisá que el nombre, el apellido y la fecha de nacimiento coincidan exactamente con el documento de viaje.",
+        body: "Revisa que el nombre, el apellido y la fecha de nacimiento coincidan exactamente con el documento de viaje.",
         secondary: { label: "Revisar datos del pasajero", to: "checkout" },
       };
     default:
       return {
         title: "La aerolínea no respondió a tiempo.",
-        body: "Suele ser algo pasajero. Esperá unos minutos y volvé a intentar desde «Tu viaje».",
+        body: "Suele ser algo pasajero. Espera unos minutos y vuelve a intentar desde «Tu viaje».",
       };
   }
 }

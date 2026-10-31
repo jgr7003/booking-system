@@ -45,7 +45,7 @@ def _phone_number(value: str) -> str:
     """Removes spaces, dashes and parentheses and checks the E.164 format."""
     value = re.sub(r"[\s\-()]", "", value)
     if not _PHONE.match(value):
-        raise ValueError(f"must be in international E.164 format, e.g. +5491112345678 ({PHONE_MIN_DIGITS}-{PHONE_MAX_DIGITS} digits)")
+        raise ValueError(f"must be in international E.164 format, e.g. +573001234567 ({PHONE_MIN_DIGITS}-{PHONE_MAX_DIGITS} digits)")
     return value
 
 
@@ -85,7 +85,7 @@ PersonName = Annotated[str, Field(max_length=MAX_NAME_LENGTH), AfterValidator(_p
 # Email address, in lower case.
 Email = Annotated[str, AfterValidator(_email)]
 
-# Phone number in E.164 format, e.g. `+5491112345678`.
+# Phone number in E.164 format, e.g. `+573001234567`.
 PhoneNumber = Annotated[str, AfterValidator(_phone_number)]
 
 # ISO 3166-1 alpha-2 country code, in upper case.
